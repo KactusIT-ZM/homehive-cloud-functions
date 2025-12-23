@@ -114,7 +114,7 @@ def enqueue_notification_tasks(due_tenants: list):
             log.error(f"Error creating task for tenant {tenant_info['tenant_id']}: {e}")
 
 @scheduler_fn.on_schedule(
-    schedule="* * * * *",
+    schedule="* 7 * * *",
     timezone=scheduler_fn.Timezone("Africa/Johannesburg"),
 )
 def main(event: scheduler_fn.ScheduledEvent) -> None:

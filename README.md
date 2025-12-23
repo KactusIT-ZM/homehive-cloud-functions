@@ -1,6 +1,26 @@
-# Cloud Function Project
+# HomeHive Cloud Functions
 
-This project contains a Python Cloud Function managed with Firebase.
+This repository contains the backend Cloud Functions for the HomeHive platform, designed to handle scheduled tasks and notifications for property management.
+
+## Overview
+
+This project includes two main Cloud Functions:
+
+1.  **`main` (Scheduled Function):** A scheduler-triggered function that runs periodically (e.g., daily). It queries the Firebase Realtime Database to find tenants whose rent is due within a configurable window (e.g., 7 days). For each due tenant, it enqueues a task in Google Cloud Tasks.
+2.  **`send_notification_worker` (HTTP Function):** An HTTP-triggered function designed to be invoked by Cloud Tasks. It receives a tenant's information in the request payload and sends them a rent reminder email using AWS Simple Email Service (SES).
+
+This two-function architecture provides a robust, scalable, and decoupled system for handling notifications.
+
+## Repository Contents
+
+*   `functions/main.py`: Contains the core Python code for both the `main` scheduler function and the `send_notification_worker` function.
+*   `functions/requirements.txt`: Lists all the Python dependencies for the project (e.g., `firebase-functions`, `boto3`, `Jinja2`).
+*   `functions/templates/reminder_email.txt`: The Jinja2 template used to generate the body of the rent reminder email.
+*   `functions/tests/`: Contains all the unit and integration tests.
+    *   `test_main.py`: The main test file, containing tests for all functions and helpers.
+    *   `test_db.json`: A snapshot of the database schema used for mock data in the tests.
+*   `firebase.json` & `.firebaserc`: Configuration files for deploying with the Firebase CLI.
+*   `README.md`: This file, providing an overview and instructions for the project.
 
 ## Prerequisites
 
@@ -10,6 +30,7 @@ This project contains a Python Cloud Function managed with Firebase.
   pyenv install 3.12.0
   ```
 - **Firebase CLI**: You will need the Firebase CLI to deploy the function.
+- **Google Cloud SDK (`gcloud`)**: Required for authentication and creating Cloud Tasks queues.
 
 ## Setup
 
@@ -36,6 +57,13 @@ This project contains a Python Cloud Function managed with Firebase.
    pip install -r requirements.txt
    ```
 
+4. **Set Up Application Default Credentials (ADC)**
+
+   To run tests that interact with Google Cloud services locally, you need to authenticate:
+   ```bash
+   gcloud auth application-default login
+   ```
+
 ## Running Tests
 
 To run the tests, make sure you are in the project root directory.
@@ -45,21 +73,6 @@ To run the tests, make sure you are in the project root directory.
 source functions/venv/bin/activate && python -m unittest discover functions/tests
 ```
 
-**Run a specific test file:**
-```bash
-source functions/venv/bin/activate && python -m unittest functions.tests.test_main
-```
-
-**Run a specific test class:**
-```bash
-source functions/venv/bin/activate && python -m unittest functions.tests.test_main.TestMain
-```
-
-**Run a specific test method:**
-```bash
-source functions/venv/bin/activate && python -m unittest functions.tests.test_main.TestMain.test_notification_handler
-```
-
 ## Test Coverage
 
 This project uses the `coverage` library to measure test coverage.
@@ -67,7 +80,7 @@ This project uses the `coverage` library to measure test coverage.
 1.  **Run Tests with Coverage:**
     From the project root, run:
     ```bash
-    source functions/venv/bin/activate && coverage run -m unittest discover functions/tests
+    source functions/venv/bin/activate && coverage run --source=functions -m unittest discover functions/tests
     ```
 
 2.  **View Console Report:**
@@ -77,7 +90,7 @@ This project uses the `coverage` library to measure test coverage.
     ```
 
 3.  **View HTML Report:**
-    For a detailed, interactive report that shows which lines were missed:
+    For a detailed, interactive report:
     ```bash
     coverage html
     ```
@@ -85,8 +98,9 @@ This project uses the `coverage` library to measure test coverage.
 
 ## Deployment
 
-To deploy the function, run the following command from the project root directory:
+To deploy the functions, run the following command from the project root directory:
 
 ```bash
 firebase deploy --only functions
 ```
+You will also need to set the required environment variables (e.g., `SENDER_EMAIL`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) in the Google Cloud console for the `send_notification_worker` function.
