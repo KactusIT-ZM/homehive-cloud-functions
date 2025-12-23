@@ -1,0 +1,3513 @@
+{
+  "HomeHive": {
+    "PropertyManagement": {
+      "Accounts": {
+        "-OTi3TKQ16jieuDen2Pv": {
+          "milsdwu5nuas68mef6": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": false,
+            "payments": {
+              "1764837532151jesgo65h8oj": {
+                "amount": 3000,
+                "billedProperties": {
+                  "175823507292869q6vtk3d4": {
+                    "parentPropertyID": "mcdxxilopkeeoa81mw9",
+                    "propertyID": "175823507292869q6vtk3d4"
+                  }
+                },
+                "id": "1764837532151jesgo65h8oj",
+                "paymentDueDate": "02/12/2025",
+                "paymentStatus": 1,
+                "paymentType": 1
+              }
+            },
+            "reminders": {
+              "mcdxxilopkeeoa81mw9": {
+                "rentDueDate": "30/01/2026",
+                "unitId": "175823507292869q6vtk3d4"
+              },
+              "sameDateReminder": true
+            }
+          }
+        },
+        "-OTlPNCoFjq8k_XsMqw2": {
+          "mcevbmtsrr1b3k608cm": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321521wwx8l1dx9r": {
+                "amount": 9400,
+                "billedProperties": {
+                  "1758235072928cuqdxjszmn": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cuqdxjszmn"
+                  }
+                },
+                "id": "17648375321521wwx8l1dx9r",
+                "note": "Rent for November and December 2025 next rent due January 1st 2026",
+                "paymentDate": "05/11/2025",
+                "paymentDueDate": "01/01/2026",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "17648375321527jfummmpmb9": {
+                "amount": 18000,
+                "billedProperties": {
+                  "1758235072928cuqdxjszmn": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cuqdxjszmn"
+                  }
+                },
+                "id": "17648375321527jfummmpmb9",
+                "note": "May June July August ",
+                "paymentDate": "01/05/2024",
+                "paymentDueDate": "01/05/2024",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152dmovflvxrdd": {
+                "amount": 28200,
+                "billedProperties": {
+                  "1758235072928cuqdxjszmn": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cuqdxjszmn"
+                  }
+                },
+                "id": "1764837532152dmovflvxrdd",
+                "note": "July - December 31st 2025 Next rent 1 January 2026",
+                "paymentDate": "29/06/2025",
+                "paymentDueDate": "01/10/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152ob7e17u53nu": {
+                "amount": 4500,
+                "billedProperties": {
+                  "1758235072928cuqdxjszmn": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cuqdxjszmn"
+                  }
+                },
+                "id": "1764837532152ob7e17u53nu",
+                "paymentDate": "01/05/2024",
+                "paymentDueDate": "01/05/2024",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152qd9r6d5pgqt": {
+                "amount": 13500,
+                "billedProperties": {
+                  "1758235072928cuqdxjszmn": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cuqdxjszmn"
+                  }
+                },
+                "id": "1764837532152qd9r6d5pgqt",
+                "note": "January February March 2025",
+                "paymentDate": "31/12/2024",
+                "paymentDueDate": "31/12/2024",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152qm0ol7koje8": {
+                "amount": 13500,
+                "billedProperties": {
+                  "1758235072928cuqdxjszmn": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cuqdxjszmn"
+                  }
+                },
+                "id": "1764837532152qm0ol7koje8",
+                "note": "1 October to December 31st  ",
+                "paymentDate": "30/09/2024",
+                "paymentDueDate": "30/09/2024",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152y81juwe34qn": {
+                "amount": 13500,
+                "billedProperties": {
+                  "1758235072928cuqdxjszmn": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cuqdxjszmn"
+                  }
+                },
+                "id": "1764837532152y81juwe34qn",
+                "note": "April May June 2025",
+                "paymentDate": "31/03/2025",
+                "paymentDueDate": "31/03/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "13/06/2026",
+                "unitId": "1758235072928cuqdxjszmn"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mceviqlzx6fup6ue85s": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": false,
+            "payments": {
+              "1764837532152c8oiakxio0e": {
+                "amount": 9400,
+                "billedProperties": {
+                  "1758235072928czauty70y7": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928czauty70y7"
+                  }
+                },
+                "id": "1764837532152c8oiakxio0e",
+                "note": "Rent payment for October and November, Next rent due 1st December 2025",
+                "paymentDate": "28/09/2025",
+                "paymentDueDate": "01/11/2025",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152contq10ohty": {
+                "amount": 9400,
+                "billedProperties": {
+                  "1758235072928czauty70y7": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928czauty70y7"
+                  }
+                },
+                "id": "1764837532152contq10ohty",
+                "note": "Rent payment for August and September next rent due October 1st 2025 ",
+                "paymentDate": "24/07/2025",
+                "paymentDueDate": "01/10/2025",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152ei3jvmgmli4": {
+                "amount": 67500,
+                "billedProperties": {
+                  "1758235072928czauty70y7": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928czauty70y7"
+                  }
+                },
+                "id": "1764837532152ei3jvmgmli4",
+                "note": "back log",
+                "paymentDate": "29/02/2024",
+                "paymentDueDate": "01/03/2024",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152jovedryf8vf": {
+                "amount": 9400,
+                "billedProperties": {
+                  "1758235072928czauty70y7": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928czauty70y7"
+                  }
+                },
+                "id": "1764837532152jovedryf8vf",
+                "note": "May June 2025",
+                "paymentDate": "31/05/2025",
+                "paymentDueDate": "01/06/2025",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152qm2h1vnmtl1": {
+                "amount": 9400,
+                "billedProperties": {
+                  "1758235072928czauty70y7": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928czauty70y7"
+                  }
+                },
+                "id": "1764837532152qm2h1vnmtl1",
+                "note": "Next Rent Due 1st February 2026",
+                "paymentDate": "01/12/2025",
+                "paymentDueDate": "01/01/2026",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152vihlgpvmcj1": {
+                "amount": 4700,
+                "billedProperties": {
+                  "1758235072928czauty70y7": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928czauty70y7"
+                  }
+                },
+                "id": "1764837532152vihlgpvmcj1",
+                "paymentDueDate": "29/06/2025",
+                "paymentStatus": 1,
+                "paymentType": 1
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "26/04/2026",
+                "unitId": "1758235072928czauty70y7"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mcex5ufwquiay5iujz": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "176483753215260ihcaxodev": {
+                "amount": 4700,
+                "billedProperties": {
+                  "175823507292830noo8myhk": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "175823507292830noo8myhk"
+                  }
+                },
+                "id": "176483753215260ihcaxodev",
+                "note": "May ",
+                "paymentDate": "01/05/2025",
+                "paymentDueDate": "01/05/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "17648375321528qzqk4shn8g": {
+                "amount": 9400,
+                "billedProperties": {
+                  "175823507292830noo8myhk": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "175823507292830noo8myhk"
+                  }
+                },
+                "id": "17648375321528qzqk4shn8g",
+                "note": "May June",
+                "paymentDate": "30/04/2025",
+                "paymentDueDate": "01/05/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152fad3hc187wq": {
+                "amount": 9400,
+                "billedProperties": {
+                  "175823507292830noo8myhk": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "175823507292830noo8myhk"
+                  }
+                },
+                "id": "1764837532152fad3hc187wq",
+                "note": "Rent for July and August (Next Rent 1st September 2025)",
+                "paymentDate": "07/06/2025",
+                "paymentDueDate": "01/10/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152lz2u6phhkm1": {
+                "amount": 4700,
+                "billedProperties": {
+                  "175823507292830noo8myhk": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "175823507292830noo8myhk"
+                  }
+                },
+                "id": "1764837532152lz2u6phhkm1",
+                "note": "Next rent due on 1st November 2025",
+                "paymentDate": "02/10/2025",
+                "paymentDueDate": "01/12/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152p3bdy8wn60m": {
+                "amount": 4700,
+                "billedProperties": {
+                  "175823507292830noo8myhk": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "175823507292830noo8myhk"
+                  }
+                },
+                "id": "1764837532152p3bdy8wn60m",
+                "note": "Rent payment for September next rent due October 1st 2025 ",
+                "paymentDate": "10/09/2025",
+                "paymentDueDate": "01/12/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152xzgnwy13156": {
+                "amount": 4700,
+                "billedProperties": {
+                  "175823507292830noo8myhk": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "175823507292830noo8myhk"
+                  }
+                },
+                "id": "1764837532152xzgnwy13156",
+                "note": "Next rent due on 1st December 2025",
+                "paymentDate": "02/11/2025",
+                "paymentDueDate": "01/01/2026",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "22/06/2026",
+                "unitId": "175823507292830noo8myhk"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mcexneyx8brf09ajte5": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321523oasbbmaz38": {
+                "amount": 14100,
+                "billedProperties": {
+                  "1758235072928fwl26lw871": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928fwl26lw871"
+                  }
+                },
+                "id": "17648375321523oasbbmaz38",
+                "note": "August, September October ",
+                "paymentDate": "02/08/2025",
+                "paymentDueDate": "01/12/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152jbl3x7vnkw8": {
+                "amount": 4700,
+                "billedProperties": {
+                  "1758235072928fwl26lw871": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928fwl26lw871"
+                  }
+                },
+                "id": "1764837532152jbl3x7vnkw8",
+                "paymentDate": "01/08/2024",
+                "paymentDueDate": "29/06/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152v7i2b71ghed": {
+                "amount": 4700,
+                "billedProperties": {
+                  "1758235072928fwl26lw871": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928fwl26lw871"
+                  }
+                },
+                "id": "1764837532152v7i2b71ghed",
+                "paymentDate": "31/10/2024",
+                "paymentDueDate": "",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152zcy87ingv0a": {
+                "amount": 9400,
+                "billedProperties": {
+                  "1758235072928fwl26lw871": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928fwl26lw871"
+                  }
+                },
+                "id": "1764837532152zcy87ingv0a",
+                "note": "Next Rent Due 1st January 2025",
+                "paymentDate": "01/11/2025",
+                "paymentDueDate": "01/01/2026",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "01/04/2026",
+                "unitId": "1758235072928fwl26lw871"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mcf487a5lsr5bbbczz": {
+            "accountStatus": 2,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321529zuoai4i7mz": {
+                "amount": 47500,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "17648375321529zuoai4i7mz",
+                "note": "Covers all rent paid up to June 31st 2025",
+                "paymentDate": "01/11/2023",
+                "paymentDueDate": "01/11/2023",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152pheb3mfhq6v": {
+                "amount": 2600,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "1764837532152pheb3mfhq6v",
+                "note": "July 2025 next rent, August 1st 2025",
+                "paymentDate": "30/06/2025",
+                "paymentDueDate": "01/09/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152srtlrvh7r89": {
+                "amount": 2600,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "1764837532152srtlrvh7r89",
+                "note": "Once off payment",
+                "paymentDate": "01/11/2023",
+                "paymentDueDate": "01/11/2023",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152vub47sh6n3p": {
+                "amount": 2600,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "1764837532152vub47sh6n3p",
+                "note": "Automatically generated next rent payment. Rent Amount K2600 is for the next 1 month ",
+                "paymentDueDate": "01/10/2025",
+                "paymentStatus": 1,
+                "paymentType": 0
+              },
+              "1764837532152vxwlrzk0ha9": {
+                "amount": 2600,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "1764837532152vxwlrzk0ha9",
+                "note": "Automatically generated next rent payment. Rent Amount K2600 is for the next 1 month ",
+                "paymentDate": "01/07/2025",
+                "paymentDueDate": "01/08/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152w3qz15410ia": {
+                "amount": 2600,
+                "billedProperties": {
+                  "mceta4mj45nf1401l7x": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "mceta4mj45nf1401l7x"
+                  }
+                },
+                "id": "1764837532152w3qz15410ia",
+                "note": "Rent Due is 1st October 2025",
+                "paymentDate": "02/09/2025",
+                "paymentDueDate": "01/08/2025",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "22/06/2026",
+                "unitId": "17582350729286cjtkglmpm"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mcf51gx5cwpdv445ipm": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321526k5nj5g9xrc": {
+                "amount": 4700,
+                "billedProperties": {
+                  "1758235072928vq3t47bo40": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928vq3t47bo40"
+                  }
+                },
+                "id": "17648375321526k5nj5g9xrc",
+                "note": "Jan ",
+                "paymentDate": "01/01/2025",
+                "paymentDueDate": "29/06/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152961ni0q5s2p": {
+                "amount": 23500,
+                "billedProperties": {
+                  "1758235072928vq3t47bo40": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928vq3t47bo40"
+                  }
+                },
+                "id": "1764837532152961ni0q5s2p",
+                "note": "May, June, July, August and September 2025 next rent October 1 2025",
+                "paymentDate": "17/01/2025",
+                "paymentDueDate": "",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152i560ik81de5": {
+                "amount": 14100,
+                "billedProperties": {
+                  "1758235072928vq3t47bo40": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928vq3t47bo40"
+                  }
+                },
+                "id": "1764837532152i560ik81de5",
+                "note": "Next rent due January 1st 2026",
+                "paymentDate": "03/10/2025",
+                "paymentDueDate": "01/12/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "04/05/2026",
+                "unitId": "1758235072928vq3t47bo40"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mfkvecv7ockyxfwo4o": {
+            "accountStatus": 2,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321520fd2en97a8a": {
+                "amount": 4700,
+                "billedProperties": {
+                  "1758235072928f0viblsaxy": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928f0viblsaxy"
+                  }
+                },
+                "id": "17648375321520fd2en97a8a",
+                "note": "Security deposit for Unit 8",
+                "paymentDate": "15/09/2025",
+                "paymentDueDate": "17/09/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "17648375321520o0wibpx85g": {
+                "amount": 9400,
+                "billedProperties": {
+                  "1758235072928f0viblsaxy": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928f0viblsaxy"
+                  }
+                },
+                "id": "17648375321520o0wibpx85g",
+                "note": "Rent Payment for October and November 2025 Next rent due, 1 December 2025",
+                "paymentDate": "15/09/2025",
+                "paymentDueDate": "01/01/2026",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "22/07/2026",
+                "unitId": "1758235072928f0viblsaxy"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mfl2i7v951qvxn7dwvs": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "1764837532152n6bo1ovzvto": {
+                "amount": 5200,
+                "billedProperties": {
+                  "1758235072928cc2aw7d9cc": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928cc2aw7d9cc"
+                  }
+                },
+                "id": "1764837532152n6bo1ovzvto",
+                "paymentDate": "01/09/2025",
+                "paymentDueDate": "17/09/2025",
+                "paymentOption": 2,
+                "paymentStatus": 0,
+                "paymentType": 1
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "03/04/2026",
+                "unitId": "1758235072928cc2aw7d9cc"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mg13kw8k7gyzfu1twf": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321525wxi03jsdgr": {
+                "amount": 2700,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "17648375321525wxi03jsdgr",
+                "note": "Next Rent Due 1st January 2026",
+                "paymentDate": "25/11/2025",
+                "paymentDueDate": "31/01/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              },
+              "1764837532152dmbi4zo08k3": {
+                "amount": 2000,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "1764837532152dmbi4zo08k3",
+                "note": "Full rentals and balance of security deposit to be paid on 01/10/2025",
+                "paymentDate": "26/09/2025",
+                "paymentDueDate": "28/09/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152hy32a1a9lnb": {
+                "amount": 700,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "1764837532152hy32a1a9lnb",
+                "note": "Paid in full",
+                "paymentDate": "30/09/2025",
+                "paymentDueDate": "",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152rf8dm2hpq3f": {
+                "amount": 5400,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "1764837532152rf8dm2hpq3f",
+                "note": "Next rent due on 1st December 2025.",
+                "paymentDate": "30/09/2025",
+                "paymentDueDate": "01/11/2025",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "26/05/2026",
+                "unitId": "17582350729286cjtkglmpm"
+              },
+              "sameDateReminder": true
+            }
+          },
+          "mihmp3d2c58wte4j3lm": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": false,
+            "payments": {
+              "17648375321520cvuo21gxzp": {
+                "amount": 4700,
+                "billedProperties": {
+                  "1758235072928f0viblsaxy": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928f0viblsaxy"
+                  }
+                },
+                "id": "17648375321520cvuo21gxzp",
+                "note": "Next Rent Due 1st March 2026",
+                "paymentDate": "01/12/2025",
+                "paymentDueDate": "",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152u8s3vxb0d2t": {
+                "amount": 4700,
+                "billedProperties": {
+                  "1758235072928f0viblsaxy": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928f0viblsaxy"
+                  }
+                },
+                "id": "1764837532152u8s3vxb0d2t",
+                "paymentDueDate": "29/11/2025",
+                "paymentStatus": 6,
+                "paymentType": 1
+              },
+              "1764837532152xh4nch6qjdc": {
+                "amount": 14100,
+                "billedProperties": {
+                  "1758235072928f0viblsaxy": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "1758235072928f0viblsaxy"
+                  }
+                },
+                "id": "1764837532152xh4nch6qjdc",
+                "note": "Next Rent Due 1st March 2026",
+                "paymentDate": "27/11/2025",
+                "paymentDueDate": "01/03/2026",
+                "paymentOption": 0,
+                "paymentStatus": 0,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mcet7266sr8gmukvoap": {
+                "rentDueDate": "22/08/2026",
+                "unitId": "1758235072928f0viblsaxy"
+              },
+              "sameDateReminder": true
+            }
+          }
+        },
+        "-OTwq4TeVXxvt9GBXWe1": {
+          "mci17fsqtvmty45faf": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "1764837532152ewo0hhhp30c": {
+                "amount": 64000,
+                "billedProperties": {
+                  "1758235072928609rs0fv8x": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928609rs0fv8x"
+                  },
+                  "175823507292872rv160r4o": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "175823507292872rv160r4o"
+                  },
+                  "17582350729289fy04fqizj": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "17582350729289fy04fqizj"
+                  },
+                  "1758235072928c2kq4y9o32": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928c2kq4y9o32"
+                  },
+                  "1758235072928ibze9wi96p": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928ibze9wi96p"
+                  },
+                  "1758235072928j4kpdoh76o": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928j4kpdoh76o"
+                  },
+                  "1758235072928oumq310u66": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928oumq310u66"
+                  },
+                  "1758235072928s4fpx8i35n": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928s4fpx8i35n"
+                  }
+                },
+                "id": "1764837532152ewo0hhhp30c",
+                "paymentDate": "01/01/2025",
+                "paymentDueDate": "01/07/2025",
+                "paymentOption": 2,
+                "paymentStatus": 0,
+                "paymentType": 1
+              },
+              "1764837532152j1h6kmli18n": {
+                "amount": 192000,
+                "billedProperties": {
+                  "1758235072928609rs0fv8x": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928609rs0fv8x"
+                  },
+                  "175823507292872rv160r4o": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "175823507292872rv160r4o"
+                  },
+                  "17582350729289fy04fqizj": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "17582350729289fy04fqizj"
+                  },
+                  "1758235072928c2kq4y9o32": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928c2kq4y9o32"
+                  },
+                  "1758235072928ibze9wi96p": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928ibze9wi96p"
+                  },
+                  "1758235072928j4kpdoh76o": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928j4kpdoh76o"
+                  },
+                  "1758235072928oumq310u66": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928oumq310u66"
+                  },
+                  "1758235072928s4fpx8i35n": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928s4fpx8i35n"
+                  }
+                },
+                "id": "1764837532152j1h6kmli18n",
+                "note": "Rent breakdown:, Big 4, Unit 1: K8000 \u00d7 3 months, Big 4, Unit 3: K8000 \u00d7 3 months, Big 4, Unit 4: K8000 \u00d7 3 months, Big 4, Unit 2: K8000 \u00d7 3 months, Old mutual, Unit 1: K8000 \u00d7 3 months, Old mutual, Unit 2: K8000 \u00d7 3 months, Old mutual, Unit 3: K8000 \u00d7 3 months, Old mutual, Unit 4: K8000 \u00d7 3 months, Total: K192000",
+                "paymentDueDate": "01/07/2025",
+                "paymentStatus": 2,
+                "paymentType": 0
+              }
+            },
+            "reminders": {
+              "mci0qdgmgobrtk4n9b": {
+                "rentDueDate": "28/12/2025",
+                "unitId": "1758235072928609rs0fv8x"
+              },
+              "sameDateReminder": true
+            }
+          }
+        },
+        "-OXCgbwyw1s1xQ8bAPpu": {
+          "me3y0imlmczmlnwb81c": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321525k216et9n48": {
+                "amount": 11000,
+                "billedProperties": {
+                  "me3xucskjgzc5ykca4": {
+                    "propertyID": "me3xucskjgzc5ykca4"
+                  }
+                },
+                "id": "17648375321525k216et9n48",
+                "paymentDueDate": "22/09/2025",
+                "paymentStatus": 1,
+                "paymentType": 1
+              }
+            }
+          },
+          "meopug9zqop1mzc9c2h": {
+            "accountStatus": 0,
+            "isSecurityDepositPaid": true,
+            "payments": {
+              "17648375321529xt0egn80ti": {
+                "amount": 14000,
+                "billedProperties": {
+                  "1758235072928glmnjfsngw": {
+                    "parentPropertyID": "meop3jackl1weu5hd7s",
+                    "propertyID": "1758235072928glmnjfsngw"
+                  }
+                },
+                "id": "17648375321529xt0egn80ti",
+                "paymentDueDate": " 22/10/2025",
+                "paymentStatus": 1,
+                "paymentType": 1
+              }
+            },
+            "reminders": {
+              "meop3jackl1weu5hd7s": {
+                "rentDueDate": "31/05/2026",
+                "unitId": "1758235072928glmnjfsngw"
+              },
+              "sameDateReminder": true
+            }
+          }
+        }
+      },
+      "Companies": {
+        "-OTi3TKQ16jieuDen2Pv": {
+          "activated": true,
+          "address": "35 Kamenza Way, Chililabombwe, Copperbelt, Zambia",
+          "companyName": "Wachilamaka Enterprise Limited",
+          "contactEmail": "support@wachilamaka.co.zm",
+          "contactPhone": "0977771451",
+          "createdAt": "2025-06-26T21:08:19.686Z",
+          "staff": [
+            "vQQvxHPnocaUg85Xdpxaz8yJ96v1"
+          ],
+          "updatedAt": "2025-06-26T21:08:19.686Z"
+        },
+        "-OTlPNCoFjq8k_XsMqw2": {
+          "activated": true,
+          "address": "4585 KAMENZA EAST",
+          "companyName": "Kalron Enterprise",
+          "contactEmail": "kalumbabwale@gmail.com",
+          "contactPhone": "0966029966",
+          "createdAt": "2025-06-27T12:42:53.838Z",
+          "staff": [
+            "dia3UFSIDkQsVIl3PAgKzQBWpm32"
+          ],
+          "updatedAt": "2025-11-24T21:19:48.557Z"
+        },
+        "-OTwq4TeVXxvt9GBXWe1": {
+          "activated": true,
+          "address": "35 kamenza way, Chililabombwe",
+          "companyName": "Wacilamaka",
+          "contactEmail": "Chombasikasote@yahoo.com",
+          "contactPhone": "0974901022",
+          "createdAt": "2025-06-29T17:59:46.489Z",
+          "staff": [
+            "B0YILzYkghXETliC36J9NaSLDCp1"
+          ],
+          "updatedAt": "2025-06-29T17:59:46.489Z"
+        },
+        "-OU4R7yDY7uGpYed6j0B": {
+          "activated": true,
+          "address": "2334/m/b Chalala, Woodlands, Lusaka, Zambia",
+          "companyName": "Self-employed",
+          "contactEmail": "chipusiles@gmail.com",
+          "contactPhone": "+260773450415",
+          "createdAt": "2025-07-01T10:02:59.216Z",
+          "staff": [
+            "JLAoJ5LOpwM1GLVBrnKCTbgrh3f2"
+          ],
+          "updatedAt": "2025-07-01T10:02:59.216Z"
+        },
+        "-OXCgbwyw1s1xQ8bAPpu": {
+          "activated": true,
+          "address": "Meanwood Ibex",
+          "companyName": "John Sikasote",
+          "contactEmail": "chipusiles@gmail.com",
+          "contactPhone": "0773450415",
+          "createdAt": "2025-08-09T07:19:04.447Z",
+          "staff": [
+            "iHQAccgDCGXBK6vPwqnSxkWr4Wv1"
+          ],
+          "updatedAt": "2025-08-09T07:19:04.447Z"
+        }
+      },
+      "GlobalTenants": {
+        "mce1ntzy3wug96qhqdm": {
+          "createdAt": "2025-06-26T23:58:36.191Z",
+          "email": "chomba@gmail.com",
+          "firstname": "Chomba",
+          "gender": 0,
+          "idNumber": "1234567654",
+          "lastname": "Sikasote",
+          "mobileNumber": "0955901022",
+          "occupation": 2,
+          "type": 0,
+          "updatedAt": "2025-06-26T23:58:36.191Z"
+        },
+        "mcevbmtsrr1b3k608cm": {
+          "createdAt": "2025-09-21T18:38:08.175Z",
+          "email": "saadaq301@gmail.com",
+          "firstname": "Ibrahim Mohamad",
+          "gender": 0,
+          "idNumber": "628741/99/3",
+          "lastname": "Abdi",
+          "mobileNumber": "+260975595051",
+          "occupation": 55,
+          "type": 0,
+          "updatedAt": "2025-09-21T18:38:08.175Z"
+        },
+        "mceviqlzx6fup6ue85s": {
+          "createdAt": "2025-09-21T17:30:34.070Z",
+          "email": "mumbaclive88@gmail.com",
+          "firstname": "Clive ",
+          "gender": 0,
+          "idNumber": "0000000000",
+          "lastname": "Mumba",
+          "mobileNumber": "+260962037585",
+          "occupation": 31,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:30:34.070Z"
+        },
+        "mcex5ufwquiay5iujz": {
+          "createdAt": "2025-09-21T18:36:08.314Z",
+          "email": "alvarezloardoangel@gmail.com",
+          "firstname": "Angel Loardo ",
+          "gender": 0,
+          "idNumber": "0000000000",
+          "lastname": "Alvarez",
+          "mobileNumber": "+260963996954",
+          "occupation": 23,
+          "type": 0,
+          "updatedAt": "2025-09-21T18:36:08.314Z"
+        },
+        "mcexneyx8brf09ajte5": {
+          "createdAt": "2025-09-21T17:31:06.223Z",
+          "email": "saadaq301@gmail.com",
+          "firstname": "Ibrahim Mohamad",
+          "gender": 0,
+          "idNumber": "604635/99/3",
+          "lastname": "Adan",
+          "mobileNumber": "+260777995785",
+          "occupation": 55,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:31:06.223Z"
+        },
+        "mcf487a5lsr5bbbczz": {
+          "createdAt": "2025-09-21T18:32:24.877Z",
+          "email": "leonardobujaico@gmail.com",
+          "firstname": "Leonardo ",
+          "gender": 0,
+          "idNumber": "1234567",
+          "lastname": "Bujaico",
+          "mobileNumber": "+260969310190",
+          "occupation": 23,
+          "type": 0,
+          "updatedAt": "2025-09-21T18:32:24.877Z"
+        },
+        "mcf51gx5cwpdv445ipm": {
+          "createdAt": "2025-09-21T17:31:38.114Z",
+          "email": "hujalejunior5@gmail.com",
+          "firstname": "Gedi Yusuf ",
+          "gender": 0,
+          "idNumber": "0000000000",
+          "lastname": "Hujale",
+          "mobileNumber": "+260977527818",
+          "occupation": 11,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:31:38.114Z"
+        },
+        "me3y0imlmczmlnwb81c": {
+          "createdAt": "2025-08-09T07:38:12.430Z",
+          "email": "cjsikasote0@gmail.com",
+          "firstname": "John",
+          "gender": 0,
+          "idNumber": "567884/10/1",
+          "lastname": "Doe",
+          "mobileNumber": "077119897",
+          "occupation": 1,
+          "type": 0,
+          "updatedAt": "2025-08-09T07:38:12.430Z"
+        },
+        "meopug9zqop1mzc9c2h": {
+          "createdAt": "2025-08-23T20:32:42.215Z",
+          "email": "cjsikasote0@outlook.com",
+          "firstname": "Peter",
+          "gender": 0,
+          "idNumber": "587779/10/1",
+          "lastname": "Daka",
+          "mobileNumber": "0774567997",
+          "occupation": 1,
+          "type": 0,
+          "updatedAt": "2025-08-23T20:32:42.215Z"
+        },
+        "mfkvecv7ockyxfwo4o": {
+          "createdAt": "2025-09-21T17:32:30.535Z",
+          "email": "dakane87@gmail.com",
+          "firstname": "Mohamed Boor ",
+          "gender": 0,
+          "idNumber": "917355/63/2",
+          "lastname": "Dagane",
+          "mobileNumber": "+260974116016",
+          "occupation": 11,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:32:30.535Z"
+        },
+        "mfl2i7v951qvxn7dwvs": {
+          "createdAt": "2025-09-21T18:29:48.137Z",
+          "email": "Kalumbabwale@gmail.com",
+          "firstname": "Kalumba",
+          "gender": 0,
+          "idNumber": "237661/68/1",
+          "lastname": "Bwale",
+          "mobileNumber": "+260966029966",
+          "occupation": 67,
+          "type": 0,
+          "updatedAt": "2025-09-21T18:29:48.137Z"
+        },
+        "mg13kw8k7gyzfu1twf": {
+          "createdAt": "2025-09-26T17:10:07.413Z",
+          "email": "esmakuni@pactworld.org",
+          "firstname": "Emmanuel",
+          "gender": 0,
+          "idNumber": "343118/16/1",
+          "lastname": "Makuni",
+          "mobileNumber": "+260977926826",
+          "occupation": 38,
+          "type": 0,
+          "updatedAt": "2025-09-26T17:10:07.413Z"
+        },
+        "mihmp3d2c58wte4j3lm": {
+          "createdAt": "27/11/2025",
+          "email": "donpablo6669@gmail.com",
+          "firstname": "Mohamad Ali  Kalulu",
+          "gender": 0,
+          "idNumber": "373359/66/1",
+          "lastname": "Abdi",
+          "mobileNumber": "+260972526683",
+          "occupation": 64,
+          "type": 0,
+          "updatedAt": "27/11/2025"
+        },
+        "milsdwu5nuas68mef6": {
+          "createdAt": "30/11/2025",
+          "email": "koozya@gmail.com",
+          "firstname": "Koozya",
+          "gender": 0,
+          "idNumber": "12345678",
+          "lastname": "Sikasote",
+          "mobileNumber": "0743794740",
+          "occupation": 0,
+          "type": 0,
+          "updatedAt": "30/11/2025"
+        }
+      },
+      "InvoiceCounters": {
+        "-OTi3TKQ16jieuDen2Pv": {
+          "20250925": 0,
+          "20250930": 1,
+          "20251125": 0,
+          "20251202": 0
+        },
+        "-OTlPNCoFjq8k_XsMqw2": {
+          "20250917": 0,
+          "20250928": 0,
+          "20251001": 4,
+          "20251101": 2,
+          "20251129": 0,
+          "20251201": 4
+        },
+        "-OXCgbwyw1s1xQ8bAPpu": {
+          "20250915": 15,
+          "20250916": 4,
+          "20250921": 0,
+          "20250922": 6
+        }
+      },
+      "Properties": {
+        "-OTi3TKQ16jieuDen2Pv": {
+          "mcdxxilopkeeoa81mw9": {
+            "amenities": [
+              10,
+              3
+            ],
+            "bathrooms": 1,
+            "bedrooms": 1,
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt",
+              "streetAddress": "123 Kamwala"
+            },
+            "name": "CJ Flats",
+            "numberOfUnits": 4,
+            "rentalPrice": 3000,
+            "type": 1,
+            "units": {
+              "175823507292869q6vtk3d4": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-26T22:14:09.516Z",
+                "id": "175823507292869q6vtk3d4",
+                "rentalPrice": 3000,
+                "status": 0,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-06-26T22:14:09.516Z"
+              },
+              "175823507292883b93pdqxs": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-26T22:14:09.516Z",
+                "id": "175823507292883b93pdqxs",
+                "rentalPrice": 3000,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-26T22:14:09.516Z"
+              },
+              "1758235072928l35w6iy2ph": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-26T22:14:09.516Z",
+                "id": "1758235072928l35w6iy2ph",
+                "rentalPrice": 3000,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-26T22:14:09.516Z"
+              },
+              "1758235072928lhmnxxao1j": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-26T22:14:09.516Z",
+                "id": "1758235072928lhmnxxao1j",
+                "rentalPrice": 3000,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-26T22:14:09.516Z"
+              }
+            }
+          },
+          "mcdxzfo0awf91t1fgz5": {
+            "amenities": [
+              3,
+              10,
+              6
+            ],
+            "bathrooms": 2,
+            "bedrooms": 3,
+            "createdAt": "2025-06-26T22:15:39.024Z",
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "123 Bonanev"
+            },
+            "name": "Bonaventure",
+            "rentalPrice": 13000,
+            "status": 0,
+            "type": 0,
+            "updatedAt": "2025-06-26T22:15:39.024Z"
+          },
+          "mcdy0kf4sfvxvub1rke": {
+            "amenities": [
+              10
+            ],
+            "bathrooms": 2,
+            "bedrooms": 2,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "123 Kamwala"
+            },
+            "name": "Big 4",
+            "numberOfUnits": 4,
+            "rentalPrice": 8000,
+            "type": 1,
+            "units": {
+              "1758235072928a8haflib3c": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-26T22:16:31.841Z",
+                "id": "1758235072928a8haflib3c",
+                "rentalPrice": 8000,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-26T22:16:31.841Z"
+              },
+              "1758235072928ccrdznqzj5": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-26T22:16:31.841Z",
+                "id": "1758235072928ccrdznqzj5",
+                "rentalPrice": 8000,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-26T22:16:31.841Z"
+              },
+              "1758235072928lyvinkkspd": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-26T22:16:31.841Z",
+                "id": "1758235072928lyvinkkspd",
+                "rentalPrice": 8000,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-26T22:16:31.841Z"
+              },
+              "1758235072928yh0v0yw51z": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-26T22:16:31.841Z",
+                "id": "1758235072928yh0v0yw51z",
+                "rentalPrice": 8000,
+                "status": 0,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-06-26T22:16:31.841Z"
+              }
+            }
+          },
+          "mikkjqsm2jdcmlcgfp4": {
+            "bathrooms": 1,
+            "bedrooms": 2,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "123 Kabula"
+            },
+            "name": "Kabulonga Chalets",
+            "numberOfUnits": 3,
+            "rentalPrice": 5000,
+            "type": 1,
+            "units": {
+              "mikkjqstm4e0igs4uu0": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "29/11/2025",
+                "id": "mikkjqstm4e0igs4uu0",
+                "rentalPrice": 5000,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "29/11/2025"
+              },
+              "mikkjqstrf3birsu4za1": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "29/11/2025",
+                "id": "mikkjqstrf3birsu4za1",
+                "rentalPrice": 5000,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "29/11/2025"
+              },
+              "mikkjqsts4xnjy36dyl2": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "29/11/2025",
+                "id": "mikkjqsts4xnjy36dyl2",
+                "rentalPrice": 5000,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "29/11/2025"
+              }
+            }
+          },
+          "mikl708rlobhvzf9q6": {
+            "amenities": [
+              1,
+              6
+            ],
+            "bathrooms": 2,
+            "bedrooms": 5,
+            "hasSharedKitchen": true,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "123 Bonanev"
+            },
+            "name": "Femiya",
+            "rentalPrice": 0,
+            "rooms": {
+              "mikl60lc0oaeyk9z1mfb": {
+                "bedSpaces": {
+                  "mikl60ld2vao0w9htmk0": {
+                    "bedSpaceNumber": "Bed 1",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60ld2vao0w9htmk0",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60lc0oaeyk9z1mfb",
+                    "roomName": "Block A  1",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  },
+                  "mikl60ldgftqd7qk8uk1": {
+                    "bedSpaceNumber": "Bed 2",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60ldgftqd7qk8uk1",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60lc0oaeyk9z1mfb",
+                    "roomName": "Block A  1",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  }
+                },
+                "hasSelfContainedBathroom": false,
+                "id": "mikl60lc0oaeyk9z1mfb",
+                "numberOfBeds": 2,
+                "roomName": "Block A  1"
+              },
+              "mikl60lgt99xxwdhck": {
+                "bedSpaces": {
+                  "mikl60lh25bp1l9uz351": {
+                    "bedSpaceNumber": "Bed 2",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60lh25bp1l9uz351",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60lgt99xxwdhck",
+                    "roomName": "Block A  2",
+                    "status": 1,
+                    "updatedAt": "29/11/2025"
+                  },
+                  "mikl60lhsme4n2o4iwj0": {
+                    "bedSpaceNumber": "Bed 1",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60lhsme4n2o4iwj0",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60lgt99xxwdhck",
+                    "roomName": "Block A  2",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  }
+                },
+                "hasSelfContainedBathroom": false,
+                "id": "mikl60lgt99xxwdhck",
+                "numberOfBeds": 2,
+                "roomName": "Block A  2"
+              },
+              "mikl60ljv78up7clv1": {
+                "bedSpaces": {
+                  "mikl60ljwotbcb0d3p1": {
+                    "bedSpaceNumber": "Bed 2",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60ljwotbcb0d3p1",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60ljv78up7clv1",
+                    "roomName": "Block A  3",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  },
+                  "mikl60ljzue68mna0e0": {
+                    "bedSpaceNumber": "Bed 1",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60ljzue68mna0e0",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60ljv78up7clv1",
+                    "roomName": "Block A  3",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  }
+                },
+                "hasSelfContainedBathroom": false,
+                "id": "mikl60ljv78up7clv1",
+                "numberOfBeds": 2,
+                "roomName": "Block A  3"
+              },
+              "mikl60lk30jxh8op6sn": {
+                "bedSpaces": {
+                  "mikl60lkiuzx089piug0": {
+                    "bedSpaceNumber": "Bed 1",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60lkiuzx089piug0",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60lk30jxh8op6sn",
+                    "roomName": "Block A  4",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  },
+                  "mikl60lknxn8xq9bbkr1": {
+                    "bedSpaceNumber": "Bed 2",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl60lknxn8xq9bbkr1",
+                    "rentalPrice": 1500,
+                    "roomId": "mikl60lk30jxh8op6sn",
+                    "roomName": "Block A  4",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  }
+                },
+                "hasSelfContainedBathroom": false,
+                "id": "mikl60lk30jxh8op6sn",
+                "numberOfBeds": 2,
+                "roomName": "Block A  4"
+              },
+              "mikl6ij9vv2f28kbxj": {
+                "bedSpaces": {
+                  "mikl6ij9fy7vead1tsu0": {
+                    "bedSpaceNumber": "Bed 1",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl6ij9fy7vead1tsu0",
+                    "rentalPrice": 3000,
+                    "roomId": "mikl6ij9vv2f28kbxj",
+                    "roomName": "Block B  1",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  },
+                  "mikl6ij9phkwommn631": {
+                    "bedSpaceNumber": "Bed 2",
+                    "createdAt": "29/11/2025",
+                    "id": "mikl6ij9phkwommn631",
+                    "rentalPrice": 3000,
+                    "roomId": "mikl6ij9vv2f28kbxj",
+                    "roomName": "Block B  1",
+                    "status": 0,
+                    "updatedAt": "29/11/2025"
+                  }
+                },
+                "hasSelfContainedBathroom": true,
+                "id": "mikl6ij9vv2f28kbxj",
+                "numberOfBeds": 2,
+                "roomName": "Block B  1"
+              }
+            },
+            "sharedBathrooms": 1,
+            "status": 0,
+            "totalBedSpaces": 10,
+            "type": 2
+          },
+          "miko66xnxljh1eigocm": {
+            "bathrooms": 0,
+            "bedrooms": 0,
+            "commercialUnits": {
+              "miko66xn6hyu7vd8jtd1": {
+                "createdAt": "29/11/2025",
+                "id": "miko66xn6hyu7vd8jtd1",
+                "rentalPrice": 1500,
+                "squareMeters": 100,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "29/11/2025",
+                "usageType": 1
+              },
+              "miko66xnu9o7hw5qf5q0": {
+                "createdAt": "29/11/2025",
+                "id": "miko66xnu9o7hw5qf5q0",
+                "rentalPrice": 1500,
+                "squareMeters": 100,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "29/11/2025",
+                "usageType": 1
+              }
+            },
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt",
+              "streetAddress": "Kawama"
+            },
+            "name": "Shop Center",
+            "rentalPrice": 1500,
+            "status": 0,
+            "totalUnits": 2,
+            "type": 3
+          }
+        },
+        "-OTlPNCoFjq8k_XsMqw2": {
+          "mcet7266sr8gmukvoap": {
+            "bathrooms": 1,
+            "bedrooms": 2,
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt",
+              "streetAddress": "4585 Kamenza East "
+            },
+            "name": "Sola Gratia Main",
+            "numberOfUnits": 8,
+            "rentalPrice": 4700,
+            "type": 1,
+            "units": {
+              "175823507292830noo8myhk": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-27T12:49:22.878Z",
+                "id": "175823507292830noo8myhk",
+                "rentalPrice": 4700,
+                "status": 1,
+                "unitNumber": "4585 - 7",
+                "updatedAt": "2025-09-20T05:58:09.951Z"
+              },
+              "17582350729286cjtkglmpm": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-27T12:49:22.878Z",
+                "id": "17582350729286cjtkglmpm",
+                "rentalPrice": 2700,
+                "status": 1,
+                "unitNumber": "4585 - 5",
+                "updatedAt": "2025-09-26T17:05:37.450Z"
+              },
+              "1758235072928cc2aw7d9cc": {
+                "amenities": [
+                  6,
+                  4
+                ],
+                "bathrooms": 3,
+                "bedrooms": 3,
+                "createdAt": "2025-06-27T13:00:11.560Z",
+                "id": "1758235072928cc2aw7d9cc",
+                "rentalPrice": 5200,
+                "status": 1,
+                "unitNumber": "4585 - 1",
+                "updatedAt": "2025-06-27T15:00:44.444Z"
+              },
+              "1758235072928cuqdxjszmn": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-27T12:49:22.878Z",
+                "id": "1758235072928cuqdxjszmn",
+                "rentalPrice": 4700,
+                "status": 1,
+                "unitNumber": "4585 - 2",
+                "updatedAt": "2025-06-27T13:15:06.566Z"
+              },
+              "1758235072928czauty70y7": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-27T12:49:22.878Z",
+                "id": "1758235072928czauty70y7",
+                "rentalPrice": 4700,
+                "status": 1,
+                "unitNumber": "4585 - 3",
+                "updatedAt": "2025-06-27T13:15:15.473Z"
+              },
+              "1758235072928f0viblsaxy": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-07-09T18:50:11.632Z",
+                "id": "1758235072928f0viblsaxy",
+                "rentalPrice": 4700,
+                "status": 1,
+                "unitNumber": "4585 - 8",
+                "updatedAt": "01/12/2025"
+              },
+              "1758235072928fwl26lw871": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-27T12:49:22.878Z",
+                "id": "1758235072928fwl26lw871",
+                "location": {
+                  "city": "Chililabombwe",
+                  "province": "Copperbelt",
+                  "streetAddress": "4585 Kamenza East "
+                },
+                "name": "Sola Gratia Main",
+                "parentPropertyID": "mcet7266sr8gmukvoap",
+                "rentalPrice": 4700,
+                "status": 1,
+                "unitNumber": "4585 - 4",
+                "updatedAt": "2025-06-27T13:15:23.305Z"
+              },
+              "1758235072928vq3t47bo40": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-27T12:49:22.878Z",
+                "id": "1758235072928vq3t47bo40",
+                "location": {
+                  "city": "Chililabombwe",
+                  "province": "Copperbelt",
+                  "streetAddress": "4585 Kamenza East "
+                },
+                "name": "Sola Gratia Main",
+                "parentPropertyID": "mcet7266sr8gmukvoap",
+                "rentalPrice": 4700,
+                "status": 1,
+                "unitNumber": "4585 - 6",
+                "updatedAt": "2025-06-27T13:15:44.272Z"
+              }
+            }
+          }
+        },
+        "-OTwq4TeVXxvt9GBXWe1": {
+          "mchzeykx8ggl6xhyihy": {
+            "amenities": [
+              3,
+              10
+            ],
+            "bathrooms": 1,
+            "bedrooms": 1,
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt",
+              "streetAddress": "Plot 3016, Congo Road"
+            },
+            "name": "CJ FLATS",
+            "numberOfUnits": 4,
+            "rentalPrice": 2500,
+            "type": 1,
+            "units": {
+              "17582350729281vgvst80e8": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:06:47.697Z",
+                "id": "17582350729281vgvst80e8",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:06:47.697Z"
+              },
+              "1758235072928ebl4m2p7jh": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:06:47.697Z",
+                "id": "1758235072928ebl4m2p7jh",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:06:47.697Z"
+              },
+              "1758235072928orpg8m13wt": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:06:47.697Z",
+                "id": "1758235072928orpg8m13wt",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-29T18:06:47.697Z"
+              },
+              "1758235072928xklva3owu9": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:06:47.697Z",
+                "id": "1758235072928xklva3owu9",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-06-29T18:06:47.697Z"
+              }
+            }
+          },
+          "mchzhb060v71xo67ueu": {
+            "amenities": [
+              3,
+              10
+            ],
+            "bathrooms": 1,
+            "bedrooms": 1,
+            "location": {
+              "city": "Chililabombwe ",
+              "province": "Copperbelt",
+              "streetAddress": "Plot 3018, Congo road"
+            },
+            "name": "LJ FLATS",
+            "numberOfUnits": 8,
+            "rentalPrice": 2500,
+            "type": 1,
+            "units": {
+              "1758235072928596elz9go1": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "1758235072928596elz9go1",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              },
+              "17582350729286hsi4g1vcz": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "17582350729286hsi4g1vcz",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 8",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              },
+              "1758235072928cyymiw5y3c": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "1758235072928cyymiw5y3c",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 6",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              },
+              "1758235072928fqnsc9dw0h": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "1758235072928fqnsc9dw0h",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              },
+              "1758235072928gjn9mxchd9": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "1758235072928gjn9mxchd9",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 7",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              },
+              "1758235072928lbqwka7mkt": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "1758235072928lbqwka7mkt",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              },
+              "1758235072928rdwy38cm3q": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "1758235072928rdwy38cm3q",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              },
+              "1758235072928tyahk625u4": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:08:37.110Z",
+                "id": "1758235072928tyahk625u4",
+                "rentalPrice": 2500,
+                "status": 0,
+                "unitNumber": "Unit 5",
+                "updatedAt": "2025-06-29T18:08:37.110Z"
+              }
+            }
+          },
+          "mchznch4cqrwsr7ebzg": {
+            "bathrooms": 2,
+            "bedrooms": 2,
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt",
+              "streetAddress": "Zambia avenue"
+            },
+            "name": "Glendower Flats",
+            "numberOfUnits": 2,
+            "rentalPrice": 2800,
+            "type": 1,
+            "units": {
+              "1758235072928k8cn85nbrs": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:13:18.952Z",
+                "id": "1758235072928k8cn85nbrs",
+                "rentalPrice": 4000,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:14:07.582Z"
+              },
+              "1758235072928p7get35h7b": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:13:18.952Z",
+                "id": "1758235072928p7get35h7b",
+                "rentalPrice": 2800,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:13:18.952Z"
+              }
+            }
+          },
+          "mchzutb6ybpilzdku1g": {
+            "amenities": [
+              3
+            ],
+            "bathrooms": 1,
+            "bedrooms": 2,
+            "createdAt": "2025-06-29T18:19:07.362Z",
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt",
+              "streetAddress": "KAMENZA Way"
+            },
+            "name": "35A Kamenza Way",
+            "rentalPrice": 8500,
+            "status": 0,
+            "type": 0,
+            "unitNumber": "35A",
+            "updatedAt": "2025-06-29T18:19:07.362Z"
+          },
+          "mchzy2l54cjvp9e3ot1": {
+            "bathrooms": 1,
+            "bedrooms": 1,
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt",
+              "streetAddress": "Mine township"
+            },
+            "name": "C220",
+            "numberOfUnits": 3,
+            "rentalPrice": 1100,
+            "type": 1,
+            "units": {
+              "1758235072928cp3za4ydtr": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:21:39.353Z",
+                "id": "1758235072928cp3za4ydtr",
+                "rentalPrice": 800,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-29T18:22:15.750Z"
+              },
+              "1758235072928hga7f1jn26": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:21:39.353Z",
+                "id": "1758235072928hga7f1jn26",
+                "rentalPrice": 1100,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:21:39.353Z"
+              },
+              "1758235072928xeq0np44ve": {
+                "bathrooms": 1,
+                "bedrooms": 1,
+                "createdAt": "2025-06-29T18:21:39.353Z",
+                "id": "1758235072928xeq0np44ve",
+                "location": {
+                  "city": "Chililabombwe",
+                  "province": "Copperbelt",
+                  "streetAddress": "Mine township"
+                },
+                "name": "C220",
+                "parentPropertyID": "mchzy2l54cjvp9e3ot1",
+                "rentalPrice": 1100,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:21:39.353Z"
+              }
+            }
+          },
+          "mci057alxew3yiqgrn": {
+            "bathrooms": 1,
+            "bedrooms": 3,
+            "createdAt": "2025-06-29T18:27:12.045Z",
+            "location": {
+              "city": "Chililabombwe ",
+              "province": "Copperbelt ",
+              "streetAddress": "Munyunshi"
+            },
+            "name": "35 MUNYUNSHI ROAD",
+            "rentalPrice": 1800,
+            "status": 0,
+            "type": 0,
+            "unitNumber": "35",
+            "updatedAt": "2025-06-29T18:27:12.045Z"
+          },
+          "mci0ejwix43a3x15k2p": {
+            "bathrooms": 1,
+            "bedrooms": 2,
+            "location": {
+              "city": "Chililabombwe",
+              "province": "Copperbelt ",
+              "streetAddress": "Mufulira road"
+            },
+            "name": "Beauty and Rhoda",
+            "numberOfUnits": 5,
+            "rentalPrice": 3500,
+            "type": 1,
+            "units": {
+              "1758235072928keyw51o046": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:34:28.290Z",
+                "id": "1758235072928keyw51o046",
+                "rentalPrice": 3500,
+                "status": 0,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-06-29T18:34:28.290Z"
+              },
+              "1758235072928n41zxy8az3": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:34:28.290Z",
+                "id": "1758235072928n41zxy8az3",
+                "rentalPrice": 3500,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-29T18:34:28.290Z"
+              },
+              "1758235072928n49o47iww2": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:34:28.290Z",
+                "id": "1758235072928n49o47iww2",
+                "rentalPrice": 3500,
+                "status": 0,
+                "unitNumber": "Jacobs Well",
+                "updatedAt": "2025-06-29T18:34:28.290Z"
+              },
+              "1758235072928put8vmvi4i": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:34:28.290Z",
+                "id": "1758235072928put8vmvi4i",
+                "rentalPrice": 3500,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:34:28.290Z"
+              },
+              "1758235072928zui25sm5wh": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:34:28.290Z",
+                "id": "1758235072928zui25sm5wh",
+                "rentalPrice": 3500,
+                "status": 0,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:34:28.290Z"
+              }
+            }
+          },
+          "mci0k5i2le4lwh72ji8": {
+            "amenities": [
+              3,
+              10
+            ],
+            "bathrooms": 2,
+            "bedrooms": 2,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "Leopards hill road"
+            },
+            "name": "Kabulonga",
+            "numberOfUnits": 3,
+            "rentalPrice": 15000,
+            "type": 1,
+            "units": {
+              "175823507292865ff22r6ua": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:38:49.562Z",
+                "id": "175823507292865ff22r6ua",
+                "rentalPrice": 15000,
+                "status": 2,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-29T18:38:49.562Z"
+              },
+              "1758235072928x73frx8xz6": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:38:49.562Z",
+                "id": "1758235072928x73frx8xz6",
+                "location": {
+                  "city": "Lusaka",
+                  "province": "Lusaka",
+                  "streetAddress": "Leopards hill road"
+                },
+                "name": "Kabulonga",
+                "parentPropertyID": "mci0k5i2le4lwh72ji8",
+                "rentalPrice": 15000,
+                "status": 2,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:38:49.562Z"
+              },
+              "1758235072928y4673cjem6": {
+                "bathrooms": 3,
+                "bedrooms": 4,
+                "createdAt": "2025-06-29T18:38:49.562Z",
+                "id": "1758235072928y4673cjem6",
+                "rentalPrice": 15000,
+                "status": 2,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:39:30.628Z"
+              }
+            }
+          },
+          "mci0oiv3cr0cqwjggpo": {
+            "amenities": [
+              3,
+              1,
+              10
+            ],
+            "bathrooms": 1,
+            "bedrooms": 2,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "16494/m"
+            },
+            "name": "Old mutual",
+            "numberOfUnits": 4,
+            "rentalPrice": 8000,
+            "type": 1,
+            "units": {
+              "175823507292872rv160r4o": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:42:13.503Z",
+                "id": "175823507292872rv160r4o",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:42:13.503Z"
+              },
+              "1758235072928c2kq4y9o32": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:42:13.503Z",
+                "id": "1758235072928c2kq4y9o32",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-06-29T18:42:13.503Z"
+              },
+              "1758235072928ibze9wi96p": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:42:13.503Z",
+                "id": "1758235072928ibze9wi96p",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:42:13.503Z"
+              },
+              "1758235072928s4fpx8i35n": {
+                "bathrooms": 1,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:42:13.503Z",
+                "id": "1758235072928s4fpx8i35n",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-29T18:42:13.503Z"
+              }
+            }
+          },
+          "mci0qdgmgobrtk4n9b": {
+            "amenities": [
+              3,
+              1,
+              10
+            ],
+            "bathrooms": 2,
+            "bedrooms": 2,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "Off Tokyo way"
+            },
+            "name": "Big 4",
+            "numberOfUnits": 4,
+            "rentalPrice": 8000,
+            "type": 1,
+            "units": {
+              "1758235072928609rs0fv8x": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:43:39.815Z",
+                "id": "1758235072928609rs0fv8x",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-06-29T18:43:39.815Z"
+              },
+              "17582350729289fy04fqizj": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:43:39.815Z",
+                "id": "17582350729289fy04fqizj",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:43:39.815Z"
+              },
+              "1758235072928j4kpdoh76o": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:43:39.815Z",
+                "id": "1758235072928j4kpdoh76o",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:43:39.815Z"
+              },
+              "1758235072928oumq310u66": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:43:39.815Z",
+                "id": "1758235072928oumq310u66",
+                "rentalPrice": 8000,
+                "status": 1,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-06-29T18:43:39.815Z"
+              }
+            }
+          },
+          "mci0tazsu4gz7xywc08": {
+            "amenities": [
+              3,
+              10,
+              0
+            ],
+            "bathrooms": 4,
+            "bedrooms": 3,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "Bonaventure"
+            },
+            "name": "Bonaventure",
+            "numberOfUnits": 2,
+            "rentalPrice": 20000,
+            "type": 1,
+            "units": {
+              "1758235072928oyz0om839b": {
+                "amenities": [
+                  6
+                ],
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-06-29T18:45:56.584Z",
+                "id": "1758235072928oyz0om839b",
+                "rentalPrice": 10000,
+                "status": 2,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-06-29T18:46:45.677Z"
+              },
+              "1758235072928vfgo7pyqqd": {
+                "bathrooms": 4,
+                "bedrooms": 3,
+                "createdAt": "2025-06-29T18:45:56.584Z",
+                "id": "1758235072928vfgo7pyqqd",
+                "rentalPrice": 20000,
+                "status": 2,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-06-29T18:45:56.584Z"
+              }
+            }
+          }
+        },
+        "-OXCgbwyw1s1xQ8bAPpu": {
+          "me3xucskjgzc5ykca4": {
+            "amenities": [
+              3,
+              2,
+              1,
+              6
+            ],
+            "bathrooms": 2,
+            "bedrooms": 3,
+            "createdAt": "2025-08-09T07:33:24.933Z",
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "3rd street"
+            },
+            "name": "Big 1",
+            "rentalPrice": 11000,
+            "status": 1,
+            "type": 0,
+            "unitNumber": "1",
+            "updatedAt": "2025-08-09T07:33:24.933Z"
+          },
+          "meop3jackl1weu5hd7s": {
+            "amenities": [
+              0,
+              3,
+              4,
+              10
+            ],
+            "bathrooms": 2,
+            "bedrooms": 3,
+            "location": {
+              "city": "Lusaka",
+              "province": "Lusaka",
+              "streetAddress": "Chalata 3564"
+            },
+            "name": "Big 7",
+            "numberOfUnits": 7,
+            "rentalPrice": 14000,
+            "type": 1,
+            "units": {
+              "17582350729281uqxbsg3oe": {
+                "bathrooms": 2,
+                "bedrooms": 3,
+                "createdAt": "2025-08-23T20:11:46.404Z",
+                "id": "17582350729281uqxbsg3oe",
+                "rentalPrice": 14000,
+                "status": 0,
+                "unitNumber": "Unit 6",
+                "updatedAt": "2025-08-23T20:11:46.404Z"
+              },
+              "17582350729282filqjw4nv": {
+                "bathrooms": 2,
+                "bedrooms": 3,
+                "createdAt": "2025-08-23T20:11:46.404Z",
+                "id": "17582350729282filqjw4nv",
+                "rentalPrice": 14000,
+                "status": 0,
+                "unitNumber": "Unit 4",
+                "updatedAt": "2025-08-23T20:11:46.404Z"
+              },
+              "1758235072928glmnjfsngw": {
+                "bathrooms": 2,
+                "bedrooms": 2,
+                "createdAt": "2025-08-23T20:11:46.404Z",
+                "id": "1758235072928glmnjfsngw",
+                "rentalPrice": 14000,
+                "status": 1,
+                "unitNumber": "Unit 1",
+                "updatedAt": "2025-08-23T20:12:20.353Z"
+              },
+              "1758235072928hu2ucbudvh": {
+                "bathrooms": 2,
+                "bedrooms": 3,
+                "createdAt": "2025-08-23T20:11:46.404Z",
+                "id": "1758235072928hu2ucbudvh",
+                "rentalPrice": 14000,
+                "status": 0,
+                "unitNumber": "Unit 2",
+                "updatedAt": "2025-08-23T20:11:46.404Z"
+              },
+              "1758235072928oiyv9hnl5v": {
+                "bathrooms": 2,
+                "bedrooms": 3,
+                "createdAt": "2025-08-23T20:11:46.404Z",
+                "id": "1758235072928oiyv9hnl5v",
+                "rentalPrice": 14000,
+                "status": 0,
+                "unitNumber": "Unit 7",
+                "updatedAt": "2025-08-23T20:11:46.404Z"
+              },
+              "1758235072928p27qdr14h1": {
+                "bathrooms": 2,
+                "bedrooms": 3,
+                "createdAt": "2025-08-23T20:11:46.404Z",
+                "id": "1758235072928p27qdr14h1",
+                "rentalPrice": 14000,
+                "status": 0,
+                "unitNumber": "Unit 5",
+                "updatedAt": "2025-08-23T20:11:46.404Z"
+              },
+              "1758235072928tz2rmw1vu7": {
+                "bathrooms": 2,
+                "bedrooms": 3,
+                "createdAt": "2025-08-23T20:11:46.404Z",
+                "id": "1758235072928tz2rmw1vu7",
+                "rentalPrice": 14000,
+                "status": 0,
+                "unitNumber": "Unit 3",
+                "updatedAt": "2025-08-23T20:11:46.404Z"
+              }
+            }
+          }
+        }
+      },
+      "Statistics": {
+        "-OTi3TKQ16jieuDen2Pv": {
+          "2025": {
+            "12": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 0,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 3000
+              },
+              "expectedRevenue": 3000,
+              "lastUpdated": 1764758119710.397,
+              "paidPaymentsCount": 0,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 1,
+              "totalRevenue": 0
+            }
+          },
+          "PaymentStats": {
+            "lastUpdated": 1764511160446,
+            "numberOfPayments": 0,
+            "totalAmountNotPaid": 3000,
+            "totalAmountPaid": 0
+          },
+          "PropertyStats": {
+            "lastUpdated": 1764511160448,
+            "numberAvailable": 16,
+            "numberOfProperties": 15,
+            "numberRented": 0,
+            "numberUnderMaintenance": 0
+          },
+          "TenantStats": {
+            "lastUpdated": 1765432213750,
+            "numberOfTenants": 1
+          },
+          "paymentTracking": {
+            "pending": {
+              "1764837532151jesgo65h8oj": {
+                "accountId": "milsdwu5nuas68mef6",
+                "amount": 3000,
+                "daysUntilExpected": 0,
+                "dueDate": "02/12/2025",
+                "expectedDate": "02/12/2025",
+                "lastUpdated": "2025-12-05T00:12:21.667146",
+                "paymentId": "1764837532151jesgo65h8oj",
+                "paymentStatus": 1,
+                "paymentType": 1,
+                "propertyName": "CJ Flats - Unit 4",
+                "tenantId": "milsdwu5nuas68mef6",
+                "tenantName": "Koozya Sikasote",
+                "tenantType": 0
+              }
+            },
+            "summary": {
+              "dueCount": 0,
+              "dueTotal": 0,
+              "lastUpdated": "2025-12-05T00:12:21.667133",
+              "overdueCount": 0,
+              "overdueTotal": 0,
+              "partiallyPaidCount": 0,
+              "partiallyPaidTotal": 0,
+              "pendingCount": 1,
+              "pendingTotal": 3000
+            }
+          }
+        },
+        "-OTlPNCoFjq8k_XsMqw2": {
+          "2023": {
+            "11": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 47500,
+                "securityDeposit": 2600
+              },
+              "averagePaymentAmount": 25050,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4932,
+              "paidPaymentsCount": 2,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 50100
+            }
+          },
+          "2024": {
+            "10": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 4700
+              },
+              "averagePaymentAmount": 4700,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4868,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 4700
+            },
+            "12": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 13500,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 13500,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.438,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 13500
+            },
+            "02": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 67500,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 67500,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.461,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 67500
+            },
+            "05": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 18000,
+                "securityDeposit": 4500
+              },
+              "averagePaymentAmount": 11250,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.426,
+              "paidPaymentsCount": 2,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 22500
+            },
+            "08": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 4700
+              },
+              "averagePaymentAmount": 4700,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4841,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 4700
+            },
+            "09": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 13500,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 13500,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4348,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 13500
+            }
+          },
+          "2025": {
+            "10": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 18800,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 9400,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 2600,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 2600,
+              "lastUpdated": 1764758119710.48,
+              "paidPaymentsCount": 2,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 1,
+              "totalRevenue": 18800
+            },
+            "11": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 40300,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 8060,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 4700
+              },
+              "expectedRevenue": 4700,
+              "lastUpdated": 1764758119710.4458,
+              "paidPaymentsCount": 5,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 1,
+              "totalRevenue": 40300
+            },
+            "12": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 9400,
+                "securityDeposit": 4700
+              },
+              "averagePaymentAmount": 7050,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.471,
+              "paidPaymentsCount": 2,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 14100
+            },
+            "01": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 28200
+              },
+              "averagePaymentAmount": 14100,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.509,
+              "paidPaymentsCount": 2,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 28200
+            },
+            "03": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 13500,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 13500,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4412,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 13500
+            },
+            "04": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 9400,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 9400,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4749,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 9400
+            },
+            "05": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 9400,
+                "securityDeposit": 4700
+              },
+              "averagePaymentAmount": 7050,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4631,
+              "paidPaymentsCount": 2,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 14100
+            },
+            "06": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 40200,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 13400,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 4700
+              },
+              "expectedRevenue": 4700,
+              "lastUpdated": 1764758119710.443,
+              "paidPaymentsCount": 3,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 1,
+              "totalRevenue": 40200
+            },
+            "07": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 12000,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 6000,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.4658,
+              "paidPaymentsCount": 2,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 12000
+            },
+            "08": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 14100,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 14100,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.489,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 14100
+            },
+            "09": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 31500,
+                "securityDeposit": 12600
+              },
+              "averagePaymentAmount": 4900,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.468,
+              "paidPaymentsCount": 9,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 44100
+            }
+          },
+          "PaymentStats": {
+            "lastUpdated": 1764262162929,
+            "nextPayments": 0,
+            "numberOfPayments": 39,
+            "totalAmountNotPaid": 9400,
+            "totalAmountPaid": 425300
+          },
+          "PropertyStats": {
+            "lastUpdated": 1764579333561,
+            "numberAvailable": 0,
+            "numberOfProperties": 8,
+            "numberRented": 8,
+            "numberUnderMaintenance": 0
+          },
+          "TenantStats": {
+            "lastUpdated": 1764259740042,
+            "numberOfTenants": 8
+          },
+          "paymentTracking": {
+            "pending": {
+              "1764837532152vihlgpvmcj1": {
+                "accountId": "mceviqlzx6fup6ue85s",
+                "amount": 4700,
+                "daysUntilExpected": 0,
+                "dueDate": "29/06/2025",
+                "expectedDate": "29/06/2025",
+                "lastUpdated": "2025-12-05T00:12:21.667180",
+                "paymentId": "1764837532152vihlgpvmcj1",
+                "paymentStatus": 1,
+                "paymentType": 1,
+                "propertyName": "Sola Gratia Main - 4585 - 3",
+                "tenantId": "mceviqlzx6fup6ue85s",
+                "tenantName": "Clive  Mumba",
+                "tenantType": 0
+              }
+            },
+            "summary": {
+              "dueCount": 0,
+              "dueTotal": 0,
+              "lastUpdated": "2025-12-05T00:12:21.667173",
+              "overdueCount": 0,
+              "overdueTotal": 0,
+              "partiallyPaidCount": 0,
+              "partiallyPaidTotal": 0,
+              "pendingCount": 1,
+              "pendingTotal": 4700
+            }
+          }
+        },
+        "-OTwq4TeVXxvt9GBXWe1": {
+          "2025": {
+            "01": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 64000
+              },
+              "averagePaymentAmount": 64000,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 0,
+              "lastUpdated": 1764758119710.531,
+              "paidPaymentsCount": 1,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 0,
+              "totalRevenue": 64000
+            },
+            "07": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 0,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 192000,
+                "securityDeposit": 0
+              },
+              "expectedRevenue": 192000,
+              "lastUpdated": 1764758119710.5342,
+              "paidPaymentsCount": 0,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 1,
+              "totalRevenue": 0
+            }
+          },
+          "PaymentStats": {
+            "lastUpdated": 1763583149120,
+            "nextPayments": 1,
+            "numberOfPayments": 1,
+            "totalAmountNotPaid": 192000,
+            "totalAmountPaid": 64000
+          },
+          "PropertyStats": {
+            "lastUpdated": 1751223416004,
+            "numberAvailable": 29,
+            "numberOfProperties": 37,
+            "numberRented": 8,
+            "numberUnderMaintenance": 0
+          },
+          "TenantStats": {
+            "lastUpdated": 1751223416316,
+            "numberOfTenants": 1
+          },
+          "paymentTracking": {
+            "due": {
+              "1764837532152j1h6kmli18n": {
+                "accountId": "mci17fsqtvmty45faf",
+                "amount": 192000,
+                "daysUntilDue": 0,
+                "dueDate": "01/07/2025",
+                "lastUpdated": "2025-12-05T00:12:21.667204",
+                "paymentId": "1764837532152j1h6kmli18n",
+                "paymentStatus": 2,
+                "paymentType": 0,
+                "propertyNames": "Big 4 - Unit 1, Big 4 - Unit 3, Big 4 - Unit 4, Big 4 - Unit 2, Old mutual - Unit 1, Old mutual - Unit 2, Old mutual - Unit 3, Old mutual - Unit 4",
+                "tenantId": "mci17fsqtvmty45faf",
+                "tenantName": "Trade Kings",
+                "tenantType": 1
+              }
+            },
+            "summary": {
+              "dueCount": 1,
+              "dueTotal": 192000,
+              "lastUpdated": "2025-12-05T00:12:21.667201",
+              "overdueCount": 0,
+              "overdueTotal": 0,
+              "partiallyPaidCount": 0,
+              "partiallyPaidTotal": 0,
+              "pendingCount": 0,
+              "pendingTotal": 0
+            }
+          }
+        },
+        "-OXCgbwyw1s1xQ8bAPpu": {
+          "2025": {
+            "10": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 0,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 14000
+              },
+              "expectedRevenue": 14000,
+              "lastUpdated": 1764758119710.5479,
+              "paidPaymentsCount": 0,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 1,
+              "totalRevenue": 0
+            },
+            "09": {
+              "actualPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "averagePaymentAmount": 0,
+              "expectedPaymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 11000
+              },
+              "expectedRevenue": 11000,
+              "lastUpdated": 1764758119710.54,
+              "paidPaymentsCount": 0,
+              "partialPaymentsCount": 0,
+              "pendingPaymentsCount": 1,
+              "totalRevenue": 0
+            }
+          },
+          "PaymentStats": {
+            "lastUpdated": 1763583149120,
+            "nextPayments": 2,
+            "numberOfPayments": 0,
+            "totalAmountNotPaid": 25000,
+            "totalAmountPaid": 0
+          },
+          "PropertyStats": {
+            "lastUpdated": 1755981162216,
+            "numberAvailable": 6,
+            "numberOfProperties": 8,
+            "numberRented": 2,
+            "numberUnderMaintenance": 0
+          },
+          "TenantStats": {
+            "lastUpdated": 1755981162577,
+            "numberOfTenants": 2
+          },
+          "paymentTracking": {
+            "pending": {
+              "17648375321525k216et9n48": {
+                "accountId": "me3y0imlmczmlnwb81c",
+                "amount": 11000,
+                "daysUntilExpected": 0,
+                "dueDate": "22/09/2025",
+                "expectedDate": "22/09/2025",
+                "lastUpdated": "2025-12-05T00:12:21.667221",
+                "paymentId": "17648375321525k216et9n48",
+                "paymentStatus": 1,
+                "paymentType": 1,
+                "propertyName": "Big 1",
+                "tenantId": "me3y0imlmczmlnwb81c",
+                "tenantName": "John Doe",
+                "tenantType": 0
+              },
+              "17648375321529xt0egn80ti": {
+                "accountId": "meopug9zqop1mzc9c2h",
+                "amount": 14000,
+                "daysUntilExpected": 0,
+                "dueDate": " 22/10/2025",
+                "expectedDate": " 22/10/2025",
+                "lastUpdated": "2025-12-05T00:12:21.667226",
+                "paymentId": "17648375321529xt0egn80ti",
+                "paymentStatus": 1,
+                "paymentType": 1,
+                "propertyName": "Big 7 - Unit 1",
+                "tenantId": "meopug9zqop1mzc9c2h",
+                "tenantName": "Peter Daka",
+                "tenantType": 0
+              }
+            },
+            "summary": {
+              "dueCount": 0,
+              "dueTotal": 0,
+              "lastUpdated": "2025-12-05T00:12:21.667219",
+              "overdueCount": 0,
+              "overdueTotal": 0,
+              "partiallyPaidCount": 0,
+              "partiallyPaidTotal": 0,
+              "pendingCount": 2,
+              "pendingTotal": 25000
+            }
+          }
+        }
+      },
+      "Tenants": {
+        "-OTi3TKQ16jieuDen2Pv": {
+          "Active": {
+            "milsdwu5nuas68mef6": {
+              "createdAt": "30/11/2025",
+              "email": "koozya@gmail.com",
+              "firstname": "Koozya",
+              "gender": 0,
+              "id": "milsdwu5nuas68mef6",
+              "idNumber": "12345678",
+              "lastname": "Sikasote",
+              "mobileNumber": "0743794740",
+              "occupation": 0,
+              "propertyIndividualRentingInfo": {
+                "175823507292869q6vtk3d4": {
+                  "parentPropertyID": "mcdxxilopkeeoa81mw9",
+                  "propertyID": "175823507292869q6vtk3d4",
+                  "securityDeposit": 3000
+                }
+              },
+              "type": 0,
+              "updatedAt": "30/11/2025"
+            },
+            "mj10r97jdo525l2q6w": {
+              "createdAt": "11/12/2025",
+              "email": "Khondwani66@gmail.com",
+              "firstname": "Teza",
+              "gender": 0,
+              "idNumber": "1234567654",
+              "lastname": "Sikasote",
+              "mobileNumber": "0743794740",
+              "occupation": 59,
+              "propertyIndividualRentingInfo": {
+                "mikl708rlobhvzf9q6": {
+                  "bedSpaces": {
+                    "mikl60lh25bp1l9uz351": {
+                      "rentalPrice": 1500
+                    }
+                  },
+                  "isWholeRoom": false,
+                  "propertyID": "mikl708rlobhvzf9q6",
+                  "roomID": "mikl60lgt99xxwdhck",
+                  "securityDeposit": 1500
+                }
+              },
+              "type": 0,
+              "updatedAt": "11/12/2025"
+            }
+          }
+        },
+        "-OTlPNCoFjq8k_XsMqw2": {
+          "Active": {
+            "mcevbmtsrr1b3k608cm": {
+              "createdAt": "2025-06-27T13:48:59.149Z",
+              "email": "saadaq301@gmail.com",
+              "emergencyContactName": "Ibrahim Adan",
+              "emergencyContactNumber": "+260777995785",
+              "firstname": "Ibrahim Mohamad",
+              "gender": 0,
+              "id": "mcevbmtsrr1b3k608cm",
+              "idNumber": "628741/99/3",
+              "lastname": "Abdi",
+              "mobileNumber": "+260975595051",
+              "occupation": 55,
+              "propertyIndividualRentingInfo": {
+                "1758235072928cuqdxjszmn": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "1758235072928cuqdxjszmn",
+                  "rentFrequency": 1,
+                  "securityDeposit": 4700
+                }
+              },
+              "signedContractUrl": "https://firebasestorage.googleapis.com/v0/b/homehive-8c7d4.firebasestorage.app/o/Tenants%2Fmcevbmtsrr1b3k608cm%2FDocuments%2FContract%2FTENANCY%20AGREEMENT%20-%204585%20-%20Ground%20floor%20Unit%202%20-%20Ibrahim%20Mohamed%20Abdi%20.pdf?alt=media&token=45590e93-397c-4433-b059-e8452954e809",
+              "type": 0,
+              "updatedAt": "2025-06-27T13:48:59.149Z"
+            },
+            "mceviqlzx6fup6ue85s": {
+              "createdAt": "2025-06-27T13:54:30.716Z",
+              "email": "mumbaclive88@gmail.com",
+              "firstname": "Clive ",
+              "gender": 0,
+              "id": "mceviqlzx6fup6ue85s",
+              "idNumber": "0000000000",
+              "lastname": "Mumba",
+              "mobileNumber": "+260962037585",
+              "occupation": 31,
+              "propertyIndividualRentingInfo": {
+                "1758235072928czauty70y7": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "1758235072928czauty70y7",
+                  "rentFrequency": 1,
+                  "securityDeposit": 4700
+                }
+              },
+              "signedContractUrl": "https://firebasestorage.googleapis.com/v0/b/homehive-8c7d4.firebasestorage.app/o/Tenants%2Fmceviqlzx6fup6ue85s%2FDocuments%2FContract%2FLEASE%20AGREEMENT-%20Clive%20Mumba%20.pdf?alt=media&token=6997520f-56e9-4337-a16a-2b1997026ba3",
+              "type": 0,
+              "updatedAt": "2025-06-27T13:54:30.716Z"
+            },
+            "mcex5ufwquiay5iujz": {
+              "createdAt": "2025-06-27T14:40:24.670Z",
+              "email": "alvarezloardoangel@gmail.com",
+              "emergencyContactName": "Karina Alvarez Loardo",
+              "emergencyContactNumber": "+51992394101",
+              "firstname": "Angel Loardo ",
+              "gender": 0,
+              "id": "mcex5ufwquiay5iujz",
+              "idNumber": "0000000000",
+              "lastname": "Alvarez",
+              "mobileNumber": "+260963996954",
+              "occupation": 23,
+              "propertyIndividualRentingInfo": {
+                "175823507292830noo8myhk": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "175823507292830noo8myhk",
+                  "rentFrequency": 1,
+                  "securityDeposit": 4700
+                }
+              },
+              "type": 0,
+              "updatedAt": "2025-06-27T14:40:24.670Z"
+            },
+            "mcexneyx8brf09ajte5": {
+              "createdAt": "2025-06-27T14:54:08.718Z",
+              "email": "saadaq301@gmail.com",
+              "firstname": "Ibrahim Mohamad",
+              "gender": 0,
+              "id": "mcexneyx8brf09ajte5",
+              "idNumber": "604635/99/3",
+              "idUrl": "https://firebasestorage.googleapis.com/v0/b/homehive-8c7d4.firebasestorage.app/o/Tenants%2Fmcexneyx8brf09ajte5%2FDocuments%2FID%2FWhatsApp%20Image%202025-06-27%20at%2016.48.19_6093700a.jpg?alt=media&token=03983273-37ed-4794-aef4-1a04762c8fae",
+              "lastname": "Adan",
+              "mobileNumber": "+260777995785",
+              "occupation": 55,
+              "propertyIndividualRentingInfo": {
+                "1758235072928fwl26lw871": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "1758235072928fwl26lw871",
+                  "rentFrequency": 1,
+                  "securityDeposit": 4700
+                }
+              },
+              "signedContractUrl": "https://firebasestorage.googleapis.com/v0/b/homehive-8c7d4.firebasestorage.app/o/Tenants%2Fmcexneyx8brf09ajte5%2FDocuments%2FContract%2FIBRAHIM%20ADAN%20LEASE%20AGREEMENT.pdf?alt=media&token=28a6d05f-c705-41a2-97cd-a744584dd183",
+              "type": 0,
+              "updatedAt": "2025-06-27T14:54:08.718Z"
+            },
+            "mcf51gx5cwpdv445ipm": {
+              "createdAt": "2025-06-27T18:20:57.451Z",
+              "email": "hujalejunior5@gmail.com",
+              "firstname": "Gedi Yusuf ",
+              "gender": 0,
+              "id": "mcf51gx5cwpdv445ipm",
+              "idNumber": "0000000000",
+              "lastname": "Hujale",
+              "mobileNumber": "+260977527818",
+              "occupation": 11,
+              "propertyIndividualRentingInfo": {
+                "1758235072928vq3t47bo40": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "1758235072928vq3t47bo40",
+                  "rentFrequency": 1,
+                  "securityDeposit": 4700
+                }
+              },
+              "type": 0,
+              "updatedAt": "2025-06-27T18:20:57.451Z"
+            },
+            "mfl2i7v951qvxn7dwvs": {
+              "createdAt": "2025-09-15T11:55:44.086Z",
+              "email": "Kalumbabwale@gmail.com",
+              "emergencyContactEmail": "mwaleronia@gmail.com",
+              "emergencyContactName": "Ronia Ziwenji Tabita Mwale Bwale",
+              "emergencyContactNumber": "+260966027929",
+              "emergencyContactRelationship": 0,
+              "employerContactNumber": "NA",
+              "employerName": "Unemployed",
+              "firstname": "Kalumba",
+              "gender": 0,
+              "id": "mfl2i7v951qvxn7dwvs",
+              "idNumber": "237661/68/1",
+              "lastname": "Bwale",
+              "mobileNumber": "+260966029966",
+              "occupation": 67,
+              "propertyIndividualRentingInfo": {
+                "1758235072928cc2aw7d9cc": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "1758235072928cc2aw7d9cc",
+                  "rentFrequency": 1,
+                  "securityDeposit": 5200
+                }
+              },
+              "type": 0,
+              "updatedAt": "2025-09-15T11:55:44.086Z"
+            },
+            "mg13kw8k7gyzfu1twf": {
+              "createdAt": "2025-09-26T17:10:07.412Z",
+              "email": "esmakuni@pactworld.org",
+              "firstname": "Emmanuel",
+              "gender": 0,
+              "id": "mg13kw8k7gyzfu1twf",
+              "idNumber": "343118/16/1",
+              "lastname": "Makuni",
+              "mobileNumber": "+260977926826",
+              "occupation": 38,
+              "propertyIndividualRentingInfo": {
+                "17582350729286cjtkglmpm": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "17582350729286cjtkglmpm",
+                  "rentFrequency": 1,
+                  "securityDeposit": 2700
+                }
+              },
+              "type": 0,
+              "updatedAt": "2025-09-26T17:10:07.412Z"
+            },
+            "mihmp3d2c58wte4j3lm": {
+              "createdAt": "27/11/2025",
+              "email": "donpablo6669@gmail.com",
+              "firstname": "Mohamad Ali  Kalulu",
+              "gender": 0,
+              "id": "mihmp3d2c58wte4j3lm",
+              "idNumber": "373359/66/1",
+              "lastname": "Abdi",
+              "mobileNumber": "+260972526683",
+              "occupation": 64,
+              "propertyIndividualRentingInfo": {
+                "1758235072928f0viblsaxy": {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "1758235072928f0viblsaxy",
+                  "rentFrequency": 3,
+                  "securityDeposit": 4700
+                }
+              },
+              "type": 0,
+              "updatedAt": "27/11/2025"
+            }
+          },
+          "InActive": {
+            "mcf487a5lsr5bbbczz": {
+              "createdAt": "2025-06-27T17:58:16.164Z",
+              "email": "leonardobujaico@gmail.com",
+              "emergencyContactName": "Karina Alvarez Loardo",
+              "emergencyContactNumber": "+51992394101",
+              "firstname": "Leonardo ",
+              "gender": 0,
+              "idNumber": "1234567",
+              "lastname": "Bujaico",
+              "mobileNumber": "+260969310190",
+              "occupation": 23,
+              "pastPropertiesRented": [
+                {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "17582350729286cjtkglmpm",
+                  "rentFrequency": 1,
+                  "securityDeposit": 2600
+                }
+              ],
+              "signedContractUrl": "https://firebasestorage.googleapis.com/v0/b/homehive-8c7d4.firebasestorage.app/o/Tenants%2Fmcf487a5lsr5bbbczz%2FDocuments%2FContract%2FLEASE%20AGREEMENT.docx%20(1).pdf?alt=media&token=1c53266c-141f-4aa2-8d19-c3bbf85ff9aa",
+              "type": 0,
+              "updatedAt": "2025-06-27T17:58:16.164Z"
+            },
+            "mfkvecv7ockyxfwo4o": {
+              "createdAt": "2025-09-15T08:36:46.628Z",
+              "email": "dakane87@gmail.com",
+              "firstname": "Mohamed Boor ",
+              "gender": 0,
+              "idNumber": "917355/63/2",
+              "lastname": "Dagane",
+              "mobileNumber": "+260974116016",
+              "occupation": 11,
+              "pastPropertiesRented": [
+                {
+                  "parentPropertyID": "mcet7266sr8gmukvoap",
+                  "propertyID": "1758235072928f0viblsaxy",
+                  "rentFrequency": 1,
+                  "securityDeposit": 4700
+                }
+              ],
+              "type": 0,
+              "updatedAt": "2025-09-15T08:36:46.628Z"
+            }
+          }
+        },
+        "-OTwq4TeVXxvt9GBXWe1": {
+          "Active": {
+            "mci17fsqtvmty45faf": {
+              "companyAddress": "Lusaka",
+              "companyEmail": "1@gmail.com",
+              "companyName": "Trade Kings",
+              "companyPrimaryContactPerson": "Trade kings",
+              "companyPrimaryPhoneNumber": "0976850513",
+              "companyRegistrationNumber": "123",
+              "companySecondaryContactPerson": "Trade kings",
+              "companySecondaryPhoneNumber": "0976850513 ",
+              "companyTpinNumber": "1004665591",
+              "createdAt": "2025-06-29T18:56:55.994Z",
+              "id": "mci17fsqtvmty45faf",
+              "propertyCompanyRentingInfo": {
+                "properties": {
+                  "1758235072928609rs0fv8x": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928609rs0fv8x",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  },
+                  "175823507292872rv160r4o": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "175823507292872rv160r4o",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  },
+                  "17582350729289fy04fqizj": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "17582350729289fy04fqizj",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  },
+                  "1758235072928c2kq4y9o32": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928c2kq4y9o32",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  },
+                  "1758235072928ibze9wi96p": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928ibze9wi96p",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  },
+                  "1758235072928j4kpdoh76o": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928j4kpdoh76o",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  },
+                  "1758235072928oumq310u66": {
+                    "parentPropertyID": "mci0qdgmgobrtk4n9b",
+                    "propertyID": "1758235072928oumq310u66",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  },
+                  "1758235072928s4fpx8i35n": {
+                    "parentPropertyID": "mci0oiv3cr0cqwjggpo",
+                    "propertyID": "1758235072928s4fpx8i35n",
+                    "rentFrequency": 3,
+                    "securityDeposit": 8000
+                  }
+                },
+                "securityDeposit": 64000
+              },
+              "type": 1,
+              "updatedAt": "2025-06-29T18:56:55.994Z"
+            }
+          }
+        },
+        "-OXCgbwyw1s1xQ8bAPpu": {
+          "Active": {
+            "me3y0imlmczmlnwb81c": {
+              "createdAt": "2025-08-09T07:38:12.429Z",
+              "email": "cjsikasote0@gmail.com",
+              "firstname": "John",
+              "gender": 0,
+              "id": "me3y0imlmczmlnwb81c",
+              "idNumber": "567884/10/1",
+              "lastname": "Doe",
+              "mobileNumber": "077119897",
+              "occupation": 1,
+              "propertyIndividualRentingInfo": {
+                "me3xucskjgzc5ykca4": {
+                  "propertyID": "me3xucskjgzc5ykca4",
+                  "rentFrequency": 1,
+                  "securityDeposit": 11000
+                }
+              },
+              "type": 0,
+              "updatedAt": "2025-08-09T07:38:12.429Z"
+            },
+            "meopug9zqop1mzc9c2h": {
+              "createdAt": "2025-08-23T20:32:42.215Z",
+              "email": "cjsikasote0@outlook.com",
+              "firstname": "Peter",
+              "gender": 0,
+              "id": "meopug9zqop1mzc9c2h",
+              "idNumber": "587779/10/1",
+              "lastname": "Daka",
+              "mobileNumber": "0774567997",
+              "occupation": 1,
+              "propertyIndividualRentingInfo": {
+                "1758235072928glmnjfsngw": {
+                  "parentPropertyID": "meop3jackl1weu5hd7s",
+                  "propertyID": "1758235072928glmnjfsngw",
+                  "rentFrequency": 1,
+                  "securityDeposit": 14000
+                }
+              },
+              "type": 0,
+              "updatedAt": "2025-08-23T20:32:42.215Z"
+            }
+          }
+        }
+      },
+      "Users": {
+        "B0YILzYkghXETliC36J9NaSLDCp1": {
+          "companyId": "-OTwq4TeVXxvt9GBXWe1",
+          "createdAt": "2025-06-29T17:59:46.529Z",
+          "email": "Chombasikasote@yahoo.com",
+          "name": "Chomba Sikasote",
+          "updatedAt": "2025-06-29T17:59:46.529Z",
+          "userType": 1
+        },
+        "JLAoJ5LOpwM1GLVBrnKCTbgrh3f2": {
+          "companyId": "-OU4R7yDY7uGpYed6j0B",
+          "createdAt": "2025-07-01T10:02:59.217Z",
+          "email": "chipusiles@gmail.com",
+          "name": "Chipusile Sikasote",
+          "updatedAt": "2025-07-01T10:02:59.217Z",
+          "userType": 1
+        },
+        "dia3UFSIDkQsVIl3PAgKzQBWpm32": {
+          "companyId": "-OTlPNCoFjq8k_XsMqw2",
+          "createdAt": "2025-06-27T12:42:53.850Z",
+          "email": "kalumbabwale@gmail.com",
+          "name": "Kalumba Bwale",
+          "updatedAt": "2025-06-27T12:42:53.850Z",
+          "userType": 1
+        },
+        "iHQAccgDCGXBK6vPwqnSxkWr4Wv1": {
+          "companyId": "-OXCgbwyw1s1xQ8bAPpu",
+          "createdAt": "2025-08-09T07:19:04.449Z",
+          "email": "chipusiles@gmail.com",
+          "name": "Chipusile John Sikasote",
+          "updatedAt": "2025-08-09T07:19:04.449Z",
+          "userType": 1
+        },
+        "vQQvxHPnocaUg85Xdpxaz8yJ96v1": {
+          "companyId": "-OTi3TKQ16jieuDen2Pv",
+          "createdAt": "2025-06-26T21:08:19.691Z",
+          "email": "support@kactusit.com",
+          "name": "KactusIT",
+          "updatedAt": "2025-06-26T21:08:19.691Z",
+          "userType": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+firebase-functions~=0.1.0
+python-dateutil
+google-cloud-tasks
+boto3
+coverage
+Jinja2
