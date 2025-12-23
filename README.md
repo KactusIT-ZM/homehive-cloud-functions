@@ -103,4 +103,18 @@ To deploy the functions, run the following command from the project root directo
 ```bash
 firebase deploy --only functions
 ```
-You will also need to set the required environment variables (e.g., `SENDER_EMAIL`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) in the Google Cloud console for the `send_notification_worker` function.
+
+### Environment Variables
+
+You will need to set the required environment variables in the Google Cloud console for the `send_notification_worker` function.
+
+*   `SENDER_EMAIL`: The "From" address for your emails (e.g., `noreply@yourdomain.com`). This email must be a verified identity in AWS SES.
+*   `AWS_REGION`: The AWS region your SES service is in (e.g., `us-east-1`).
+*   `AWS_ACCESS_KEY_ID`: Your AWS access key.
+*   `AWS_SECRET_ACCESS_KEY`: Your AWS secret key.
+
+#### Andon Cord (Safety Net) for Testing
+
+To prevent sending emails to real users during testing, you can set the `TESTING_MODE` environment variable.
+
+*   **`TESTING_MODE`**: Set this to `true` to force all emails to be redirected to `info@kactusit.com`. If this variable is not set or is set to any other value, emails will be sent to the actual tenant's email address.

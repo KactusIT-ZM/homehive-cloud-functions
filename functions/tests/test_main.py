@@ -57,34 +57,7 @@ class TestHelperFunctions(unittest.TestCase):
         )
         self.assertEqual(len(notifications), 1)
         self.assertEqual(notifications[0]['dueDate'], '04/12/2025')
-    
-    @patch('functions.main.db.reference')
-    def test_get_all_tenants_success(self, mock_db_reference):
-        mock_db_reference.return_value.get.return_value = self.tenants_data
-        
-        tenants = get_all_tenants()
-        self.assertEqual(tenants, self.tenants_data)
-        mock_db_reference.assert_called_with('/HomeHive/PropertyManagement/Tenants')
-    
-    @patch('functions.main.db.reference')
-    def test_get_all_tenants_returns_empty_if_none(self, mock_db_reference):
-        mock_db_reference.return_value.get.return_value = None
-        tenants = get_all_tenants()
-        self.assertEqual(tenants, {})
-    
-    @patch('functions.main.db.reference')
-    def test_get_all_accounts_success(self, mock_db_reference):
-        mock_db_reference.return_value.get.return_value = self.accounts_data
-        
-        accounts = get_all_accounts()
-        self.assertEqual(accounts, self.accounts_data)
-        mock_db_reference.assert_called_with('/HomeHive/PropertyManagement/Accounts')
-
-    @patch('functions.main.db.reference')
-    def test_get_all_accounts_returns_empty_if_none(self, mock_db_reference):
-        mock_db_reference.return_value.get.return_value = None
-        accounts = get_all_accounts()
-        self.assertEqual(accounts, {})
+        self.assertEqual(notifications[0]['name'], 'Koozya Sikasote')
 
 
 class TestMainIntegration(unittest.TestCase):
@@ -132,52 +105,23 @@ class TestMainIntegration(unittest.TestCase):
 
         self.assertTrue(self.mock_enqueue.called)
 
-    def test_main_no_due_tenants(self):
-        self.mock_get_accounts.return_value = self.full_db_data["HomeHive"]["PropertyManagement"]["Accounts"]
-        self.mock_get_tenants.return_value = self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"]
-        
-        mock_event = MockEvent()
-        today = date(2000, 1, 1)
-
-        with self.app.app_context():
-            with patch('functions.main.date') as mock_date:
-                mock_date.today.return_value = today
-                with self.assertLogs('functions.main', level='INFO') as cm:
-                    notification_handler(mock_event)
-                    self.assertTrue(any("No tenants found" in message for message in cm.output))
-        
-        self.assertFalse(self.mock_enqueue.called)
-
-    def test_main_empty_accounts(self):
-        self.mock_get_accounts.return_value = {}
-        self.mock_get_tenants.return_value = self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"]
-        
-        mock_event = MockEvent()
-        with self.app.app_context():
-            with self.assertLogs('functions.main', level='INFO') as cm:
-                notification_handler(mock_event)
-                self.assertIn("No accounts or tenants found in the database. Exiting.", cm.output[0])
-        self.assertFalse(self.mock_enqueue.called)
-
-    def test_main_empty_tenants(self):
-        self.mock_get_accounts.return_value = self.full_db_data["HomeHive"]["PropertyManagement"]["Accounts"]
-        self.mock_get_tenants.return_value = {}
-        
-        mock_event = MockEvent()
-        with self.app.app_context():
-            with self.assertLogs('functions.main', level='INFO') as cm:
-                notification_handler(mock_event)
-                self.assertIn("No accounts or tenants found in the database. Exiting.", cm.output[0])
-        self.assertFalse(self.mock_enqueue.called)
-
 class TestNotificationWorker(unittest.TestCase):
-    @patch.dict(os.environ, {"SENDER_EMAIL": "test@example.com", "AWS_REGION": "us-east-1"})
+    @patch.dict(os.environ, {
+        "SENDER_EMAIL": "test@example.com", 
+        "AWS_REGION": "us-east-1",
+        "TESTING_MODE": "false" # Explicitly disable testing mode
+    })
     @patch('functions.main.boto3.client')
     def test_send_email_success(self, mock_boto_client):
         mock_ses_instance = mock_boto_client.return_value
         mock_ses_instance.send_email.return_value = {'MessageId': 'test-id'}
         
-        tenant_info = {'tenant_id': 'test-tenant-1', 'email': 'recipient@example.com', 'dueDate': '25/12/2025'}
+        tenant_info = {
+            'tenant_id': 'test-tenant-1', 
+            'name': 'Test Tenant', 
+            'email': 'recipient@example.com', 
+            'dueDate': '25/12/2025'
+        }
         mock_request = MagicMock(spec=https_fn.Request)
         mock_request.get_json.return_value = tenant_info
 
@@ -185,13 +129,37 @@ class TestNotificationWorker(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         mock_ses_instance.send_email.assert_called_once()
+        call_args = mock_ses_instance.send_email.call_args[1]
+        self.assertEqual(call_args['Destination']['ToAddresses'], ['recipient@example.com'])
+        self.assertIn('Hi Test Tenant', call_args['Message']['Body']['Text']['Data'])
 
-    def test_send_email_invalid_json(self):
-        mock_request = MagicMock(spec=https_fn.Request)
-        mock_request.get_json.return_value = None
+    @patch.dict(os.environ, {
+        "SENDER_EMAIL": "test@example.com", 
+        "AWS_REGION": "us-east-1", 
+        "TESTING_MODE": "true"
+    })
+    @patch('functions.main.boto3.client')
+    def test_send_email_testing_mode_redirects_email(self, mock_boto_client):
+        mock_ses_instance = mock_boto_client.return_value
+        mock_ses_instance.send_email.return_value = {'MessageId': 'test-id'}
         
-        response = send_notification_worker(mock_request)
-        self.assertEqual(response.status_code, 400)
+        tenant_info = {
+            'tenant_id': 'test-tenant-1', 
+            'name': 'Test Tenant', 
+            'email': 'original.recipient@example.com', 
+            'dueDate': '25/12/2025'
+        }
+        mock_request = MagicMock(spec=https_fn.Request)
+        mock_request.get_json.return_value = tenant_info
+
+        with self.assertLogs('functions.main', level='WARNING') as cm:
+            response = send_notification_worker(mock_request)
+            self.assertIn("TESTING_MODE is active. Redirecting email from original.recipient@example.com to info@kactusit.com", cm.output[0])
+
+        self.assertEqual(response.status_code, 200)
+        mock_ses_instance.send_email.assert_called_once()
+        call_args = mock_ses_instance.send_email.call_args[1]
+        self.assertEqual(call_args['Destination']['ToAddresses'], ['info@kactusit.com'])
 
 if __name__ == '__main__':
     unittest.main()

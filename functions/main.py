@@ -165,6 +165,13 @@ def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
         if not sender_email:
             log.error("SENDER_EMAIL environment variable not set.")
             return https_fn.Response("Server configuration error", status=500)
+        
+        # --- Andon Cord / Safety Net ---
+        is_testing = os.environ.get("TESTING_MODE", "true").lower() == "true"
+        if is_testing:
+            original_email = recipient_email
+            recipient_email = "info@kactusit.com"
+            log.warning(f"TESTING_MODE is active. Redirecting email from {original_email} to {recipient_email}")
 
         # Render the email body from the template
         template = template_env.get_template('reminder_email.txt')
