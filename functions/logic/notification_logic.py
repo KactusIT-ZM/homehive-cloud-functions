@@ -26,6 +26,10 @@ def get_due_tenants_for_reminders(statistics: dict, tenants: dict, days_window: 
     for company_id, company_stats in statistics.items():
         pending_payments = company_stats.get('paymentTracking', {}).get('pending', {})
         for payment_id, payment_details in pending_payments.items():
+            # If paymentType is 0, it's a rental payment. Only consider rental payments for reminders.
+            if payment_details.get('paymentType') != 0:
+                continue
+
             rent_due_date_str = payment_details.get('dueDate').strip()
             if not rent_due_date_str:
                 continue

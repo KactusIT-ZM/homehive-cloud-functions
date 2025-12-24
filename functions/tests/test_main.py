@@ -46,25 +46,73 @@ class TestHelperFunctions(unittest.TestCase):
 
     def test_get_due_tenants_for_reminders_with_statistics_data(self):
         mock_today = date(2025, 12, 24) # Today is 24/12/2025
+        
+        # Mock data for tenants
+        mock_tenants_data = {
+            "company_id_1": {
+                "active": {
+                    "tenant_id_rental": {
+                        "email": "rental@example.com",
+                        "mobileNumber": "1112223333"
+                    },
+                    "tenant_id_non_rental": {
+                        "email": "nonrental@example.com",
+                        "mobileNumber": "4445556666"
+                    }
+                }
+            }
+        }
+
+        # Mock data for statistics
+        mock_statistics_data = {
+            "company_id_1": {
+                "paymentTracking": {
+                    "pending": {
+                        "payment_id_rental": {
+                            "amount": 1000,
+                            "dueDate": "28/12/2025", # Within 7-day window from 2025-12-24
+                            "paymentType": 0, # Rental payment - should be included
+                            "tenantId": "tenant_id_rental",
+                            "tenantName": "Rental Tenant",
+                            "propertyName": "Rental Property"
+                        },
+                        "payment_id_non_rental": {
+                            "amount": 500,
+                            "dueDate": "27/12/2025", # Within 7-day window from 2025-12-24
+                            "paymentType": 1, # Non-rental payment - should be excluded
+                            "tenantId": "tenant_id_non_rental",
+                            "tenantName": "Non-Rental Tenant",
+                            "propertyName": "Non-Rental Property"
+                        }
+                    }
+                }
+            }
+        }
+
         with patch('functions.logic.notification_logic.date') as mock_date:
             mock_date.today.return_value = mock_today
             mock_date.side_effect = lambda *args, **kw: date(*args, **kw) # Allow normal date constructor
 
-            due_tenants = get_due_tenants_for_reminders(self.statistics_data, self.tenants_data, 7)
+            due_tenants = get_due_tenants_for_reminders(mock_statistics_data, mock_tenants_data, 7)
             
             self.assertIsInstance(due_tenants, list)
-            self.assertGreater(len(due_tenants), 0)
 
-            # Assert the specific payment for 1764837532151jesgo65h8oj (due 28/12/2025)
-            target_payment_id = '1764837532151jesgo65h8oj'
-            target_tenant = next((t for t in due_tenants if t.get('tenant_id') == 'milsdwu5nuas68mef6'), None) # Using tenant_id to find
+            # Assert that the rental payment is included
+            rental_tenant_found = False
+            for tenant_info in due_tenants:
+                if tenant_info.get('tenant_id') == 'tenant_id_rental':
+                    rental_tenant_found = True
+                    self.assertEqual(tenant_info['name'], 'Rental Tenant')
+                    self.assertEqual(tenant_info['email'], 'rental@example.com')
+                    self.assertEqual(tenant_info['dueDate'], '28/12/2025')
+                    self.assertEqual(tenant_info['rent_amount'], 1000)
+                    self.assertEqual(tenant_info['property_name'], 'Rental Property')
+                    break
+            self.assertTrue(rental_tenant_found, "Rental payment was not found in due tenants.")
 
-            self.assertIsNotNone(target_tenant, f"Payment {target_payment_id} not found in due tenants.")
-            self.assertEqual(target_tenant['name'], 'Koozya Sikasote')
-            self.assertEqual(target_tenant['email'], 'koozya@gmail.com')
-            self.assertEqual(target_tenant['dueDate'], '28/12/2025')
-            self.assertEqual(target_tenant['rent_amount'], 3000)
-            self.assertEqual(target_tenant['property_name'], 'CJ Flats - Unit 4')
+            # Assert that the non-rental payment is NOT included
+            non_rental_tenant_found = any(t.get('tenant_id') == 'tenant_id_non_rental' for t in due_tenants)
+            self.assertFalse(non_rental_tenant_found, "Non-rental payment should have been excluded but was found.")
 
 
 class TestMainIntegration(unittest.TestCase):
