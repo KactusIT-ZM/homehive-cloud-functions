@@ -1,25 +1,25 @@
-name: Build and Deploy
-on:
-  push:
-    branches:
-      - main
-jobs:
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
-      - name: Set up GCP Credentials
-        run: |
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" > gcp-key.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/gcp-key.json" >> $GITHUB_ENV
-        shell: bash
-      - name: Deploy to Firebase
-        uses: gannonk08/firebase-action-python@v0.0.1
-        with:
-          args: deploy --only functions --debug
-        env:
-          CREATE_VENV: true
-          PROJECT_PATH: functions
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+# name: Build and Deploy
+# on:
+#   push:
+#     branches:
+#       - main
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repo
+#         uses: actions/checkout@master
+#       - name: Set up GCP Credentials
+#         run: |
+#           echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" > gcp-key.json
+#           echo "GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/gcp-key.json" >> $GITHUB_ENV
+#         shell: bash
+#       - name: Deploy to Firebase
+#         uses: gannonk08/firebase-action-python@v0.0.1
+#         with:
+#           args: deploy --only functions --debug
+#         env:
+#           CREATE_VENV: true
+#           PROJECT_PATH: functions
+#           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
