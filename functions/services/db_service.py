@@ -1,7 +1,11 @@
 # functions/db_service.py
 
 import firebase_admin.db as db
+import logging
+
 from constants import TENANTS_PATH, STATISTICS_PATH
+
+log = logging.getLogger(__name__)
 
 def get_all_tenants() -> dict:
     """
@@ -26,3 +30,27 @@ def get_all_statistics() -> dict:
     ref = db.reference(STATISTICS_PATH)
     stats = ref.get()
     return stats if stats else {}
+
+def move_payment_to_overdue(company_id: str, payment_id: str, payment_details: dict):
+    """
+    Moves a payment from pending to overdue in Firebase Realtime Database and updates counts.
+    """
+    try:
+        pending_ref = db.reference(f"{STATISTICS_PATH}/{company_id}/paymentTracking/pending/{payment_id}")
+        overdue_ref = db.reference(f"{STATISTICS_PATH}/{company_id}/paymentTracking/overdue/{payment_id}")
+        
+        overdue_ref.set(payment_details)
+        
+        pending_ref.delete()
+
+        # Update summary counts
+        summary_ref = db.reference(f"{STATISTICS_PATH}/{company_id}/paymentTracking/summary")
+        summary_data = summary_ref.get()
+        if summary_data:
+            summary_data['pendingCount'] = summary_data.get('pendingCount', 0) - 1
+            summary_data['overdueCount'] = summary_data.get('overdueCount', 0) + 1
+            summary_ref.update(summary_data)
+        
+        log.info(f"Successfully moved payment {payment_id} to overdue for company {company_id}")
+    except Exception as e:
+        log.error(f"Error moving payment {payment_id} to overdue for company {company_id}: {e}")

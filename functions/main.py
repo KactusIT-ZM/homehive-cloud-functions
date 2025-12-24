@@ -4,8 +4,8 @@ from firebase_admin import initialize_app
 import logging
 import os 
 
-from services.db_service import get_all_tenants, get_all_statistics
-from logic.notification_logic import get_due_tenants_for_reminders
+from services.db_service import get_all_tenants, get_all_statistics, move_payment_to_overdue
+from logic.notification_logic import get_due_tenants_for_reminders, get_payments_to_move_to_overdue
 from services.cloud_tasks_service import enqueue_notification_tasks
 from utils.template_renderer import template_env
 from services.email_service import send_reminder_email
@@ -33,15 +33,25 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
 
     if statistics and tenants:
         due_tenants = get_due_tenants_for_reminders(statistics, tenants, days_window)
+        payments_to_move = get_payments_to_move_to_overdue(statistics)
         
         if due_tenants:
             log.info(f"Found {len(due_tenants)} tenants with rent due in the next {days_window} days:")
             for item in due_tenants:
-                log.info(f"  - Tenant: {item['tenant_id']}, Due: {item['dueDate']}, Contact: {item['email'] or item['mobileNumber']}")
+                log.info(f"  - Tenant (Due Soon): {item['tenant_id']}, Due: {item['dueDate']}, Contact: {item['email'] or item['mobileNumber']}")
             
             enqueue_notification_tasks(due_tenants)
         else:
             log.info(f"No tenants found with rent due in the next {days_window} days.")
+        
+        if payments_to_move:
+            log.warning(f"Found {len(payments_to_move)} payments to move to overdue:")
+            for payment in payments_to_move:
+                log.warning(f"  - Payment: {payment['payment_id']} for company {payment['company_id']}, Due: {payment['payment_details'].get('dueDate')}")
+                move_payment_to_overdue(payment['company_id'], payment['payment_id'], payment['payment_details'])
+        else:
+            log.info("No payments to move to overdue.")
+
     else:
         log.info("No statistics or tenants found in the database. Exiting.")
 
