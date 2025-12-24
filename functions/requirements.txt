@@ -1,6 +1,10 @@
-firebase-functions~=0.1.0
+firebase-functions==0.5.0
+firebase-admin
+Flask
 python-dateutil
 google-cloud-tasks
 boto3
 coverage
 Jinja2
+google-cloud-secret-manager
+fpdf2

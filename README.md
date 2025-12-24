@@ -68,6 +68,14 @@ This two-function architecture provides a robust, scalable, and decoupled system
 
 To run the tests, make sure you are in the project root directory.
 
+### Run a Specific Test
+
+To run a single specific test method, use the following format:
+
+```bash
+functions/venv/bin/python -m unittest functions.tests.test_main.TestNotificationWorker.test_send_email_testing_mode_redirects_email
+```
+
 **Run all tests:**
 ```bash
 source functions/venv/bin/activate && python -m unittest discover functions/tests

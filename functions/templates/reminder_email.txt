@@ -1,6 +1,0 @@
-Hi {{ name }},
-
-This is a friendly reminder that you have rent due.
-Your rent is due on {{ dueDate }}.
-
-This is an automated test message from HomeHive.
