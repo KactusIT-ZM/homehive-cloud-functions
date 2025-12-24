@@ -10,6 +10,11 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Set up GCP Credentials
+        run: |
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" > gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/gcp-key.json" >> $GITHUB_ENV
+        shell: bash
       - name: Deploy to Firebase
         uses: gannonk08/firebase-action-python@v0.0.1
         with:
