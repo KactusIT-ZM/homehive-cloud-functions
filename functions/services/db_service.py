@@ -31,6 +31,14 @@ def get_all_statistics() -> dict:
     stats = ref.get()
     return stats if stats else {}
 
+def get_all_companies() -> dict:
+    """
+    Gets all companies from the Firebase Realtime Database.
+    """
+    ref = db.reference('/HomeHive/PropertyManagement/Companies')
+    companies = ref.get()
+    return companies if companies else {}
+
 def move_payment_to_overdue(company_id: str, payment_id: str, payment_details: dict):
     """
     Moves a payment from pending to overdue in Firebase Realtime Database and updates counts.
