@@ -11,20 +11,20 @@ from .secret_manager_service import access_secret_version
 # Set up a module-level logger
 log = logging.getLogger(__name__)
 
-def send_reminder_email(tenant_info: dict, template_env, invoice_pdf: bytes = None) -> bool:
+def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: bytes = None) -> bool:
     """
-    Sends a rent reminder email to the tenant.
+    Sends a consolidated rent reminder email to the tenant, summarizing multiple due rentals.
     Returns True if successful, False otherwise.
     """
     recipient_email = tenant_info.get('email')
-    due_date = tenant_info.get('dueDate')
     tenant_name = tenant_info.get('name', 'Tenant')
+    due_rentals = tenant_info.get('due_rentals', [])
 
     if not recipient_email:
         log.error(f"No email for tenant {tenant_info.get('tenant_id')}. Skipping email.")
         return False
         
-    aws_region = "us-east-1" # Hardcoding for security and consistency with Secret Manager credentials
+    aws_region = "us-east-1"
     sender_email = os.environ.get("SENDER_EMAIL", "noreply@homehive.properties")
 
     if not sender_email:
@@ -39,15 +39,16 @@ def send_reminder_email(tenant_info: dict, template_env, invoice_pdf: bytes = No
         log.warning(f"TESTING_MODE is active. Redirecting email from {original_email} to {recipient_email}")
 
     # Render the email body from the template
-    template = template_env.get_template('reminder_email.html')
+    template = template_env.get_template('tenant_summary_email.html')
     html_body = template.render(
         name=tenant_name, 
-        dueDate=due_date,
-        property_name=tenant_info.get('property_name', 'N/A'),
-        rent_amount=tenant_info.get('rent_amount', 'N/A')
+        due_rentals=due_rentals
     )
     # Create a plain text version as a fallback
-    text_body = f"Hi {tenant_name},\n\nThis is a friendly reminder that your rent payment for {tenant_info.get('property_name', 'N/A')} amounting to ZMW {tenant_info.get('rent_amount', 'N/A')} is due soon.\nYour upcoming rent payment is due on: {due_date}.\n\nPlease log in to your HomeHive portal to view your statement or make a payment: https://your-homehive-portal.com\n\nIf you have already made this payment or have any questions, please disregard this email or contact us directly.\n\nThank you for being a valued tenant.\n\nSincerely,\nThe HomeHive Team\n\n© 2025 HomeHive. All rights reserved.\nThis is an automated message, please do not reply."
+    text_body = f"Hi {tenant_name},\n\nThis is a friendly reminder that multiple rent payments are due soon for the following properties:\n\n"
+    for rental in due_rentals:
+        text_body += f"- Property: {rental.get('property_name', 'N/A')}, Amount: ZMW {rental.get('rent_amount', 'N/A')}, Due Date: {rental.get('dueDate', 'N/A')}\n"
+    text_body += "\nPlease find a consolidated invoice attached to this email. You can also log in to your HomeHive portal to view your statements or make payments: https://your-homehive-portal.com\n\nIf you have already made these payments or have any questions, please disregard this email or contact us directly.\n\nThank you for being a valued tenant.\n\nSincerely,\nThe HomeHive Team\n\n© 2025 HomeHive. All rights reserved.\nThis is an automated message, please do not reply."
     
     aws_access_key_id = access_secret_version("AWS_ACCESS_KEY_ID")
     aws_secret_access_key = access_secret_version("AWS_SECRET_ACCESS_KEY")
@@ -64,7 +65,7 @@ def send_reminder_email(tenant_info: dict, template_env, invoice_pdf: bytes = No
             aws_secret_access_key=aws_secret_access_key
         )
         
-        subject = "Reminder: Upcoming Rent Payment Due"
+        subject = "Reminder: Upcoming Rental Payments Due - HomeHive"
 
         # Create the root message and set the headers.
         msg = MIMEMultipart('mixed')
@@ -104,10 +105,10 @@ def send_reminder_email(tenant_info: dict, template_env, invoice_pdf: bytes = No
             RawMessage={'Data': msg.as_string()}
         )
         
-        log.info(f"Successfully sent email reminder to {recipient_email}")
+        log.info(f"Successfully sent consolidated email reminder to {recipient_email}")
         return True
     except Exception as e:
-        log.error(f"An unexpected error occurred while sending email: {e}")
+        log.error(f"An unexpected error occurred while sending consolidated email: {e}")
         return False
 
 def send_landlord_summary_email(landlord_email: str, due_rentals_list: list, template_env) -> bool:

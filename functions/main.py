@@ -5,10 +5,10 @@ import logging
 import os 
 
 from services.db_service import get_all_tenants, get_all_statistics, move_payment_to_overdue, get_all_companies
-from logic.notification_logic import get_due_tenants_for_reminders, get_payments_to_move_to_overdue, get_due_rentals_by_landlord
+from logic.notification_logic import get_due_rentals_by_tenant, get_payments_to_move_to_overdue, get_due_rentals_by_landlord
 from services.cloud_tasks_service import enqueue_notification_tasks
 from utils.template_renderer import template_env
-from services.email_service import send_reminder_email, send_landlord_summary_email
+from services.email_service import send_tenant_summary_email, send_landlord_summary_email
 from services.invoice_service import create_invoice_pdf
 
 # Set up a module-level logger
@@ -33,21 +33,21 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
     companies = get_all_companies() # Fetch company data
 
     if statistics and tenants and companies:
-        due_tenants = get_due_tenants_for_reminders(statistics, tenants, days_window)
+        grouped_due_rentals_by_tenant = get_due_rentals_by_tenant(statistics, tenants, days_window)
         payments_to_move = get_payments_to_move_to_overdue(statistics)
         landlord_due_rentals = get_due_rentals_by_landlord(statistics, tenants, companies, days_window)
-        
-        if due_tenants:
-            log.info(f"Found {len(due_tenants)} tenants with rent due in the next {days_window} days:")
-            for item in due_tenants:
-                log.info(f"  - Tenant (Due Soon): {item['tenant_id']}, Due: {item['dueDate']}, Contact: {item['email'] or item['mobileNumber']}")
-            
-            enqueue_notification_tasks(due_tenants)
+
+        if grouped_due_rentals_by_tenant:
+            log.info(f"Found {len(grouped_due_rentals_by_tenant)} tenants with rent due exactly {days_window} days from now:")
+            # Enqueue each tenant's consolidated reminder as a single task
+            enqueue_notification_tasks(list(grouped_due_rentals_by_tenant.values()))
+            for tenant_id, tenant_data in grouped_due_rentals_by_tenant.items():
+                log.info(f"  - Enqueued consolidated reminder for Tenant ID: {tenant_id}, Name: {tenant_data['tenant_info']['name']}")
         else:
-            log.info(f"No tenants found with rent due in the next {days_window} days.")
+            log.info(f"No tenants found with rent due exactly {days_window} days from now.")
 
         if landlord_due_rentals:
-            log.info(f"Found {len(landlord_due_rentals)} landlords with due rentals.")
+            log.info(f"Found {len(landlord_due_rentals)} landlords with due rentals exactly {days_window} days from now.")
             for landlord_email, rentals_list in landlord_due_rentals.items():
                 log.info(f"  - Sending summary email to landlord {landlord_email} for {len(rentals_list)} due rentals.")
                 send_landlord_summary_email(landlord_email, rentals_list, template_env)
@@ -68,19 +68,19 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
 @https_fn.on_request()
 def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
     """
-    HTTP-triggered function that receives a tenant's info and sends a notification.
+    HTTP-triggered function that receives a tenant's consolidated info and sends a notification.
     """
     try:
-        tenant_info = req.get_json(silent=True)
-        if not tenant_info:
+        tenant_consolidated_info = req.get_json(silent=True)
+        if not tenant_consolidated_info:
             log.error("No tenant data in request body.")
             return https_fn.Response("No data received", status=400)
 
-        # Create the invoice PDF
-        invoice_pdf = create_invoice_pdf(tenant_info)
+        # Create the consolidated invoice PDF
+        invoice_pdf = create_invoice_pdf(tenant_consolidated_info)
 
-        # Call the email service to send the reminder with the invoice attached
-        success = send_reminder_email(tenant_info, template_env, invoice_pdf=invoice_pdf)
+        # Call the email service to send the reminder with the consolidated invoice attached
+        success = send_tenant_summary_email(tenant_consolidated_info, template_env, invoice_pdf=invoice_pdf)
 
         if success:
             return https_fn.Response("Email sent successfully.", status=200)

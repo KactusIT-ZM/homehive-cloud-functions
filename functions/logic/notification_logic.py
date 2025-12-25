@@ -13,20 +13,22 @@ def _flatten_tenants(tenants: dict) -> dict:
         for tenant_id, tenant_data in status_group.items()
     }
 
-def get_due_tenants_for_reminders(statistics: dict, tenants: dict, days_window: int) -> list:
+def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_today: int) -> dict:
     """
-    Identifies tenants with rent due within the configured window by processing pending payments from statistics.
+    Identifies rental payments due exactly `exact_days_from_today` from today, grouped by tenant ID.
+    Returns a dictionary where keys are tenant IDs and values are dicts containing tenant_info and a list of their due rentals.
     """
     today = date.today()
-    due_date_upper_bound = today + timedelta(days=days_window)
+    target_due_date = today + timedelta(days=exact_days_from_today)
     all_tenants_flat = _flatten_tenants(tenants)
     
-    all_due_tenants = []
+    # Structure: {tenant_id: {'tenant_info': {...}, 'due_rentals': [...]}}
+    grouped_due_rentals_by_tenant = {} 
 
     for company_id, company_stats in statistics.items():
         pending_payments = company_stats.get('paymentTracking', {}).get('pending', {})
         for payment_id, payment_details in pending_payments.items():
-            # If paymentType is 0, it's a rental payment. Only consider rental payments for reminders.
+            # Only consider rental payments (paymentType == 0)
             if payment_details.get('paymentType') != 0:
                 continue
 
@@ -36,34 +38,41 @@ def get_due_tenants_for_reminders(statistics: dict, tenants: dict, days_window: 
 
             try:
                 due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
-                if today <= due_date <= due_date_upper_bound:
+                if due_date == target_due_date: # Check for exact due date
                     tenant_id = payment_details.get('tenantId')
                     tenant_details_from_db = all_tenants_flat.get(tenant_id)
                     if tenant_details_from_db:
-                        tenant_info = {
-                            'tenant_id': tenant_id,
-                            'name': payment_details.get('tenantName', ''),
-                            'email': tenant_details_from_db.get('email'),
-                            'mobileNumber': tenant_details_from_db.get('mobileNumber'),
+                        if tenant_id not in grouped_due_rentals_by_tenant:
+                            grouped_due_rentals_by_tenant[tenant_id] = {
+                                'tenant_info': {
+                                    'tenant_id': tenant_id,
+                                    'name': payment_details.get('tenantName', ''),
+                                    'email': tenant_details_from_db.get('email'),
+                                    'mobileNumber': tenant_details_from_db.get('mobileNumber'),
+                                },
+                                'due_rentals': []
+                            }
+                        
+                        # Add individual rental details to the tenant's list
+                        grouped_due_rentals_by_tenant[tenant_id]['due_rentals'].append({
                             'dueDate': due_date.strftime('%d/%m/%Y'),
                             'rent_amount': payment_details.get('amount'),
                             'property_name': payment_details.get('propertyName', ''),
                             'payment_id': payment_id
-                        }
-                        all_due_tenants.append(tenant_info)
+                        })
             except (ValueError, TypeError):
                 log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
                 continue
                 
-    return all_due_tenants
+    return grouped_due_rentals_by_tenant
 
-def get_due_rentals_by_landlord(statistics: dict, tenants: dict, companies: dict, days_window: int) -> dict:
+def get_due_rentals_by_landlord(statistics: dict, tenants: dict, companies: dict, exact_days_from_today: int) -> dict:
     """
-    Identifies rental payments due within the configured window, grouped by landlord email.
+    Identifies rental payments due exactly `exact_days_from_today` from today, grouped by landlord email.
     Each landlord receives a summary of all due rentals for their associated properties.
     """
     today = date.today()
-    due_date_upper_bound = today + timedelta(days=days_window)
+    target_due_date = today + timedelta(days=exact_days_from_today)
     all_tenants_flat = _flatten_tenants(tenants)
     
     landlord_due_rentals = {} # Key: landlord_email, Value: list of rental details
@@ -87,7 +96,7 @@ def get_due_rentals_by_landlord(statistics: dict, tenants: dict, companies: dict
 
             try:
                 due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
-                if today <= due_date <= due_date_upper_bound:
+                if due_date == target_due_date: # Check for exact due date
                     tenant_id = payment_details.get('tenantId')
                     tenant_details_from_db = all_tenants_flat.get(tenant_id)
                     if tenant_details_from_db:

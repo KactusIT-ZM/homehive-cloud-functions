@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reminder: Upcoming Rental Payments Due - HomeHive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 20px;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+        }
+        .content {
+            padding: 20px;
+            line-height: 1.6;
+            color: #333333;
+        }
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .content th, .content td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .content th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .button-container {
+            text-align: center;
+            padding: 10px 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .footer {
+            background-color: #f0f0f0;
+            color: #777777;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9em;
+            border-top: 1px solid #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="33%" align="left" valign="middle">
+                        <img src="cid:logo" alt="HomeHive Logo" style="max-width: 40px; height: auto; display: block; padding-left: 10px;">
+                    </td>
+                    <td width="34%" align="center" valign="middle">
+                        <h1>Rental Payment Reminder</h1>
+                    </td>
+                    <td width="33%" align="right" valign="middle">
+                        <!-- Empty cell for spacing -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="content">
+            <p>Dear {{ name }},</p>
+            <p>This is a friendly reminder that multiple rent payments are due soon. We want to ensure you have ample time to prepare.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property Name</th>
+                        <th>Amount Due</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rental in due_rentals %}
+                    <tr>
+                        <td>{{ rental.property_name }}</td>
+                        <td>ZMW {{ rental.rent_amount }}</td>
+                        <td>{{ rental.dueDate }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <p>Please find a consolidated invoice attached to this email.</p>
+            <div class="button-container">
+                <a href="https://your-homehive-portal.com" class="button">Go to HomeHive Portal</a>
+            </div>
+            <p>If you have already made these payments, please disregard this email.</p>
+            <p>Thank you for being a valued tenant.</p>
+            <p>Sincerely,</p>
+            <p>The HomeHive Team</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 HomeHive. All rights reserved.</p>
+            <p>This is an automated message, please do not reply.</p>
+        </div>
+    </div>
+</body>
+</html>

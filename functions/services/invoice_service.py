@@ -25,50 +25,56 @@ class PDF(FPDF):
 
 def create_invoice_pdf(tenant_info: dict) -> bytes:
     """
-    Creates a rent invoice PDF for the tenant in a standard format.
+    Creates a consolidated rent invoice PDF for the tenant.
+    `tenant_info` should contain 'name', 'email', 'mobileNumber', and a 'due_rentals' list.
+    Each item in 'due_rentals' should have 'property_name', 'rent_amount', 'dueDate', 'payment_id'.
     """
     pdf = PDF()
     pdf.add_page()
     pdf.set_font('Helvetica', '', 12)
 
-    pdf.set_font('Helvetica', '', 12)
-
     # Invoice Info
     pdf.set_font('Helvetica', 'B', 12)
-    # Bill To (left aligned)
     pdf.set_x(10)
     pdf.cell(95, 10, f"Bill To: {tenant_info.get('name', 'N/A')}", border=0, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
-    # Invoice # (right aligned)
-    pdf.cell(95, 10, f"Invoice #: {tenant_info.get('payment_id', 'N/A')}", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(95, 10, f"Invoice #: Consolidated Invoice", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     pdf.set_font('Helvetica', '', 12)
     pdf.ln(10) # Add a line break for spacing
 
     # Invoice Date (right aligned)
     pdf.cell(0, 7, f"Invoice Date: {datetime.now().strftime('%Y-%m-%d')}", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-    # Due Date (right aligned)
-    pdf.cell(0, 7, f"Due Date: {tenant_info.get('dueDate', 'N/A')}", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    # The due date will be derived from the rentals list
     pdf.ln(10)
 
     # Invoice Table Header
     pdf.set_fill_color(200, 220, 255)
     pdf.set_font('Helvetica', 'B', 12)
-    pdf.cell(130, 10, 'Description', border=1, align='L', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
-    pdf.cell(30, 10, 'Quantity', border=1, align='C', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
-    pdf.cell(30, 10, 'Total', border=1, align='R', fill=True, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(90, 10, 'Description', border=1, align='L', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
+    pdf.cell(40, 10, 'Property', border=1, align='L', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
+    pdf.cell(30, 10, 'Due Date', border=1, align='C', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
+    pdf.cell(30, 10, 'Amount', border=1, align='R', fill=True, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     # Invoice Table Body
     pdf.set_font('Helvetica', '', 12)
-    rent_amount = tenant_info.get('rent_amount', 1000.00) # Placeholder
-    pdf.cell(130, 10, f"Rent for {tenant_info.get('property_name', 'N/A')} - Due {tenant_info.get('dueDate', 'N/A')}", border=1, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
-    pdf.cell(30, 10, '1', border=1, align='C', new_x=XPos.RIGHT, new_y=YPos.TOP)
-    pdf.cell(30, 10, f'ZMW {rent_amount:.2f}', border=1, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    total_amount_due = 0.0
+    for rental in tenant_info.get('due_rentals', []):
+        description = f"Rent Payment ({rental.get('payment_id', 'N/A')})"
+        property_name = rental.get('property_name', 'N/A')
+        due_date = rental.get('dueDate', 'N/A')
+        rent_amount = rental.get('rent_amount', 0.0)
+        
+        pdf.cell(90, 10, description, border=1, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
+        pdf.cell(40, 10, property_name, border=1, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
+        pdf.cell(30, 10, due_date, border=1, align='C', new_x=XPos.RIGHT, new_y=YPos.TOP)
+        pdf.cell(30, 10, f'ZMW {rent_amount:.2f}', border=1, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        total_amount_due += float(rent_amount)
     
     pdf.ln(10)
 
     # Total
     pdf.set_font('Helvetica', 'B', 12)
     pdf.cell(160, 10, 'Total Amount Due:', border=0, align='R', new_x=XPos.RIGHT, new_y=YPos.TOP)
-    pdf.cell(30, 10, f'ZMW {rent_amount:.2f}', border=1, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(30, 10, f'ZMW {total_amount_due:.2f}', border=1, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     return pdf.output()

@@ -19,9 +19,9 @@ from functions.main import (
     send_notification_worker
 )
 from functions.services.db_service import get_all_tenants, get_all_accounts
-from functions.logic.notification_logic import get_due_tenants_for_reminders, _flatten_tenants, get_due_rentals_by_landlord
+from functions.logic.notification_logic import get_due_rentals_by_tenant, _flatten_tenants, get_due_rentals_by_landlord
 from functions.services.cloud_tasks_service import enqueue_notification_tasks
-from functions.services.email_service import send_reminder_email, send_landlord_summary_email
+from functions.services.email_service import send_tenant_summary_email, send_landlord_summary_email
 from firebase_functions import https_fn
 
 class MockEvent:
@@ -45,20 +45,27 @@ class TestHelperFunctions(unittest.TestCase):
         self.assertIn('mcevbmtsrr1b3k608cm', flat_tenants)
         self.assertEqual(flat_tenants['mcevbmtsrr1b3k608cm']['email'], 'saadaq301@gmail.com')
 
-    def test_get_due_tenants_for_reminders_with_statistics_data(self):
+    def test_get_due_rentals_by_tenant(self):
         mock_today = date(2025, 12, 24) # Today is 24/12/2025
         
         # Mock data for tenants
         mock_tenants_data = {
             "company_id_1": {
                 "active": {
-                    "tenant_id_rental": {
-                        "email": "rental@example.com",
-                        "mobileNumber": "1112223333"
+                    "tenant_id_rental_1": {
+                        "email": "rental1@example.com",
+                        "mobileNumber": "1112223333",
+                        "name": "Rental Tenant 1"
                     },
-                    "tenant_id_non_rental": {
+                    "tenant_id_rental_2": {
+                        "email": "rental2@example.com",
+                        "mobileNumber": "4445556666",
+                        "name": "Rental Tenant 2"
+                    },
+                    "tenant_id_non_rental": { # This tenant's payment should be filtered out by type
                         "email": "nonrental@example.com",
-                        "mobileNumber": "4445556666"
+                        "mobileNumber": "7778889999",
+                        "name": "Non-Rental Tenant"
                     }
                 }
             }
@@ -69,21 +76,45 @@ class TestHelperFunctions(unittest.TestCase):
             "company_id_1": {
                 "paymentTracking": {
                     "pending": {
-                        "payment_id_rental": {
+                        "payment_id_rental_A": { # Tenant 1, Due exactly 7 days, rental
                             "amount": 1000,
-                            "dueDate": "28/12/2025", # Within 7-day window from 2025-12-24
-                            "paymentType": 0, # Rental payment - should be included
-                            "tenantId": "tenant_id_rental",
-                            "tenantName": "Rental Tenant",
-                            "propertyName": "Rental Property"
+                            "dueDate": "31/12/2025", 
+                            "paymentType": 0, 
+                            "tenantId": "tenant_id_rental_1",
+                            "tenantName": "Rental Tenant 1",
+                            "propertyName": "Property A"
                         },
-                        "payment_id_non_rental": {
+                        "payment_id_rental_B": { # Tenant 1, Due exactly 7 days, rental (second unit)
+                            "amount": 1200,
+                            "dueDate": "31/12/2025", 
+                            "paymentType": 0, 
+                            "tenantId": "tenant_id_rental_1",
+                            "tenantName": "Rental Tenant 1",
+                            "propertyName": "Property B"
+                        },
+                        "payment_id_rental_C": { # Tenant 2, Due exactly 7 days, rental
+                            "amount": 1500,
+                            "dueDate": "31/12/2025", 
+                            "paymentType": 0, 
+                            "tenantId": "tenant_id_rental_2",
+                            "tenantName": "Rental Tenant 2",
+                            "propertyName": "Property C"
+                        },
+                        "payment_id_non_rental_X": { # Non-rental, should be excluded
                             "amount": 500,
-                            "dueDate": "27/12/2025", # Within 7-day window from 2025-12-24
-                            "paymentType": 1, # Non-rental payment - should be excluded
+                            "dueDate": "31/12/2025", 
+                            "paymentType": 1, 
                             "tenantId": "tenant_id_non_rental",
                             "tenantName": "Non-Rental Tenant",
-                            "propertyName": "Non-Rental Property"
+                            "propertyName": "Property X"
+                        },
+                        "payment_id_rental_wrong_date": { # Rental, wrong date, should be excluded
+                            "amount": 2000,
+                            "dueDate": "28/12/2025",
+                            "paymentType": 0,
+                            "tenantId": "tenant_id_rental_1",
+                            "tenantName": "Rental Tenant 1",
+                            "propertyName": "Property D"
                         }
                     }
                 }
@@ -92,28 +123,35 @@ class TestHelperFunctions(unittest.TestCase):
 
         with patch('functions.logic.notification_logic.date') as mock_date:
             mock_date.today.return_value = mock_today
-            mock_date.side_effect = lambda *args, **kw: date(*args, **kw) # Allow normal date constructor
+            mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
 
-            due_tenants = get_due_tenants_for_reminders(mock_statistics_data, mock_tenants_data, 7)
+            grouped_rentals = get_due_rentals_by_tenant(mock_statistics_data, mock_tenants_data, 7)
             
-            self.assertIsInstance(due_tenants, list)
+            self.assertIsInstance(grouped_rentals, dict)
+            self.assertEqual(len(grouped_rentals), 2) # Expect 2 tenants with due rentals
 
-            # Assert that the rental payment is included
-            rental_tenant_found = False
-            for tenant_info in due_tenants:
-                if tenant_info.get('tenant_id') == 'tenant_id_rental':
-                    rental_tenant_found = True
-                    self.assertEqual(tenant_info['name'], 'Rental Tenant')
-                    self.assertEqual(tenant_info['email'], 'rental@example.com')
-                    self.assertEqual(tenant_info['dueDate'], '28/12/2025')
-                    self.assertEqual(tenant_info['rent_amount'], 1000)
-                    self.assertEqual(tenant_info['property_name'], 'Rental Property')
-                    break
-            self.assertTrue(rental_tenant_found, "Rental payment was not found in due tenants.")
+            # Assert tenant_id_rental_1's rentals
+            self.assertIn('tenant_id_rental_1', grouped_rentals)
+            tenant1_data = grouped_rentals['tenant_id_rental_1']
+            self.assertEqual(tenant1_data['tenant_info']['name'], 'Rental Tenant 1')
+            self.assertEqual(tenant1_data['tenant_info']['email'], 'rental1@example.com')
+            self.assertEqual(len(tenant1_data['due_rentals']), 2) # Expect two due rentals for this tenant
 
-            # Assert that the non-rental payment is NOT included
-            non_rental_tenant_found = any(t.get('tenant_id') == 'tenant_id_non_rental' for t in due_tenants)
-            self.assertFalse(non_rental_tenant_found, "Non-rental payment should have been excluded but was found.")
+            # Verify individual rentals for tenant 1
+            rental_props = [r['property_name'] for r in tenant1_data['due_rentals']]
+            self.assertIn('Property A', rental_props)
+            self.assertIn('Property B', rental_props)
+            
+            # Assert tenant_id_rental_2's rentals
+            self.assertIn('tenant_id_rental_2', grouped_rentals)
+            tenant2_data = grouped_rentals['tenant_id_rental_2']
+            self.assertEqual(tenant2_data['tenant_info']['name'], 'Rental Tenant 2')
+            self.assertEqual(tenant2_data['tenant_info']['email'], 'rental2@example.com')
+            self.assertEqual(len(tenant2_data['due_rentals']), 1) # Expect one due rental for this tenant
+            self.assertEqual(tenant2_data['due_rentals'][0]['property_name'], 'Property C')
+
+            # Assert non-rental payments are not included
+            self.assertNotIn('tenant_id_non_rental', grouped_rentals)
 
     def test_get_due_rentals_by_landlord(self):
         mock_today = date(2025, 12, 24) # Today is 24/12/2025
@@ -143,7 +181,7 @@ class TestHelperFunctions(unittest.TestCase):
                     "pending": {
                         "payment_id_rental_A": {
                             "amount": 1000,
-                            "dueDate": "28/12/2025", # Within 7-day window
+                            "dueDate": "31/12/2025", # Exactly 7 days from today
                             "paymentType": 0, # Rental
                             "tenantId": "tenant_id_rental_A",
                             "tenantName": "Tenant A",
@@ -151,15 +189,15 @@ class TestHelperFunctions(unittest.TestCase):
                         },
                         "payment_id_non_rental_B": {
                             "amount": 500,
-                            "dueDate": "27/12/2025", # Within 7-day window
+                            "dueDate": "31/12/2025", # Exactly 7 days from today
                             "paymentType": 1, # Non-rental - should be excluded
                             "tenantId": "tenant_id_non_rental_B",
                             "tenantName": "Tenant B",
                             "propertyName": "Property B"
                         },
-                        "payment_id_rental_old": {
+                        "payment_id_rental_old": { # Should be excluded
                             "amount": 700,
-                            "dueDate": "20/12/2025", # Outside of today <= due_date, will be skipped
+                            "dueDate": "28/12/2025", 
                             "paymentType": 0,
                             "tenantId": "tenant_id_rental_A",
                             "tenantName": "Tenant A Old",
@@ -173,11 +211,19 @@ class TestHelperFunctions(unittest.TestCase):
                     "pending": {
                         "payment_id_rental_C": {
                             "amount": 1500,
-                            "dueDate": "30/12/2025", # Within 7-day window
+                            "dueDate": "31/12/2025", # Exactly 7 days from today
                             "paymentType": 0, # Rental
                             "tenantId": "tenant_id_rental_C",
                             "tenantName": "Tenant C",
                             "propertyName": "Property C"
+                        },
+                        "payment_id_rental_wrong_date_C": { # Should be excluded
+                            "amount": 1200,
+                            "dueDate": "30/12/2025", 
+                            "paymentType": 0,
+                            "tenantId": "tenant_id_rental_C",
+                            "tenantName": "Tenant C Wrong Date",
+                            "propertyName": "Property C Wrong Date"
                         }
                     }
                 }
@@ -199,6 +245,7 @@ class TestHelperFunctions(unittest.TestCase):
             self.assertEqual(len(landlord1_rentals), 1) # Only one rental (payment_id_rental_A)
             self.assertEqual(landlord1_rentals[0]['tenant_name'], "Tenant A")
             self.assertEqual(landlord1_rentals[0]['amount'], 1000)
+            self.assertEqual(landlord1_rentals[0]['due_date'], '31/12/2025')
 
             # Assert landlord2@example.com's rentals
             self.assertIn("landlord2@example.com", landlord_due_rentals)
@@ -206,11 +253,14 @@ class TestHelperFunctions(unittest.TestCase):
             self.assertEqual(len(landlord2_rentals), 1) # Only one rental (payment_id_rental_C)
             self.assertEqual(landlord2_rentals[0]['tenant_name'], "Tenant C")
             self.assertEqual(landlord2_rentals[0]['amount'], 1500)
+            self.assertEqual(landlord2_rentals[0]['due_date'], '31/12/2025')
 
             # Assert non-rental payment is not included
             for rentals in landlord_due_rentals.values():
                 for rental in rentals:
-                    self.assertNotIn("Non-Rental Tenant", rental['tenant_name']) # Check by name for simplicity
+                    self.assertNotIn("Non-Rental Tenant", rental['tenant_name'])
+                    self.assertNotIn("Tenant A Old", rental['tenant_name'])
+                    self.assertNotIn("Tenant C Wrong Date", rental['tenant_name'])
 
 
 class TestMainIntegration(unittest.TestCase):
@@ -261,7 +311,7 @@ class TestMainIntegration(unittest.TestCase):
             return self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"]
         return None
 
-    def test_notification_handler_flow_enqueues_task_for_due_tenant(self):
+    def test_main_triggers_tenant_notifications(self): # Renamed function
         statistics_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"])
         tenants_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"])
         
@@ -280,24 +330,42 @@ class TestMainIntegration(unittest.TestCase):
 
         with self.app.app_context():
             with patch('functions.logic.notification_logic.date') as mock_date_logic, \
-                 patch('functions.main.get_due_tenants_for_reminders') as mock_get_due_tenants:
+                 patch('functions.main.get_due_rentals_by_tenant') as mock_get_due_rentals_by_tenant: # Patch new function
                 mock_date_logic.today.return_value = date(2025, 12, 24) # Set a fixed date for the test
                 mock_date_logic.side_effect = lambda *args, **kw: date(*args, **kw) # Allow normal date constructor
 
                 # Mock to ensure enqueue is called with the expected tenant_info
-                mock_get_due_tenants.return_value = [{
-                    'tenant_id': 'milsdwu5nuas68mef6', 
-                    'name': 'Koozya Sikasote', 
-                    'email': 'koozya@gmail.com', 
-                    'mobileNumber': '0743794740',
-                    'dueDate': '28/12/2025',
-                    'rent_amount': 3000,
-                    'property_name': 'CJ Flats - Unit 4'
-                }] 
+                # This should be a grouped structure now
+                mock_get_due_rentals_by_tenant.return_value = {
+                    'tenant_id_1': {
+                        'tenant_info': {
+                            'tenant_id': 'tenant_id_1',
+                            'name': 'Tenant One',
+                            'email': 'tenant1@example.com',
+                            'mobileNumber': '111',
+                        },
+                        'due_rentals': [
+                            {
+                                'dueDate': '31/12/2025',
+                                'rent_amount': 1000,
+                                'property_name': 'Property A',
+                                'payment_id': 'payment_A'
+                            },
+                            {
+                                'dueDate': '31/12/2025',
+                                'rent_amount': 500,
+                                'property_name': 'Property B',
+                                'payment_id': 'payment_B'
+                            }
+                        ]
+                    }
+                } 
                 notification_handler(mock_event)
         
-        mock_get_due_tenants.assert_called_once_with(statistics_data, tenants_data, 7) # Assert args
-        self.assertTrue(self.mock_enqueue.called)
+        mock_get_due_rentals_by_tenant.assert_called_once_with(statistics_data, tenants_data, 7)
+        # enqueue_notification_tasks should be called with a list of the values from the grouped dict
+        self.mock_enqueue.assert_called_once_with(list(mock_get_due_rentals_by_tenant.return_value.values()))
+
 
     @patch('functions.main.get_all_companies')
     @patch('functions.main.get_due_rentals_by_landlord')
@@ -316,10 +384,10 @@ class TestMainIntegration(unittest.TestCase):
 
         mock_landlord_rentals = {
             "landlord1@example.com": [
-                {'tenant_name': 'Tenant A', 'property_name': 'Property A', 'amount': 1000, 'due_date': '28/12/2025'}
+                {'tenant_name': 'Tenant A', 'property_name': 'Property A', 'amount': 1000, 'due_date': '31/12/2025'}
             ],
             "landlord2@example.com": [
-                {'tenant_name': 'Tenant C', 'property_name': 'Property C', 'amount': 1500, 'due_date': '30/12/2025'}
+                {'tenant_name': 'Tenant C', 'property_name': 'Property C', 'amount': 1500, 'due_date': '31/12/2025'}
             ]
         }
         mock_get_due_rentals_by_landlord.return_value = mock_landlord_rentals
@@ -328,11 +396,11 @@ class TestMainIntegration(unittest.TestCase):
 
         with self.app.app_context():
             with patch('functions.logic.notification_logic.date') as mock_date_logic, \
-                 patch('functions.main.get_due_tenants_for_reminders') as mock_get_due_tenants:
+                 patch('functions.main.get_due_rentals_by_tenant') as mock_get_due_rentals_by_tenant: # Patch new function
                 mock_date_logic.today.return_value = date(2025, 12, 24)
                 mock_date_logic.side_effect = lambda *args, **kw: date(*args, **kw)
 
-                mock_get_due_tenants.return_value = [] # No tenant reminders for this test
+                mock_get_due_rentals_by_tenant.return_value = {} # No tenant reminders for this test
 
                 notification_handler(mock_event)
         
@@ -355,69 +423,49 @@ class TestNotificationWorker(unittest.TestCase):
     })
     @patch('functions.services.email_service.boto3.client')
     @patch('functions.services.email_service.access_secret_version')
-    def test_send_email_success(self, mock_access_secret_version, mock_boto_client):
+    def test_send_tenant_summary_email_success(self, mock_access_secret_version, mock_boto_client):
         mock_access_secret_version.side_effect = ["mock_aws_access_key", "mock_aws_secret_key"]
         mock_ses_instance = mock_boto_client.return_value
         mock_ses_instance.send_raw_email.return_value = {} # send_raw_email is now always used
         
-        tenant_info = {
+        tenant_consolidated_info = {
             'tenant_id': 'test-tenant-1', 
             'name': 'Test Tenant', 
             'email': 'recipient@example.com', 
-            'dueDate': '25/12/2025',
-            'rent_amount': 1000,
-            'property_name': 'Test Property'
+            'mobileNumber': '1234567890',
+            'due_rentals': [
+                {
+                    'dueDate': '31/12/2025',
+                    'rent_amount': 1000,
+                    'property_name': 'Test Property A',
+                    'payment_id': 'payment-A'
+                },
+                {
+                    'dueDate': '31/12/2025',
+                    'rent_amount': 500,
+                    'property_name': 'Test Property B',
+                    'payment_id': 'payment-B'
+                }
+            ]
         }
-        mock_request = MagicMock(spec=https_fn.Request)
-        mock_request.get_json.return_value = tenant_info
-
-        with patch('functions.services.invoice_service.create_invoice_pdf') as mock_create_invoice_pdf, \
-             patch('functions.main.template_env') as mock_template_env: # Patch template_env
-            mock_create_invoice_pdf.return_value = b'mock_pdf_data'
-            mock_template_env.get_template.return_value.render.return_value = 'mock_html_body'
-
-            response = send_notification_worker(mock_request)
-
-            self.assertEqual(response.status_code, 200)
-            mock_ses_instance.send_raw_email.assert_called_once()
-            call_args = mock_ses_instance.send_raw_email.call_args[1]
-            # Further assertions on RawMessage content can be added if needed
-            self.assertEqual(call_args['Destinations'], ['recipient@example.com'])
-
-    @patch.dict(os.environ, {
-        "SENDER_EMAIL": "test@example.com", 
-        "TESTING_MODE": "true"
-    })
-    @patch('functions.services.email_service.log')
-    @patch('functions.services.email_service.boto3.client')
-    @patch('functions.services.email_service.access_secret_version')
-    def test_send_email_testing_mode_redirects_email(self, mock_access_secret_version, mock_boto_client, mock_log):
-        mock_access_secret_version.side_effect = ["mock_aws_access_key", "mock_aws_secret_key"]
-        mock_ses_instance = mock_boto_client.return_value
-        mock_ses_instance.send_raw_email.return_value = {} # send_raw_email is now always used
         
-        tenant_info = {
-            'tenant_id': 'test-tenant-1', 
-            'name': 'Test Tenant', 
-            'email': 'original.recipient@example.com', 
-            'dueDate': '25/12/2025',
-            'rent_amount': 1000,
-            'property_name': 'Test Property'
-        }
-        mock_request = MagicMock(spec=https_fn.Request)
-        mock_request.get_json.return_value = tenant_info
-
-        with patch('functions.services.invoice_service.create_invoice_pdf') as mock_create_invoice_pdf, \
-             patch('functions.main.template_env') as mock_template_env: # Patch template_env
+        with patch('functions.main.template_env') as mock_template_env, \
+             patch('functions.services.invoice_service.create_invoice_pdf') as mock_create_invoice_pdf:
             mock_create_invoice_pdf.return_value = b'mock_pdf_data'
             mock_template_env.get_template.return_value.render.return_value = 'mock_html_body'
 
-            response = send_notification_worker(mock_request)
+            success = send_tenant_summary_email(tenant_consolidated_info, mock_template_env, invoice_pdf=b'mock_pdf_data')
 
-            self.assertEqual(response.status_code, 200)
+            self.assertTrue(success)
             mock_ses_instance.send_raw_email.assert_called_once()
             call_args = mock_ses_instance.send_raw_email.call_args[1]
-            self.assertEqual(call_args['Destinations'], ['info@kactusit.com'])
+            self.assertEqual(call_args['Destinations'], ['recipient@example.com'])
+            
+            mock_template_env.get_template.assert_called_with('tenant_summary_email.html')
+            mock_template_env.get_template.return_value.render.assert_called_with(
+                name='Test Tenant', 
+                due_rentals=tenant_consolidated_info['due_rentals']
+            )
 
     @patch.dict(os.environ, {
         "SENDER_EMAIL": "landlord@example.com", 
