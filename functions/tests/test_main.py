@@ -18,10 +18,21 @@ from functions.main import (
     main as notification_handler,
     send_notification_worker
 )
-from functions.services.db_service import get_all_tenants, get_all_accounts, move_payment_to_due
-from functions.logic.notification_logic import get_due_rentals_by_tenant, _flatten_tenants, get_due_rentals_by_landlord, get_payments_to_move_to_due_soon
+from functions.services.db_service import (
+    get_all_tenants, 
+    get_all_accounts, move_payment_to_due
+)
+from functions.logic.notification_logic import (
+    get_due_rentals_by_tenant, 
+    _flatten_tenants, get_due_rentals_by_landlord, 
+    get_payments_to_move_to_due_soon, 
+    get_payments_to_move_from_due_to_overdue
+)
 from functions.services.cloud_tasks_service import enqueue_notification_tasks
-from functions.services.email_service import send_tenant_summary_email, send_landlord_summary_email
+from functions.services.email_service import (
+    send_tenant_summary_email, 
+    send_landlord_summary_email
+)
 from firebase_functions import https_fn
 
 class MockEvent:
@@ -152,6 +163,68 @@ class TestHelperFunctions(unittest.TestCase):
 
             # Assert non-rental payments are not included
             self.assertNotIn('tenant_id_non_rental', grouped_rentals)
+
+    def test_get_payments_to_move_from_due_to_overdue(self):
+        mock_today = date(2025, 12, 24) # Today is 24/12/2025
+
+        mock_statistics_data = {
+            "company_id_1": {
+                "paymentTracking": {
+                    "due": {
+                        "payment_id_due_past": { # Should be moved to overdue
+                            "amount": 1000,
+                            "dueDate": "23/12/2025", # Yesterday
+                            "paymentType": 0,
+                            "tenantId": "tenant_id_1",
+                            "tenantName": "Tenant 1",
+                            "propertyName": "Property A"
+                        },
+                        "payment_id_due_today": { # Should NOT be moved (due today is not past)
+                            "amount": 500,
+                            "dueDate": "24/12/2025", # Today
+                            "paymentType": 1,
+                            "tenantId": "tenant_id_2",
+                            "tenantName": "Tenant 2",
+                            "propertyName": "Property B"
+                        },
+                        "payment_id_due_future": { # Should NOT be moved
+                            "amount": 1500,
+                            "dueDate": "25/12/2025", # Tomorrow
+                            "paymentType": 0,
+                            "tenantId": "tenant_id_3",
+                            "tenantName": "Tenant 3",
+                            "propertyName": "Property C"
+                        }
+                    },
+                    "pending": { # Should not be considered by this function
+                         "payment_id_pending_past": {
+                            "amount": 200,
+                            "dueDate": "23/12/2025",
+                            "paymentType": 0,
+                            "tenantId": "tenant_id_4",
+                            "tenantName": "Tenant 4",
+                            "propertyName": "Property D"
+                        }
+                    }
+                }
+            }
+        }
+
+        with patch('functions.logic.notification_logic.date') as mock_date:
+            mock_date.today.return_value = mock_today
+            mock_date.side_effect = lambda *args, **kw: date(*args, **kw) # Allow normal date constructor
+
+            payments_to_move = get_payments_to_move_from_due_to_overdue(mock_statistics_data)
+
+            self.assertIsInstance(payments_to_move, list)
+            self.assertEqual(len(payments_to_move), 1) # Only one payment should be moved
+
+            moved_payment = payments_to_move[0]
+            self.assertEqual(moved_payment['company_id'], 'company_id_1')
+            self.assertEqual(moved_payment['payment_id'], 'payment_id_due_past')
+            self.assertEqual(moved_payment['payment_details']['tenantId'], 'tenant_id_1')
+            self.assertEqual(moved_payment['payment_details']['amount'], 1000)
+            self.assertEqual(moved_payment['payment_details']['dueDate'], '23/12/2025')
 
     def test_get_payments_to_move_to_due_soon(self):
         mock_today = date(2025, 12, 24) # Today is 24/12/2025

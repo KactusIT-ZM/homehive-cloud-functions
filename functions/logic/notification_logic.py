@@ -143,7 +143,36 @@ def get_payments_to_move_to_overdue(statistics: dict) -> list:
                 continue
     return payments_to_move
 
-def get_payments_to_move_to_due_soon(statistics: dict, exact_days_from_today: int) -> list:
+def get_payments_to_move_from_due_to_overdue(statistics: dict) -> list:
+    """
+    Identifies payments currently in the 'due' state that are past their due date
+    and need to be moved to the 'overdue' section.
+    Returns a list of dictionaries, each containing company_id, payment_id, and payment_details.
+    """
+    today = date.today()
+    payments_to_move = []
+
+    for company_id, company_stats in statistics.items():
+        due_payments = company_stats.get('paymentTracking', {}).get('due', {}) # Look in 'due' payments
+        for payment_id, payment_details in due_payments.items():
+            rent_due_date_str = payment_details.get('dueDate').strip()
+            if not rent_due_date_str:
+                continue
+
+            try:
+                due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
+                if due_date < today: # If due date is in the past
+                    payments_to_move.append({
+                        'company_id': company_id,
+                        'payment_id': payment_id,
+                        'payment_details': payment_details
+                    })
+            except (ValueError, TypeError):
+                log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
+                continue
+    return payments_to_move
+
+def get_payments_to_move_to_due(statistics: dict, exact_days_from_today: int) -> list:
     """
     Identifies payments in the 'pending' state that are due exactly `exact_days_from_today` days from today.
     Returns a list of dictionaries, each containing company_id, payment_id, and payment_details.
