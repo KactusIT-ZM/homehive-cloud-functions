@@ -58,12 +58,12 @@ def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_t
                             'dueDate': due_date.strftime('%d/%m/%Y'),
                             'rent_amount': payment_details.get('amount'),
                             'property_name': payment_details.get('propertyName', ''),
-                            'payment_id': payment_id
+                            'payment_id': payment_id,
+                            'company_id': company_id # Add company_id here
                         })
             except (ValueError, TypeError):
                 log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
                 continue
-                
     return grouped_due_rentals_by_tenant
 
 def get_due_rentals_by_landlord(statistics: dict, tenants: dict, companies: dict, exact_days_from_today: int) -> dict:
@@ -142,3 +142,34 @@ def get_payments_to_move_to_overdue(statistics: dict) -> list:
                 log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
                 continue
     return payments_to_move
+
+def get_payments_to_move_to_due_soon(statistics: dict, exact_days_from_today: int) -> list:
+    """
+    Identifies payments in the 'pending' state that are due exactly `exact_days_from_today` days from today.
+    Returns a list of dictionaries, each containing company_id, payment_id, and payment_details.
+    Includes all payment types (rental and non-rental).
+    """
+    today = date.today()
+    target_due_date = today + timedelta(days=exact_days_from_today)
+    payments_to_move = []
+
+    for company_id, company_stats in statistics.items():
+        pending_payments = company_stats.get('paymentTracking', {}).get('pending', {})
+        for payment_id, payment_details in pending_payments.items():
+            rent_due_date_str = payment_details.get('dueDate').strip()
+            if not rent_due_date_str:
+                continue
+
+            try:
+                due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
+                if due_date == target_due_date: # Check for exact due date
+                    payments_to_move.append({
+                        'company_id': company_id,
+                        'payment_id': payment_id,
+                        'payment_details': payment_details
+                    })
+            except (ValueError, TypeError):
+                log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
+                continue
+    return payments_to_move
+

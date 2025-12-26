@@ -51,14 +51,60 @@ def move_payment_to_overdue(company_id: str, payment_id: str, payment_details: d
         
         pending_ref.delete()
 
-        # Update summary counts
+        tenant_id = payment_details.get('tenantId')
+        if tenant_id:
+            account_payment_status_ref = db.reference(f"/HomeHive/PropertyManagement/Accounts/{company_id}/{tenant_id}/payments/{payment_id}/paymentStatus")
+            account_payment_status_ref.set(3) # 3 for overdue
+
+        # Update summary counts and totals
+
         summary_ref = db.reference(f"{STATISTICS_PATH}/{company_id}/paymentTracking/summary")
         summary_data = summary_ref.get()
         if summary_data:
             summary_data['pendingCount'] = summary_data.get('pendingCount', 0) - 1
+            summary_data['pendingTotal'] = summary_data.get('pendingTotal', 0) - amount # Decrement pendingTotal
+            
             summary_data['overdueCount'] = summary_data.get('overdueCount', 0) + 1
+            summary_data['overdueTotal'] = summary_data.get('overdueTotal', 0) + amount # Increment overdueTotal
             summary_ref.update(summary_data)
         
         log.info(f"Successfully moved payment {payment_id} to overdue for company {company_id}")
     except Exception as e:
         log.error(f"Error moving payment {payment_id} to overdue for company {company_id}: {e}")
+
+def move_payment_to_due(company_id: str, payment_id: str, payment_details: dict):
+    """
+    Moves a payment from pending to due in Firebase Realtime Database and updates counts and totals.
+    """
+    try:
+        pending_ref = db.reference(f"{STATISTICS_PATH}/{company_id}/paymentTracking/pending/{payment_id}")
+        due_ref = db.reference(f"{STATISTICS_PATH}/{company_id}/paymentTracking/due/{payment_id}") # Node name is 'due'
+        
+        # Get the amount of the payment being moved
+        tenant_id = payment_details.get('tenantId')
+        if tenant_id:
+            account_payment_status_ref = db.reference(f"/HomeHive/PropertyManagement/Accounts/{company_id}/{tenant_id}/payments/{payment_id}/paymentStatus")
+            account_payment_status_ref.set(2) # 2 for due
+
+        # Get the amount of the payment being moved
+        amount = float(payment_details.get('amount', 0))
+
+
+        due_ref.set(payment_details)
+        
+        pending_ref.delete()
+
+        # Update summary counts and totals
+        summary_ref = db.reference(f"{STATISTICS_PATH}/{company_id}/paymentTracking/summary")
+        summary_data = summary_ref.get()
+        if summary_data:
+            summary_data['pendingCount'] = summary_data.get('pendingCount', 0) - 1
+            summary_data['pendingTotal'] = summary_data.get('pendingTotal', 0) - amount # Decrement pendingTotal
+            
+            summary_data['dueCount'] = summary_data.get('dueCount', 0) + 1 
+            summary_data['dueTotal'] = summary_data.get('dueTotal', 0) + amount # Increment dueTotal
+            summary_ref.update(summary_data)
+        
+        log.info(f"Successfully moved payment {payment_id} to due for company {company_id}")
+    except Exception as e:
+        log.error(f"Error moving payment {payment_id} to due for company {company_id}: {e}")

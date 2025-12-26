@@ -26,18 +26,33 @@ class PDF(FPDF):
 def create_invoice_pdf(tenant_info: dict) -> bytes:
     """
     Creates a consolidated rent invoice PDF for the tenant.
-    `tenant_info` should contain 'name', 'email', 'mobileNumber', and a 'due_rentals' list.
-    Each item in 'due_rentals' should have 'property_name', 'rent_amount', 'dueDate', 'payment_id'.
+    `tenant_info` should be a dict with keys 'tenant_info' (containing 'name', 'email', 'mobileNumber', 'tenant_id')
+    and 'due_rentals' (a list where each item has 'property_name', 'rent_amount', 'dueDate', 'payment_id').
     """
     pdf = PDF()
     pdf.add_page()
     pdf.set_font('Helvetica', '', 12)
 
+    # Extract tenant details from the nested 'tenant_info'
+    tenant_details = tenant_info.get('tenant_info', {})
+    tenant_name = tenant_details.get('name', 'N/A')
+    tenant_id = tenant_details.get('tenant_id', 'UNKNOWN') # Define tenant_id here
+
     # Invoice Info
     pdf.set_font('Helvetica', 'B', 12)
     pdf.set_x(10)
-    pdf.cell(95, 10, f"Bill To: {tenant_info.get('name', 'N/A')}", border=0, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
-    pdf.cell(95, 10, f"Invoice #: Consolidated Invoice", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.cell(95, 10, f"Bill To: {tenant_name}", border=0, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
+    
+    # Extract the due date from the first rental for the invoice ID
+    # Assuming all due_rentals for a consolidated invoice have the same dueDate
+    first_rental_due_date_str = tenant_info.get('due_rentals', [{}])[0].get('dueDate', datetime.now().strftime('%d/%m/%Y'))
+    try:
+        invoice_date_component = datetime.strptime(first_rental_due_date_str, '%d/%m/%Y').strftime('%Y%m%d')
+    except (ValueError, TypeError):
+        invoice_date_component = datetime.now().strftime('%Y%m%d') # Fallback to creation date if parsing fails
+
+    invoice_number = f"INV-{tenant_id[:8].upper()}-{invoice_date_component}"
+    pdf.cell(95, 10, f"Invoice #: {invoice_number}", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     pdf.set_font('Helvetica', '', 12)
     pdf.ln(10) # Add a line break for spacing
@@ -59,7 +74,7 @@ def create_invoice_pdf(tenant_info: dict) -> bytes:
     pdf.set_font('Helvetica', '', 12)
     total_amount_due = 0.0
     for rental in tenant_info.get('due_rentals', []):
-        description = f"Rent Payment ({rental.get('payment_id', 'N/A')})"
+        description = f"Rent Payment for {rental.get('property_name', 'N/A')}" # Updated description
         property_name = rental.get('property_name', 'N/A')
         due_date = rental.get('dueDate', 'N/A')
         rent_amount = rental.get('rent_amount', 0.0)
