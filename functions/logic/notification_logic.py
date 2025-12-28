@@ -48,6 +48,7 @@ def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_t
                                     'name': payment_details.get('tenantName', ''),
                                     'email': tenant_details_from_db.get('email'),
                                     'mobileNumber': tenant_details_from_db.get('mobileNumber'),
+                                    'idNumber': tenant_details_from_db.get('idNumber'),
                                 },
                                 'due_rentals': []
                             }

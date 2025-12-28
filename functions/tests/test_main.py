@@ -472,7 +472,7 @@ class TestNotificationWorker(unittest.TestCase):
                     'property_name': 'Test Property B',
                     'payment_id': 'payment-B'
                 }
-            ]
+            ],
         }
         
         with patch('functions.main.template_env') as mock_template_env, \
@@ -480,7 +480,7 @@ class TestNotificationWorker(unittest.TestCase):
             mock_create_invoice_pdf.return_value = b'mock_pdf_data'
             mock_template_env.get_template.return_value.render.return_value = 'mock_html_body'
 
-            success = send_tenant_summary_email(tenant_consolidated_info, mock_template_env, invoice_pdf=b'mock_pdf_data')
+            success = send_tenant_summary_email(tenant_consolidated_info, mock_template_env, invoice_url='test_invoice_url')
 
             self.assertTrue(success)
             mock_ses_instance.send_raw_email.assert_called_once()
@@ -490,7 +490,8 @@ class TestNotificationWorker(unittest.TestCase):
             mock_template_env.get_template.assert_called_with('tenant_summary_email.html')
             mock_template_env.get_template.return_value.render.assert_called_with(
                 name='Test Tenant', 
-                due_rentals=tenant_consolidated_info['due_rentals']
+                due_rentals=tenant_consolidated_info['due_rentals'],
+                invoice_url='test_invoice_url'
             )
 
     @patch.dict(os.environ, {
@@ -605,7 +606,7 @@ class TestEndtoEnd(unittest.TestCase):
             company_id = "-OTi3TKQ16jieuDen2Pv"
             payment_id = "1766704766379fg6fze94e"
 
-            mock_grouped_rentals = [{'tenant_info': {'tenant_id': 'mjm2dme0g7lj9ukzmw8', 'name': 'Khondwani Sikasote', 'email': 'Khondwani66@gmail.com', 'mobileNumber': '0743794740'}, 'due_rentals': [{'dueDate': '31/12/2025', 'rent_amount': 8000, 'property_name': 'Big 4 - Unit 1', 'payment_id': '1766704766379fg6fze94e', 'company_id': '-OTi3TKQ16jieuDen2Pv'}]}]
+            mock_grouped_rentals = [{'tenant_info': {'tenant_id': 'mjm2dme0g7lj9ukzmw8', 'name': 'Khondwani Sikasote', 'email': 'Khondwani66@gmail.com', 'mobileNumber': '0743794740', 'idNumber': '12345677'}, 'due_rentals': [{'dueDate': '31/12/2025', 'rent_amount': 8000, 'property_name': 'Big 4 - Unit 1', 'payment_id': '1766704766379fg6fze94e', 'company_id': '-OTi3TKQ16jieuDen2Pv'}]}]
             
             try:
                 statistics_data[company_id]['paymentTracking']['pending'][payment_id]['dueDate'] = "31/12/2025"
