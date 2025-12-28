@@ -157,25 +157,39 @@ def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
         log.error(f"Failed to upload invoice PDF for tenant {tenant_id_for_logging}.")
         return https_fn.Response("Failed to upload invoice PDF.", status=500)
 
-    # Create a Realtime Database client reference
-    ref = db.reference('invoiceRedirects')
+    # Upload the invoice PDF to storage
+    cloud_storage_path = upload_to_storage(invoice_pdf_bytes, id_number, invoice_number)
+    if not cloud_storage_path:
+        log.error(f"Failed to upload invoice PDF for tenant {tenant_id_for_logging}.")
+        return https_fn.Response("Failed to upload invoice PDF.", status=500)
 
-    # Generate a unique invoiceId for the redirect
-    invoice_redirect_id = str(uuid.uuid4())
+    # --- Store invoice info in the payment node ---
+    # We will use the first due rental's info to identify the payment node
+    if not tenant_consolidated_info.get('due_rentals'):
+        log.error(f"No due rentals found for tenant {tenant_id_for_logging}. Cannot store invoice info.")
+        return https_fn.Response("No due rentals for invoice.", status=400)
 
-    # Store the mapping in Realtime Database
-    ref.child(invoice_redirect_id).set({
-        'id_number': id_number,
+    first_rental = tenant_consolidated_info['due_rentals'][0]
+    company_id_for_payment = first_rental.get('company_id')
+    payment_id_for_payment = first_rental.get('payment_id')
+    tenant_id_for_payment = tenant_info.get('tenant_id') # Use the tenantId from tenant_info
+
+    if not company_id_for_payment or not payment_id_for_payment or not tenant_id_for_payment:
+        log.error(f"Missing identifiers for payment node for tenant {tenant_id_for_logging}. Cannot store invoice info.")
+        return https_fn.Response("Missing payment identifiers.", status=400)
+
+    rt_db_path = f"HomeHive/PropertyManagement/Accounts/{company_id_for_payment}/{tenant_id_for_payment}/payments/{payment_id_for_payment}/invoice"
+    ref = db.reference(rt_db_path)
+    ref.set({
+        'cloudStoragePath': cloud_storage_path,
         'invoice_number': invoice_number,
-        'created_at': datetime.now().isoformat() # Use ISO format for datetime in RTDB
+        'created_at': datetime.now().isoformat()
     })
-    log.info(f"Created Realtime Database redirect entry for invoiceId: {invoice_redirect_id}")
+    log.info(f"Stored invoice info in RTDB at: {rt_db_path}")
 
-    # Construct the URL to the new redirect Cloud Function
-    # Assuming 'get_invoice_redirect' is the name of the new function
-    # The base URL for Cloud Functions can be obtained from environment variables or constructed
+    # Construct the URL to the get_invoice Cloud Function
     cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', 'https://us-central1-homehive-8c7d4.cloudfunctions.net')
-    invoice_url = f"{cloud_function_base_url}/get_invoice?invoiceId={invoice_redirect_id}"
+    invoice_url = f"{cloud_function_base_url}/get_invoice?companyId={company_id_for_payment}&tenantId={tenant_id_for_payment}&paymentId={payment_id_for_payment}"
 
 
     # Call the email service to send the reminder with the consolidated invoice attached
@@ -197,42 +211,46 @@ def get_invoice(req: https_fn.Request) -> https_fn.Response:
     HTTP-triggered function that retrieves an invoice PDF from Google Cloud Storage
     and streams its content directly to the client. This hides the direct storage
     path from the client.
-    It takes an invoiceId, retrieves the actual invoice details from Realtime Database.
+    It takes companyId, tenantId, and paymentId as query parameters to locate
+    the invoice information in Realtime Database.
     """
-    ref = db.reference('invoiceRedirects')
+    company_id = req.args.get('companyId')
+    tenant_id = req.args.get('tenantId')
+    payment_id = req.args.get('paymentId')
 
-    invoice_id = req.args.get('invoiceId')
-    if not invoice_id:
-        log.error("Missing invoiceId query parameter for get_invoice.")
-        return https_fn.Response("Missing invoiceId.", status=400)
+    if not company_id or not tenant_id or not payment_id:
+        log.error("Missing companyId, tenantId, or paymentId query parameters for get_invoice.")
+        return https_fn.Response("Missing identifiers.", status=400)
 
     try:
-        data = ref.child(invoice_id).get()
-        if not data:
-            log.warning(f"Invoice redirect entry not found for invoiceId: {invoice_id}")
-            return https_fn.Response("Invoice not found or expired.", status=404)
-        
-        id_number = data.get('id_number')
-        invoice_number = data.get('invoice_number')
+        rt_db_path = f"HomeHive/PropertyManagement/Accounts/{company_id}/{tenant_id}/payments/{payment_id}/invoice"
+        ref = db.reference(rt_db_path)
+        data = ref.get()
 
-        if not id_number or not invoice_number:
-            log.error(f"Incomplete redirect data for invoiceId: {invoice_id}. id_number: {id_number}, invoice_number: {invoice_number}")
-            return https_fn.Response("Invalid invoice data.", status=500)
+        if not data:
+            log.warning(f"Invoice data not found in RTDB at: {rt_db_path}")
+            return https_fn.Response("Invoice not found.", status=404)
         
-        # Now, retrieve the PDF content directly
+        cloud_storage_path = data.get('cloudStoragePath')
+        invoice_number = data.get('invoice_number') # Not strictly needed here, but good for logs
+
+        if not cloud_storage_path:
+            log.error(f"Missing cloudStoragePath in RTDB at: {rt_db_path}")
+            return https_fn.Response("Invoice path not found.", status=500)
+        
+        # Now, retrieve the PDF content directly from Cloud Storage
         bucket = storage.bucket()
-        file_path = f"Tenants/{id_number}/invoices/{invoice_number}.pdf"
-        blob = bucket.blob(file_path)
+        blob = bucket.blob(cloud_storage_path) # Use the path directly from RTDB
 
         if not blob.exists():
-            log.error(f"Invoice PDF not found in storage for invoiceId: {invoice_id} (Path: {file_path})")
-            return https_fn.Response("Invoice file not found.", status=404)
+            log.error(f"Invoice PDF not found in storage at: {cloud_storage_path}")
+            return https_fn.Response("Invoice file not found in storage.", status=404)
 
         pdf_content = blob.download_as_bytes()
         
-        log.info(f"Streaming invoiceId {invoice_id} directly to client.")
+        log.info(f"Streaming invoice PDF for payment {payment_id} directly to client.")
         return https_fn.Response(pdf_content, headers={"Content-Type": "application/pdf"}, status=200)
 
     except Exception as e:
-        log.error(f"Error in get_invoice for invoiceId {invoice_id}: {e}")
+        log.error(f"Error in get_invoice for payment {payment_id}: {e}")
         return https_fn.Response("An error occurred.", status=500)
