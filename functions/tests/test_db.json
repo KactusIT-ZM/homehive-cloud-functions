@@ -3,30 +3,39 @@
     "PropertyManagement": {
       "Accounts": {
         "-OTi3TKQ16jieuDen2Pv": {
-          "milsdwu5nuas68mef6": {
+          "mjm2dme0g7lj9ukzmw8": {
             "accountStatus": 0,
-            "isSecurityDepositPaid": false,
+            "isSecurityDepositPaid": true,
             "payments": {
-              "1764837532151jesgo65h8oj": {
-                "amount": 3000,
+              "176670472514648lpde4uo": {
+                "amount": 8000,
                 "billedProperties": {
-                  "175823507292869q6vtk3d4": {
-                    "parentPropertyID": "mcdxxilopkeeoa81mw9",
-                    "propertyID": "175823507292869q6vtk3d4"
+                  "1758235072928lyvinkkspd": {
+                    "parentPropertyID": "mcdy0kf4sfvxvub1rke",
+                    "propertyID": "1758235072928lyvinkkspd"
                   }
                 },
-                "id": "1764837532151jesgo65h8oj",
-                "paymentDueDate": "02/12/2025",
-                "paymentStatus": 1,
+                "id": "176670472514648lpde4uo",
+                "paymentDate": "26/12/2025",
+                "paymentDueDate": "28/12/2025",
+                "paymentOption": 0,
+                "paymentStatus": 0,
                 "paymentType": 1
-              }
-            },
-            "reminders": {
-              "mcdxxilopkeeoa81mw9": {
-                "rentDueDate": "30/01/2026",
-                "unitId": "175823507292869q6vtk3d4"
               },
-              "sameDateReminder": true
+              "1766704766379fg6fze94e": {
+                "amount": 8000,
+                "billedProperties": {
+                  "1758235072928lyvinkkspd": {
+                    "parentPropertyID": "mcdy0kf4sfvxvub1rke",
+                    "propertyID": "1758235072928lyvinkkspd"
+                  }
+                },
+                "id": "1766704766379fg6fze94e",
+                "paymentDate": "",
+                "paymentDueDate": "02/01/2026",
+                "paymentStatus": 1,
+                "paymentType": 0
+              }
             }
           }
         },
@@ -34,6 +43,8 @@
           "mcevbmtsrr1b3k608cm": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "01/05/2024",
+            "nextPaymentDate": "01/11/2025",
             "payments": {
               "17648375321521wwx8l1dx9r": {
                 "amount": 9400,
@@ -149,7 +160,8 @@
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "13/06/2026",
+                "rentDueDate": "25/12/2025",
+                "rentFrequency": 1,
                 "unitId": "1758235072928cuqdxjszmn"
               },
               "sameDateReminder": true
@@ -158,6 +170,7 @@
           "mceviqlzx6fup6ue85s": {
             "accountStatus": 0,
             "isSecurityDepositPaid": false,
+            "nextPaymentDate": "29/06/2025",
             "payments": {
               "1764837532152c8oiakxio0e": {
                 "amount": 9400,
@@ -255,7 +268,8 @@
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "26/04/2026",
+                "rentDueDate": 1,
+                "rentFrequency": 1,
                 "unitId": "1758235072928czauty70y7"
               },
               "sameDateReminder": true
@@ -264,6 +278,8 @@
           "mcex5ufwquiay5iujz": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "01/05/2025",
+            "nextPaymentDate": "01/09/2025",
             "payments": {
               "176483753215260ihcaxodev": {
                 "amount": 4700,
@@ -364,7 +380,8 @@
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "22/06/2026",
+                "rentDueDate": 1,
+                "rentFrequency": 1,
                 "unitId": "175823507292830noo8myhk"
               },
               "sameDateReminder": true
@@ -373,6 +390,8 @@
           "mcexneyx8brf09ajte5": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "01/08/2024",
+            "nextPaymentDate": "01/11/2025",
             "payments": {
               "17648375321523oasbbmaz38": {
                 "amount": 14100,
@@ -439,7 +458,8 @@
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "01/04/2026",
+                "rentDueDate": 1,
+                "rentFrequency": 1,
                 "unitId": "1758235072928fwl26lw871"
               },
               "sameDateReminder": true
@@ -448,6 +468,8 @@
           "mcf487a5lsr5bbbczz": {
             "accountStatus": 2,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "01/11/2023",
+            "nextPaymentDate": "01/10/2025",
             "payments": {
               "17648375321529zuoai4i7mz": {
                 "amount": 47500,
@@ -543,18 +565,13 @@
                 "paymentStatus": 0,
                 "paymentType": 0
               }
-            },
-            "reminders": {
-              "mcet7266sr8gmukvoap": {
-                "rentDueDate": "22/06/2026",
-                "unitId": "17582350729286cjtkglmpm"
-              },
-              "sameDateReminder": true
             }
           },
           "mcf51gx5cwpdv445ipm": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "17/01/2025",
+            "nextPaymentDate": "01/10/2025",
             "payments": {
               "17648375321526k5nj5g9xrc": {
                 "amount": 4700,
@@ -607,7 +624,8 @@
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "04/05/2026",
+                "rentDueDate": 1,
+                "rentFrequency": 1,
                 "unitId": "1758235072928vq3t47bo40"
               },
               "sameDateReminder": true
@@ -616,6 +634,8 @@
           "mfkvecv7ockyxfwo4o": {
             "accountStatus": 2,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "15/09/2025",
+            "nextPaymentDate": "01/14/2025",
             "payments": {
               "17648375321520fd2en97a8a": {
                 "amount": 4700,
@@ -652,7 +672,8 @@
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "22/07/2026",
+                "rentDueDate": 1,
+                "rentFrequency": 1,
                 "unitId": "1758235072928f0viblsaxy"
               },
               "sameDateReminder": true
@@ -661,6 +682,8 @@
           "mfl2i7v951qvxn7dwvs": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "01/09/2025",
+            "nextPaymentDate": "01/10/2025",
             "payments": {
               "1764837532152n6bo1ovzvto": {
                 "amount": 5200,
@@ -677,18 +700,13 @@
                 "paymentStatus": 0,
                 "paymentType": 1
               }
-            },
-            "reminders": {
-              "mcet7266sr8gmukvoap": {
-                "rentDueDate": "03/04/2026",
-                "unitId": "1758235072928cc2aw7d9cc"
-              },
-              "sameDateReminder": true
             }
           },
           "mg13kw8k7gyzfu1twf": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "26/09/2025",
+            "nextPaymentDate": "01/10/2025",
             "payments": {
               "17648375321525wxi03jsdgr": {
                 "amount": 2700,
@@ -753,11 +771,28 @@
                 "paymentOption": 1,
                 "paymentStatus": 0,
                 "paymentType": 0
+              },
+              "17666528853356ft3pg3v5": {
+                "amount": 2700,
+                "billedProperties": {
+                  "17582350729286cjtkglmpm": {
+                    "parentPropertyID": "mcet7266sr8gmukvoap",
+                    "propertyID": "17582350729286cjtkglmpm"
+                  }
+                },
+                "id": "17666528853356ft3pg3v5",
+                "note": "Next Rent 1st February 2026",
+                "paymentDate": "25/12/2025",
+                "paymentDueDate": "",
+                "paymentOption": 1,
+                "paymentStatus": 0,
+                "paymentType": 0
               }
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "26/05/2026",
+                "rentDueDate": 1,
+                "rentFrequency": 1,
                 "unitId": "17582350729286cjtkglmpm"
               },
               "sameDateReminder": true
@@ -765,7 +800,8 @@
           },
           "mihmp3d2c58wte4j3lm": {
             "accountStatus": 0,
-            "isSecurityDepositPaid": false,
+            "isSecurityDepositPaid": true,
+            "nextPaymentDate": "29/11/2025",
             "payments": {
               "17648375321520cvuo21gxzp": {
                 "amount": 4700,
@@ -815,7 +851,8 @@
             },
             "reminders": {
               "mcet7266sr8gmukvoap": {
-                "rentDueDate": "22/08/2026",
+                "rentDueDate": 1,
+                "rentFrequency": 1,
                 "unitId": "1758235072928f0viblsaxy"
               },
               "sameDateReminder": true
@@ -826,6 +863,8 @@
           "mci17fsqtvmty45faf": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "lastPaymentDate": "01/01/2025",
+            "nextPaymentDate": "01/11/2025",
             "payments": {
               "1764837532152ewo0hhhp30c": {
                 "amount": 64000,
@@ -907,18 +946,11 @@
                   }
                 },
                 "id": "1764837532152j1h6kmli18n",
-                "note": "Rent breakdown:, Big 4, Unit 1: K8000 \u00d7 3 months, Big 4, Unit 3: K8000 \u00d7 3 months, Big 4, Unit 4: K8000 \u00d7 3 months, Big 4, Unit 2: K8000 \u00d7 3 months, Old mutual, Unit 1: K8000 \u00d7 3 months, Old mutual, Unit 2: K8000 \u00d7 3 months, Old mutual, Unit 3: K8000 \u00d7 3 months, Old mutual, Unit 4: K8000 \u00d7 3 months, Total: K192000",
+                "note": "Rent breakdown:, Big 4, Unit 1: K8000 × 3 months, Big 4, Unit 3: K8000 × 3 months, Big 4, Unit 4: K8000 × 3 months, Big 4, Unit 2: K8000 × 3 months, Old mutual, Unit 1: K8000 × 3 months, Old mutual, Unit 2: K8000 × 3 months, Old mutual, Unit 3: K8000 × 3 months, Old mutual, Unit 4: K8000 × 3 months, Total: K192000",
                 "paymentDueDate": "01/07/2025",
-                "paymentStatus": 2,
+                "paymentStatus": 3,
                 "paymentType": 0
               }
-            },
-            "reminders": {
-              "mci0qdgmgobrtk4n9b": {
-                "rentDueDate": "28/12/2025",
-                "unitId": "1758235072928609rs0fv8x"
-              },
-              "sameDateReminder": true
             }
           }
         },
@@ -926,6 +958,7 @@
           "me3y0imlmczmlnwb81c": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "nextPaymentDate": "22/09/2025",
             "payments": {
               "17648375321525k216et9n48": {
                 "amount": 11000,
@@ -944,6 +977,7 @@
           "meopug9zqop1mzc9c2h": {
             "accountStatus": 0,
             "isSecurityDepositPaid": true,
+            "nextPaymentDate": "21/10/2025",
             "payments": {
               "17648375321529xt0egn80ti": {
                 "amount": 14000,
@@ -958,13 +992,6 @@
                 "paymentStatus": 1,
                 "paymentType": 1
               }
-            },
-            "reminders": {
-              "meop3jackl1weu5hd7s": {
-                "rentDueDate": "31/05/2026",
-                "unitId": "1758235072928glmnjfsngw"
-              },
-              "sameDateReminder": true
             }
           }
         }
@@ -978,9 +1005,10 @@
           "contactPhone": "0977771451",
           "createdAt": "2025-06-26T21:08:19.686Z",
           "staff": [
-            "vQQvxHPnocaUg85Xdpxaz8yJ96v1"
+            "vQQvxHPnocaUg85Xdpxaz8yJ96v1",
+            "IljCDuIW7NeYbdpGgJ478mg408g2"
           ],
-          "updatedAt": "2025-06-26T21:08:19.686Z"
+          "updatedAt": "24/12/2025"
         },
         "-OTlPNCoFjq8k_XsMqw2": {
           "activated": true,
@@ -992,7 +1020,7 @@
           "staff": [
             "dia3UFSIDkQsVIl3PAgKzQBWpm32"
           ],
-          "updatedAt": "2025-11-24T21:19:48.557Z"
+          "updatedAt": "24/12/2025"
         },
         "-OTwq4TeVXxvt9GBXWe1": {
           "activated": true,
@@ -1032,67 +1060,7 @@
         }
       },
       "GlobalTenants": {
-        "mce1ntzy3wug96qhqdm": {
-          "createdAt": "2025-06-26T23:58:36.191Z",
-          "email": "chomba@gmail.com",
-          "firstname": "Chomba",
-          "gender": 0,
-          "idNumber": "1234567654",
-          "lastname": "Sikasote",
-          "mobileNumber": "0955901022",
-          "occupation": 2,
-          "type": 0,
-          "updatedAt": "2025-06-26T23:58:36.191Z"
-        },
-        "mcevbmtsrr1b3k608cm": {
-          "createdAt": "2025-09-21T18:38:08.175Z",
-          "email": "saadaq301@gmail.com",
-          "firstname": "Ibrahim Mohamad",
-          "gender": 0,
-          "idNumber": "628741/99/3",
-          "lastname": "Abdi",
-          "mobileNumber": "+260975595051",
-          "occupation": 55,
-          "type": 0,
-          "updatedAt": "2025-09-21T18:38:08.175Z"
-        },
-        "mceviqlzx6fup6ue85s": {
-          "createdAt": "2025-09-21T17:30:34.070Z",
-          "email": "mumbaclive88@gmail.com",
-          "firstname": "Clive ",
-          "gender": 0,
-          "idNumber": "0000000000",
-          "lastname": "Mumba",
-          "mobileNumber": "+260962037585",
-          "occupation": 31,
-          "type": 0,
-          "updatedAt": "2025-09-21T17:30:34.070Z"
-        },
-        "mcex5ufwquiay5iujz": {
-          "createdAt": "2025-09-21T18:36:08.314Z",
-          "email": "alvarezloardoangel@gmail.com",
-          "firstname": "Angel Loardo ",
-          "gender": 0,
-          "idNumber": "0000000000",
-          "lastname": "Alvarez",
-          "mobileNumber": "+260963996954",
-          "occupation": 23,
-          "type": 0,
-          "updatedAt": "2025-09-21T18:36:08.314Z"
-        },
-        "mcexneyx8brf09ajte5": {
-          "createdAt": "2025-09-21T17:31:06.223Z",
-          "email": "saadaq301@gmail.com",
-          "firstname": "Ibrahim Mohamad",
-          "gender": 0,
-          "idNumber": "604635/99/3",
-          "lastname": "Adan",
-          "mobileNumber": "+260777995785",
-          "occupation": 55,
-          "type": 0,
-          "updatedAt": "2025-09-21T17:31:06.223Z"
-        },
-        "mcf487a5lsr5bbbczz": {
+        "1234567": {
           "createdAt": "2025-09-21T18:32:24.877Z",
           "email": "leonardobujaico@gmail.com",
           "firstname": "Leonardo ",
@@ -1104,56 +1072,48 @@
           "type": 0,
           "updatedAt": "2025-09-21T18:32:24.877Z"
         },
-        "mcf51gx5cwpdv445ipm": {
-          "createdAt": "2025-09-21T17:31:38.114Z",
-          "email": "hujalejunior5@gmail.com",
-          "firstname": "Gedi Yusuf ",
+        "12345677": {
+          "authId": "PIYlRSUZPJUdd20H3XKSCYOjsaM2",
+          "companyAccess": {
+            "-OTi3TKQ16jieuDen2Pv": {
+              "companyName": "-OTi3TKQ16jieuDen2Pv",
+              "invitationStatus": "pending",
+              "invitedAt": "2025-12-26T15:20:51.182Z",
+              "invitedBy": "vQQvxHPnocaUg85Xdpxaz8yJ96v1",
+              "properties": {
+                "1758235072928lyvinkkspd": {
+                  "parentPropertyId": "mcdy0kf4sfvxvub1rke",
+                  "propertyId": "1758235072928lyvinkkspd",
+                  "propertyName": "Big 4"
+                }
+              }
+            }
+          },
+          "createdAt": "26/12/2025",
+          "email": "Khondwani66@gmail.com",
+          "firstname": "Khondwani",
           "gender": 0,
-          "idNumber": "0000000000",
-          "lastname": "Hujale",
-          "mobileNumber": "+260977527818",
-          "occupation": 11,
+          "idNumber": "12345677",
+          "lastname": "Sikasote",
+          "mobileNumber": "0743794740",
+          "occupation": 0,
           "type": 0,
-          "updatedAt": "2025-09-21T17:31:38.114Z"
+          "updatedAt": "2025-12-26T15:20:51.182Z"
         },
-        "me3y0imlmczmlnwb81c": {
-          "createdAt": "2025-08-09T07:38:12.430Z",
-          "email": "cjsikasote0@gmail.com",
-          "firstname": "John",
+        "12345678": {
+          "createdAt": "30/11/2025",
+          "email": "koozya@gmail.com",
+          "firstname": "Koozya",
           "gender": 0,
-          "idNumber": "567884/10/1",
-          "lastname": "Doe",
-          "mobileNumber": "077119897",
-          "occupation": 1,
+          "idNumber": "12345678",
+          "lastname": "Sikasote",
+          "mobileNumber": "0743794740",
+          "occupation": 0,
           "type": 0,
-          "updatedAt": "2025-08-09T07:38:12.430Z"
+          "updatedAt": "30/11/2025"
         },
-        "meopug9zqop1mzc9c2h": {
-          "createdAt": "2025-08-23T20:32:42.215Z",
-          "email": "cjsikasote0@outlook.com",
-          "firstname": "Peter",
-          "gender": 0,
-          "idNumber": "587779/10/1",
-          "lastname": "Daka",
-          "mobileNumber": "0774567997",
-          "occupation": 1,
-          "type": 0,
-          "updatedAt": "2025-08-23T20:32:42.215Z"
-        },
-        "mfkvecv7ockyxfwo4o": {
-          "createdAt": "2025-09-21T17:32:30.535Z",
-          "email": "dakane87@gmail.com",
-          "firstname": "Mohamed Boor ",
-          "gender": 0,
-          "idNumber": "917355/63/2",
-          "lastname": "Dagane",
-          "mobileNumber": "+260974116016",
-          "occupation": 11,
-          "type": 0,
-          "updatedAt": "2025-09-21T17:32:30.535Z"
-        },
-        "mfl2i7v951qvxn7dwvs": {
-          "createdAt": "2025-09-21T18:29:48.137Z",
+        "237661681": {
+          "createdAt": "24/12/2025",
           "email": "Kalumbabwale@gmail.com",
           "firstname": "Kalumba",
           "gender": 0,
@@ -1162,9 +1122,9 @@
           "mobileNumber": "+260966029966",
           "occupation": 67,
           "type": 0,
-          "updatedAt": "2025-09-21T18:29:48.137Z"
+          "updatedAt": "24/12/2025"
         },
-        "mg13kw8k7gyzfu1twf": {
+        "343118161": {
           "createdAt": "2025-09-26T17:10:07.413Z",
           "email": "esmakuni@pactworld.org",
           "firstname": "Emmanuel",
@@ -1176,7 +1136,7 @@
           "type": 0,
           "updatedAt": "2025-09-26T17:10:07.413Z"
         },
-        "mihmp3d2c58wte4j3lm": {
+        "373359661": {
           "createdAt": "27/11/2025",
           "email": "donpablo6669@gmail.com",
           "firstname": "Mohamad Ali  Kalulu",
@@ -1188,17 +1148,113 @@
           "type": 0,
           "updatedAt": "27/11/2025"
         },
-        "milsdwu5nuas68mef6": {
-          "createdAt": "30/11/2025",
-          "email": "koozya@gmail.com",
-          "firstname": "Koozya",
+        "567884101": {
+          "createdAt": "2025-08-09T07:38:12.430Z",
+          "email": "cjsikasote0@gmail.com",
+          "firstname": "John",
           "gender": 0,
-          "idNumber": "12345678",
-          "lastname": "Sikasote",
-          "mobileNumber": "0743794740",
-          "occupation": 0,
+          "idNumber": "567884/10/1",
+          "lastname": "Doe",
+          "mobileNumber": "077119897",
+          "occupation": 1,
           "type": 0,
-          "updatedAt": "30/11/2025"
+          "updatedAt": "2025-08-09T07:38:12.430Z"
+        },
+        "587779101": {
+          "createdAt": "2025-08-23T20:32:42.215Z",
+          "email": "cjsikasote0@outlook.com",
+          "firstname": "Peter",
+          "gender": 0,
+          "idNumber": "587779/10/1",
+          "lastname": "Daka",
+          "mobileNumber": "0774567997",
+          "occupation": 1,
+          "type": 0,
+          "updatedAt": "2025-08-23T20:32:42.215Z"
+        },
+        "604635993": {
+          "createdAt": "2025-09-21T17:31:06.223Z",
+          "email": "saadaq301@gmail.com",
+          "firstname": "Ibrahim Mohamad",
+          "gender": 0,
+          "idNumber": "604635/99/3",
+          "lastname": "Adan",
+          "mobileNumber": "+260777995785",
+          "occupation": 55,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:31:06.223Z"
+        },
+        "628741993": {
+          "createdAt": "2025-09-21T18:38:08.175Z",
+          "email": "saadaq301@gmail.com",
+          "firstname": "Ibrahim Mohamad",
+          "gender": 0,
+          "idNumber": "628741/99/3",
+          "lastname": "Abdi",
+          "mobileNumber": "+260975595051",
+          "occupation": 55,
+          "type": 0,
+          "updatedAt": "2025-09-21T18:38:08.175Z"
+        },
+        "917338632": {
+          "createdAt": "2025-09-21T17:31:38.114Z",
+          "email": "hujalejunior5@gmail.com",
+          "firstname": "Gedi Yusuf ",
+          "gender": 0,
+          "idNumber": "917338/63/2",
+          "lastname": "Hujale",
+          "mobileNumber": "+260977527818",
+          "occupation": 11,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:31:38.114Z"
+        },
+        "917355632": {
+          "createdAt": "2025-09-21T17:32:30.535Z",
+          "email": "dakane87@gmail.com",
+          "firstname": "Mohamed Boor ",
+          "gender": 0,
+          "idNumber": "917355/63/2",
+          "lastname": "Dagane",
+          "mobileNumber": "+260974116016",
+          "occupation": 11,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:32:30.535Z"
+        },
+        "1234567654": {
+          "createdAt": "2025-06-26T23:58:36.191Z",
+          "email": "chomba@gmail.com",
+          "firstname": "Chomba",
+          "gender": 0,
+          "idNumber": "1234567654",
+          "lastname": "Sikasote",
+          "mobileNumber": "0955901022",
+          "occupation": 2,
+          "type": 0,
+          "updatedAt": "2025-06-26T23:58:36.191Z"
+        },
+        "0237262268": {
+          "createdAt": "2025-09-21T18:36:08.314Z",
+          "email": "alvarezloardoangel@gmail.com",
+          "firstname": "Angel Loardo ",
+          "gender": 0,
+          "idNumber": "0237262268",
+          "lastname": "Alvarez",
+          "mobileNumber": "+260963996954",
+          "occupation": 23,
+          "type": 0,
+          "updatedAt": "2025-09-21T18:36:08.314Z"
+        },
+        "4323588741": {
+          "createdAt": "2025-09-21T17:30:34.070Z",
+          "email": "mumbaclive88@gmail.com",
+          "firstname": "Clive ",
+          "gender": 0,
+          "idNumber": "4323588741",
+          "lastname": "Mumba",
+          "mobileNumber": "+260962037585",
+          "occupation": 31,
+          "type": 0,
+          "updatedAt": "2025-09-21T17:30:34.070Z"
         }
       },
       "InvoiceCounters": {
@@ -1346,7 +1402,7 @@
                 "createdAt": "2025-06-26T22:16:31.841Z",
                 "id": "1758235072928lyvinkkspd",
                 "rentalPrice": 8000,
-                "status": 0,
+                "status": 1,
                 "unitNumber": "Unit 1",
                 "updatedAt": "2025-06-26T22:16:31.841Z"
               },
@@ -1460,7 +1516,7 @@
                     "rentalPrice": 1500,
                     "roomId": "mikl60lgt99xxwdhck",
                     "roomName": "Block A  2",
-                    "status": 1,
+                    "status": 0,
                     "updatedAt": "29/11/2025"
                   },
                   "mikl60lhsme4n2o4iwj0": {
@@ -2403,6 +2459,192 @@
           }
         }
       },
+      "SecurityDepositTracking": {
+        "-OTi3TKQ16jieuDen2Pv": {
+          "ActiveDeposits": {
+            "mjm2dme0g7lj9ukzmw8": {
+              "accountId": "mjm2dme0g7lj9ukzmw8",
+              "amount": 8000,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "26/12/2025",
+              "propertyDetails": [
+                {
+                  "propertyName": "Big 4",
+                  "unitNumber": "Unit 1"
+                }
+              ],
+              "tenantEmail": "Khondwani66@gmail.com",
+              "tenantId": "mjm2dme0g7lj9ukzmw8",
+              "tenantName": "Khondwani Sikasote",
+              "tenantPhone": "0743794740"
+            }
+          }
+        },
+        "-OTlPNCoFjq8k_XsMqw2": {
+          "ActiveDeposits": {
+            "mcevbmtsrr1b3k608cm": {
+              "accountId": "mcevbmtsrr1b3k608cm",
+              "amount": 4500,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "01/05/2024",
+              "propertyDetails": [
+                {
+                  "propertyName": "Sola Gratia Main",
+                  "unitNumber": "4585 - 2"
+                }
+              ],
+              "tenantEmail": "saadaq301@gmail.com",
+              "tenantId": "mcevbmtsrr1b3k608cm",
+              "tenantName": "Ibrahim Mohamad Abdi",
+              "tenantPhone": "+260975595051"
+            },
+            "mcex5ufwquiay5iujz": {
+              "accountId": "mcex5ufwquiay5iujz",
+              "amount": 4700,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "01/05/2025",
+              "propertyDetails": [
+                {
+                  "propertyName": "Sola Gratia Main",
+                  "unitNumber": "4585 - 7"
+                }
+              ],
+              "tenantEmail": "alvarezloardoangel@gmail.com",
+              "tenantId": "mcex5ufwquiay5iujz",
+              "tenantName": "Angel Loardo  Alvarez",
+              "tenantPhone": "+260963996954"
+            },
+            "mcexneyx8brf09ajte5": {
+              "accountId": "mcexneyx8brf09ajte5",
+              "amount": 4700,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "31/10/2024",
+              "propertyDetails": [
+                {
+                  "propertyName": "Sola Gratia Main",
+                  "unitNumber": "4585 - 4"
+                }
+              ],
+              "tenantEmail": "saadaq301@gmail.com",
+              "tenantId": "mcexneyx8brf09ajte5",
+              "tenantName": "Ibrahim Mohamad Adan",
+              "tenantPhone": "+260777995785"
+            },
+            "mcf51gx5cwpdv445ipm": {
+              "accountId": "mcf51gx5cwpdv445ipm",
+              "amount": 23500,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "17/01/2025",
+              "propertyDetails": [
+                {
+                  "propertyName": "Sola Gratia Main",
+                  "unitNumber": "4585 - 6"
+                }
+              ],
+              "tenantEmail": "hujalejunior5@gmail.com",
+              "tenantId": "mcf51gx5cwpdv445ipm",
+              "tenantName": "Gedi Yusuf  Hujale",
+              "tenantPhone": "+260977527818"
+            },
+            "mfl2i7v951qvxn7dwvs": {
+              "accountId": "mfl2i7v951qvxn7dwvs",
+              "amount": 5200,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "01/09/2025",
+              "propertyDetails": [
+                {
+                  "propertyName": "Sola Gratia Main",
+                  "unitNumber": "4585 - 1"
+                }
+              ],
+              "tenantEmail": "Kalumbabwale@gmail.com",
+              "tenantId": "mfl2i7v951qvxn7dwvs",
+              "tenantName": "Kalumba Bwale",
+              "tenantPhone": "+260966029966"
+            },
+            "mg13kw8k7gyzfu1twf": {
+              "accountId": "mg13kw8k7gyzfu1twf",
+              "amount": 700,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "30/09/2025",
+              "propertyDetails": [
+                {
+                  "propertyName": "Sola Gratia Main",
+                  "unitNumber": "4585 - 5"
+                }
+              ],
+              "tenantEmail": "esmakuni@pactworld.org",
+              "tenantId": "mg13kw8k7gyzfu1twf",
+              "tenantName": "Emmanuel Makuni",
+              "tenantPhone": "+260977926826"
+            },
+            "mihmp3d2c58wte4j3lm": {
+              "accountId": "mihmp3d2c58wte4j3lm",
+              "amount": 4700,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "01/12/2025",
+              "propertyDetails": [
+                {
+                  "propertyName": "Sola Gratia Main",
+                  "unitNumber": "4585 - 8"
+                }
+              ],
+              "tenantEmail": "donpablo6669@gmail.com",
+              "tenantId": "mihmp3d2c58wte4j3lm",
+              "tenantName": "Mohamad Ali  Kalulu Abdi",
+              "tenantPhone": "+260972526683"
+            }
+          }
+        },
+        "-OTwq4TeVXxvt9GBXWe1": {
+          "ActiveDeposits": {
+            "mci17fsqtvmty45faf": {
+              "accountId": "mci17fsqtvmty45faf",
+              "amount": 64000,
+              "createdAt": 1766749854520,
+              "depositPaidDate": "01/01/2025",
+              "propertyDetails": [
+                {
+                  "propertyName": "Big 4",
+                  "unitNumber": "Unit 3"
+                },
+                {
+                  "propertyName": "Old mutual",
+                  "unitNumber": "Unit 1"
+                },
+                {
+                  "propertyName": "Big 4",
+                  "unitNumber": "Unit 2"
+                },
+                {
+                  "propertyName": "Old mutual",
+                  "unitNumber": "Unit 4"
+                },
+                {
+                  "propertyName": "Old mutual",
+                  "unitNumber": "Unit 2"
+                },
+                {
+                  "propertyName": "Big 4",
+                  "unitNumber": "Unit 1"
+                },
+                {
+                  "propertyName": "Big 4",
+                  "unitNumber": "Unit 4"
+                },
+                {
+                  "propertyName": "Old mutual",
+                  "unitNumber": "Unit 3"
+                }
+              ],
+              "tenantEmail": "",
+              "tenantId": "mci17fsqtvmty45faf",
+              "tenantName": "Trade Kings",
+              "tenantPhone": ""
+            }
+          }
+        }
+      },
       "Statistics": {
         "-OTi3TKQ16jieuDen2Pv": {
           "2025": {
@@ -2415,62 +2657,76 @@
               "averagePaymentAmount": 0,
               "expectedPaymentsByType": {
                 "maintenance": 0,
-                "rent": 0,
-                "securityDeposit": 3000
+                "rent": 8000,
+                "securityDeposit": 8000
               },
-              "expectedRevenue": 3000,
-              "lastUpdated": 1764758119710.397,
+              "expectedRevenue": 16000,
+              "lastUpdated": 1766704767055,
               "paidPaymentsCount": 0,
               "partialPaymentsCount": 0,
-              "pendingPaymentsCount": 1,
+              "paymentsByType": {
+                "maintenance": 0,
+                "rent": 0,
+                "securityDeposit": 0
+              },
+              "paymentsCount": 0,
+              "pendingPaymentsCount": 2,
               "totalRevenue": 0
             }
           },
           "PaymentStats": {
-            "lastUpdated": 1764511160446,
-            "numberOfPayments": 0,
-            "totalAmountNotPaid": 3000,
-            "totalAmountPaid": 0
+            "lastUpdated": 1766704766776,
+            "numberOfPayments": 1,
+            "totalAmountNotPaid": 8000,
+            "totalAmountPaid": 8000
           },
           "PropertyStats": {
-            "lastUpdated": 1764511160448,
-            "numberAvailable": 16,
+            "lastUpdated": 1766704725153,
+            "numberAvailable": 15,
             "numberOfProperties": 15,
-            "numberRented": 0,
+            "numberRented": 1,
             "numberUnderMaintenance": 0
           },
+          "SecurityDepositStats": {
+            "lastUpdated": 1766738987527,
+            "numberOfActiveDeposits": 1,
+            "numberOfRefundedDeposits": 0,
+            "totalDepositsHeld": 8000,
+            "totalDepositsPaid": 8000,
+            "totalDepositsRefunded": 0
+          },
           "TenantStats": {
-            "lastUpdated": 1765432213750,
+            "lastUpdated": 1766704725513,
             "numberOfTenants": 1
           },
           "paymentTracking": {
             "pending": {
-              "1764837532151jesgo65h8oj": {
-                "accountId": "milsdwu5nuas68mef6",
-                "amount": 3000,
-                "daysUntilExpected": 0,
-                "dueDate": "28/12/2025",
-                "expectedDate": "02/12/2025",
-                "lastUpdated": "2025-12-05T00:12:21.667146",
-                "paymentId": "1764837532151jesgo65h8oj",
+              "1766704766379fg6fze94e": {
+                "accountId": "mjm2dme0g7lj9ukzmw8",
+                "amount": 8000,
+                "dueDate": "02/01/2026",
+                "lastUpdated": "2025-12-25T23:19:26.783Z",
+                "parentPropertyId": "mcdy0kf4sfvxvub1rke",
+                "paymentId": "1766704766379fg6fze94e",
                 "paymentStatus": 1,
-                "paymentType": 1,
-                "propertyName": "CJ Flats - Unit 4",
-                "tenantId": "milsdwu5nuas68mef6",
-                "tenantName": "Koozya Sikasote",
+                "paymentType": 0,
+                "propertyId": "1758235072928lyvinkkspd",
+                "propertyName": "Big 4 - Unit 1",
+                "tenantId": "mjm2dme0g7lj9ukzmw8",
+                "tenantName": "Khondwani Sikasote",
                 "tenantType": 0
               }
             },
             "summary": {
-              "dueCount": 0,
-              "dueTotal": 0,
-              "lastUpdated": "2025-12-05T00:12:21.667133",
+              "dueCount": 1,
+              "dueTotal": 8000,
+              "lastUpdated": "2025-12-25T23:19:27.060Z",
               "overdueCount": 0,
               "overdueTotal": 0,
               "partiallyPaidCount": 0,
               "partiallyPaidTotal": 0,
-              "pendingCount": 1,
-              "pendingTotal": 3000
+              "pendingCount": 0,
+              "pendingTotal": 0
             }
           }
         },
@@ -2654,21 +2910,21 @@
             "12": {
               "actualPaymentsByType": {
                 "maintenance": 0,
-                "rent": 9400,
+                "rent": 12100,
                 "securityDeposit": 4700
               },
-              "averagePaymentAmount": 7050,
+              "averagePaymentAmount": 5600,
               "expectedPaymentsByType": {
                 "maintenance": 0,
                 "rent": 0,
                 "securityDeposit": 0
               },
               "expectedRevenue": 0,
-              "lastUpdated": 1764758119710.471,
-              "paidPaymentsCount": 2,
+              "lastUpdated": 1766652885932,
+              "paidPaymentsCount": 3,
               "partialPaymentsCount": 0,
               "pendingPaymentsCount": 0,
-              "totalRevenue": 14100
+              "totalRevenue": 16800
             },
             "01": {
               "actualPaymentsByType": {
@@ -2824,31 +3080,37 @@
             }
           },
           "PaymentStats": {
-            "lastUpdated": 1764262162929,
+            "lastUpdated": 1766652885634,
             "nextPayments": 0,
-            "numberOfPayments": 39,
-            "totalAmountNotPaid": 9400,
-            "totalAmountPaid": 425300
+            "numberOfPayments": 40,
+            "totalAmountNotPaid": 4700,
+            "totalAmountPaid": 428000
           },
           "PropertyStats": {
-            "lastUpdated": 1764579333561,
-            "numberAvailable": 0,
+            "lastUpdated": 1766608976203,
+            "numberAvailable": 1,
             "numberOfProperties": 8,
-            "numberRented": 8,
+            "numberRented": 7,
             "numberUnderMaintenance": 0
+          },
+          "SecurityDepositStats": {
+            "lastUpdated": 1766738987527,
+            "numberOfActiveDeposits": 13,
+            "numberOfRefundedDeposits": 0,
+            "totalDepositsHeld": 66700,
+            "totalDepositsPaid": 66700,
+            "totalDepositsRefunded": 0
           },
           "TenantStats": {
             "lastUpdated": 1764259740042,
             "numberOfTenants": 8
           },
           "paymentTracking": {
-            "pending": {
+            "overdue": {
               "1764837532152vihlgpvmcj1": {
                 "accountId": "mceviqlzx6fup6ue85s",
                 "amount": 4700,
-                "daysUntilExpected": 0,
                 "dueDate": "29/06/2025",
-                "expectedDate": "29/06/2025",
                 "lastUpdated": "2025-12-05T00:12:21.667180",
                 "paymentId": "1764837532152vihlgpvmcj1",
                 "paymentStatus": 1,
@@ -2863,11 +3125,11 @@
               "dueCount": 0,
               "dueTotal": 0,
               "lastUpdated": "2025-12-05T00:12:21.667173",
-              "overdueCount": 0,
+              "overdueCount": 1,
               "overdueTotal": 0,
               "partiallyPaidCount": 0,
               "partiallyPaidTotal": 0,
-              "pendingCount": 1,
+              "pendingCount": 0,
               "pendingTotal": 4700
             }
           }
@@ -2927,12 +3189,20 @@
             "numberRented": 8,
             "numberUnderMaintenance": 0
           },
+          "SecurityDepositStats": {
+            "lastUpdated": 1766738987527,
+            "numberOfActiveDeposits": 1,
+            "numberOfRefundedDeposits": 0,
+            "totalDepositsHeld": 64000,
+            "totalDepositsPaid": 64000,
+            "totalDepositsRefunded": 0
+          },
           "TenantStats": {
             "lastUpdated": 1751223416316,
             "numberOfTenants": 1
           },
           "paymentTracking": {
-            "due": {
+            "overdue": {
               "1764837532152j1h6kmli18n": {
                 "accountId": "mci17fsqtvmty45faf",
                 "amount": 192000,
@@ -3016,18 +3286,24 @@
             "numberRented": 2,
             "numberUnderMaintenance": 0
           },
+          "SecurityDepositStats": {
+            "lastUpdated": 1766738987527,
+            "numberOfActiveDeposits": 2,
+            "numberOfRefundedDeposits": 0,
+            "totalDepositsHeld": 0,
+            "totalDepositsPaid": 0,
+            "totalDepositsRefunded": 0
+          },
           "TenantStats": {
             "lastUpdated": 1755981162577,
             "numberOfTenants": 2
           },
           "paymentTracking": {
-            "pending": {
+            "overdue": {
               "17648375321525k216et9n48": {
                 "accountId": "me3y0imlmczmlnwb81c",
                 "amount": 11000,
-                "daysUntilExpected": 0,
                 "dueDate": "22/09/2025",
-                "expectedDate": "22/09/2025",
                 "lastUpdated": "2025-12-05T00:12:21.667221",
                 "paymentId": "17648375321525k216et9n48",
                 "paymentStatus": 1,
@@ -3040,9 +3316,7 @@
               "17648375321529xt0egn80ti": {
                 "accountId": "meopug9zqop1mzc9c2h",
                 "amount": 14000,
-                "daysUntilExpected": 0,
                 "dueDate": " 22/10/2025",
-                "expectedDate": " 22/10/2025",
                 "lastUpdated": "2025-12-05T00:12:21.667226",
                 "paymentId": "17648375321529xt0egn80ti",
                 "paymentStatus": 1,
@@ -3057,11 +3331,11 @@
               "dueCount": 0,
               "dueTotal": 0,
               "lastUpdated": "2025-12-05T00:12:21.667219",
-              "overdueCount": 0,
+              "overdueCount": 2,
               "overdueTotal": 0,
               "partiallyPaidCount": 0,
               "partiallyPaidTotal": 0,
-              "pendingCount": 2,
+              "pendingCount": 0,
               "pendingTotal": 25000
             }
           }
@@ -3070,50 +3344,30 @@
       "Tenants": {
         "-OTi3TKQ16jieuDen2Pv": {
           "Active": {
-            "milsdwu5nuas68mef6": {
-              "createdAt": "30/11/2025",
-              "email": "koozya@gmail.com",
-              "firstname": "Koozya",
+            "mjm2dme0g7lj9ukzmw8": {
+              "createdAt": "26/12/2025",
+              "email": "Khondwani66@gmail.com",
+              "emergencyContactEmail": "Khondwani66@gmail.com",
+              "emergencyContactName": "Khondwani Sikasote",
+              "emergencyContactNumber": "0743794740",
+              "emergencyContactRelationship": 0,
+              "employerContactNumber": "0743794740",
+              "employerName": "ByteOrbit",
+              "firstname": "Khondwani",
               "gender": 0,
-              "id": "milsdwu5nuas68mef6",
-              "idNumber": "12345678",
+              "idNumber": "12345677",
               "lastname": "Sikasote",
               "mobileNumber": "0743794740",
               "occupation": 0,
               "propertyIndividualRentingInfo": {
-                "175823507292869q6vtk3d4": {
-                  "parentPropertyID": "mcdxxilopkeeoa81mw9",
-                  "propertyID": "175823507292869q6vtk3d4",
-                  "securityDeposit": 3000
+                "1758235072928lyvinkkspd": {
+                  "parentPropertyID": "mcdy0kf4sfvxvub1rke",
+                  "propertyID": "1758235072928lyvinkkspd",
+                  "securityDeposit": 8000
                 }
               },
               "type": 0,
-              "updatedAt": "30/11/2025"
-            },
-            "mj10r97jdo525l2q6w": {
-              "createdAt": "11/12/2025",
-              "email": "Khondwani66@gmail.com",
-              "firstname": "Teza",
-              "gender": 0,
-              "idNumber": "1234567654",
-              "lastname": "Sikasote",
-              "mobileNumber": "0743794740",
-              "occupation": 59,
-              "propertyIndividualRentingInfo": {
-                "mikl708rlobhvzf9q6": {
-                  "bedSpaces": {
-                    "mikl60lh25bp1l9uz351": {
-                      "rentalPrice": 1500
-                    }
-                  },
-                  "isWholeRoom": false,
-                  "propertyID": "mikl708rlobhvzf9q6",
-                  "roomID": "mikl60lgt99xxwdhck",
-                  "securityDeposit": 1500
-                }
-              },
-              "type": 0,
-              "updatedAt": "11/12/2025"
+              "updatedAt": "26/12/2025"
             }
           }
         },
@@ -3252,7 +3506,6 @@
                 "1758235072928cc2aw7d9cc": {
                   "parentPropertyID": "mcet7266sr8gmukvoap",
                   "propertyID": "1758235072928cc2aw7d9cc",
-                  "rentFrequency": 1,
                   "securityDeposit": 5200
                 }
               },
@@ -3475,6 +3728,14 @@
           "updatedAt": "2025-06-29T17:59:46.529Z",
           "userType": 1
         },
+        "IljCDuIW7NeYbdpGgJ478mg408g2": {
+          "companyId": "-OTi3TKQ16jieuDen2Pv",
+          "createdAt": "24/12/2025",
+          "email": "nataizya.s@gmail.com",
+          "name": "Nataizya Sikasote",
+          "updatedAt": "24/12/2025",
+          "userType": 1
+        },
         "JLAoJ5LOpwM1GLVBrnKCTbgrh3f2": {
           "companyId": "-OU4R7yDY7uGpYed6j0B",
           "createdAt": "2025-07-01T10:02:59.217Z",
@@ -3487,8 +3748,10 @@
           "companyId": "-OTlPNCoFjq8k_XsMqw2",
           "createdAt": "2025-06-27T12:42:53.850Z",
           "email": "kalumbabwale@gmail.com",
+          "jobTitle": "Proprietor ",
           "name": "Kalumba Bwale",
-          "updatedAt": "2025-06-27T12:42:53.850Z",
+          "phoneNumber": "+260966029966",
+          "updatedAt": "24/12/2025",
           "userType": 1
         },
         "iHQAccgDCGXBK6vPwqnSxkWr4Wv1": {
@@ -3497,6 +3760,20 @@
           "email": "chipusiles@gmail.com",
           "name": "Chipusile John Sikasote",
           "updatedAt": "2025-08-09T07:19:04.449Z",
+          "userType": 1
+        },
+        "oZ8LzDf77wSMZFMgACiFNAUZJn53": {
+          "companyId": "-OTlPNCoFjq8k_XsMqw2",
+          "createdAt": "24/12/2025",
+          "email": "mwaleronia@gmail.com",
+          "invitationExpiresAt": "24/12/2025 23:53",
+          "invitationSentAt": "24/12/2025",
+          "invitationStatus": 0,
+          "jobTitle": "Proprietor",
+          "lastInvitationSentAt": "24/12/2025",
+          "name": "Ronia Ziwenji Tabitha Mwale Bwale ",
+          "phoneNumber": "+260966027929",
+          "updatedAt": "24/12/2025",
           "userType": 1
         },
         "vQQvxHPnocaUg85Xdpxaz8yJ96v1": {

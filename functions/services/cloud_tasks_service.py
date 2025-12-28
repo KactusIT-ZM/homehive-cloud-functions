@@ -32,6 +32,6 @@ def enqueue_notification_tasks(due_tenants: list):
         
         try:
             response = tasks_client.create_task(parent=parent, task=task)
-            log.info(f"Created task {response.name} for tenant {tenant_info['tenant_id']}")
+            log.info(f"Created task {response.name} for tenant {tenant_info['tenant_info']['tenant_id']}")
         except Exception as e:
-            log.error(f"Error creating task for tenant {tenant_info['tenant_id']}: {e}")
+            log.error(f"Error creating task for tenant {tenant_info['tenant_info']['tenant_id']}: {e}")

@@ -22,7 +22,6 @@ def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_t
     target_due_date = today + timedelta(days=exact_days_from_today)
     all_tenants_flat = _flatten_tenants(tenants)
     
-    # Structure: {tenant_id: {'tenant_info': {...}, 'due_rentals': [...]}}
     grouped_due_rentals_by_tenant = {} 
 
     for company_id, company_stats in statistics.items():
@@ -58,12 +57,13 @@ def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_t
                             'dueDate': due_date.strftime('%d/%m/%Y'),
                             'rent_amount': payment_details.get('amount'),
                             'property_name': payment_details.get('propertyName', ''),
-                            'payment_id': payment_id
+                            'payment_id': payment_id,
+                            'company_id': company_id # Add company_id here
                         })
             except (ValueError, TypeError):
                 log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
                 continue
-                
+
     return grouped_due_rentals_by_tenant
 
 def get_due_rentals_by_landlord(statistics: dict, tenants: dict, companies: dict, exact_days_from_today: int) -> dict:
@@ -142,3 +142,65 @@ def get_payments_to_move_to_overdue(statistics: dict) -> list:
                 log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
                 continue
     return payments_to_move
+
+def get_payments_to_move_from_due_to_overdue(statistics: dict) -> list:
+    """
+    Identifies payments currently in the 'due' state that are past their due date
+    and need to be moved to the 'overdue' section.
+    Returns a list of dictionaries, each containing company_id, payment_id, and payment_details.
+    """
+    today = date.today()
+    payments_to_move = []
+
+    for company_id, company_stats in statistics.items():
+        due_payments = company_stats.get('paymentTracking', {}).get('due', {}) # Look in 'due' payments
+        for payment_id, payment_details in due_payments.items():
+            rent_due_date_str = payment_details.get('dueDate').strip()
+            if not rent_due_date_str:
+                continue
+
+            try:
+                due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
+                if due_date < today: # If due date is in the past
+                    payments_to_move.append({
+                        'company_id': company_id,
+                        'payment_id': payment_id,
+                        'payment_details': payment_details
+                    })
+            except (ValueError, TypeError):
+                log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
+                continue
+    return payments_to_move
+
+def get_payments_to_move_to_due(statistics: dict, exact_days_from_today: int) -> list:
+    """
+    Identifies payments in the 'pending' state that are due exactly `exact_days_from_today` days from today.
+    Returns a list of dictionaries, each containing company_id, payment_id, and payment_details.
+    Includes all payment types (rental and non-rental).
+    """
+    today = date.today()
+    target_due_date = today + timedelta(days=exact_days_from_today)
+    payments_to_move = []
+
+    for company_id, company_stats in statistics.items():
+        pending_payments = company_stats.get('paymentTracking', {}).get('pending', {})
+        for payment_id, payment_details in pending_payments.items():
+            rent_due_date_str = payment_details.get('dueDate').strip()
+            if not rent_due_date_str:
+                continue
+
+            try:
+                due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
+                if due_date == target_due_date: # Check for exact due date
+                    payments_to_move.append({
+                        'company_id': company_id,
+                        'payment_id': payment_id,
+                        'payment_details': payment_details
+                    })
+            except (ValueError, TypeError):
+                log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
+                continue
+
+    log.error(f"Payments to move to due: {payments_to_move}")
+    return payments_to_move
+

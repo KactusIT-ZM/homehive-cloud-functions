@@ -35,7 +35,7 @@ coverage
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
-# Bower dependency directory (https://bower.io/)
+# Bower dependency directory (https://bowerjs.com/)
 bower_components
 
 # node-waf configuration
@@ -67,3 +67,5 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+.DS_Store

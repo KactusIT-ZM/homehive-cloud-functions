@@ -11,21 +11,30 @@ from .secret_manager_service import access_secret_version
 # Set up a module-level logger
 log = logging.getLogger(__name__)
 
-def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: bytes = None) -> bool:
+def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: bytes = None, cc_recipients: list = None) -> bool:
     """
     Sends a consolidated rent reminder email to the tenant, summarizing multiple due rentals.
+    Optionally, CCs a list of recipients (e.g., landlord).
     Returns True if successful, False otherwise.
     """
-    recipient_email = tenant_info.get('email')
-    tenant_name = tenant_info.get('name', 'Tenant')
-    due_rentals = tenant_info.get('due_rentals', [])
+    tenant_id_for_logging = "UNKNOWN_TENANT_IN_EMAIL_SERVICE" # Initialize for logging
+    try:
+        tenant_details = tenant_info.get('tenant_info', {}) 
+        recipient_email = tenant_details.get('email')
+        tenant_name = tenant_details.get('name', 'Tenant')
+        tenant_id_for_logging = tenant_details.get('tenant_id', "UNKNOWN_ID_FROM_PAYLOAD") # Re-assign with extracted ID
+        due_rentals = tenant_info.get('due_rentals', [])
 
-    if not recipient_email:
-        log.error(f"No email for tenant {tenant_info.get('tenant_id')}. Skipping email.")
+        if not recipient_email:
+            log.error(f"No email for tenant {tenant_id_for_logging}. Skipping email.")
+            return False
+            
+        aws_region = "us-east-1"
+        sender_email = os.environ.get("SENDER_EMAIL", "noreply@homehive.properties")
+    # ... (rest of the code)
+    except Exception as e:
+        log.error(f"An unexpected error occurred while sending consolidated email for tenant {tenant_id_for_logging}: {e}")
         return False
-        
-    aws_region = "us-east-1"
-    sender_email = os.environ.get("SENDER_EMAIL", "noreply@homehive.properties")
 
     if not sender_email:
         log.error("SENDER_EMAIL environment variable not set.")
@@ -37,6 +46,9 @@ def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: byte
         original_email = recipient_email
         recipient_email = "info@kactusit.com"
         log.warning(f"TESTING_MODE is active. Redirecting email from {original_email} to {recipient_email}")
+        if cc_recipients:
+            log.warning(f"TESTING_MODE is active. Redirecting CC recipients {cc_recipients} to {recipient_email}")
+            cc_recipients = [recipient_email] # Redirect CCs to the test email too
 
     # Render the email body from the template
     template = template_env.get_template('tenant_summary_email.html')
@@ -72,6 +84,8 @@ def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: byte
         msg['Subject'] = subject
         msg['From'] = sender_email
         msg['To'] = recipient_email
+        if cc_recipients:
+            msg['Cc'] = ', '.join(cc_recipients)
 
         # Create a 'related' part for the HTML and embedded image.
         msg_related = MIMEMultipart('related')
@@ -99,13 +113,20 @@ def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: byte
             part['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
             msg.attach(part)
         
+        # Determine all destinations for SES
+        destinations = [recipient_email]
+        if cc_recipients:
+            destinations.extend(cc_recipients)
+
         ses_client.send_raw_email(
             Source=sender_email,
-            Destinations=[recipient_email],
+            Destinations=destinations,
             RawMessage={'Data': msg.as_string()}
         )
         
         log.info(f"Successfully sent consolidated email reminder to {recipient_email}")
+        if cc_recipients:
+            log.info(f"CC'd to: {', '.join(cc_recipients)}")
         return True
     except Exception as e:
         log.error(f"An unexpected error occurred while sending consolidated email: {e}")
@@ -159,7 +180,7 @@ def send_landlord_summary_email(landlord_email: str, due_rentals_list: list, tem
             aws_secret_access_key=aws_secret_access_key
         )
         
-        subject = "Summary: Upcoming Rental Payments Due - HomeHive"
+        subject = "Upcoming Rental Payments Due"
 
         # Create the root message and set the headers.
         msg = MIMEMultipart('mixed')
