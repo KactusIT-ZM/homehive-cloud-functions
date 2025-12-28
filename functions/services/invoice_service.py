@@ -23,11 +23,13 @@ class PDF(FPDF):
         # Page number on the right
         self.cell(0, 10, f'Page {self.page_no()}', border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-def create_invoice_pdf(tenant_info: dict) -> bytes:
+def create_invoice_pdf(tenant_info: dict) -> tuple[bytes, str]:
     """
     Creates a consolidated rent invoice PDF for the tenant.
     `tenant_info` should be a dict with keys 'tenant_info' (containing 'name', 'email', 'mobileNumber', 'tenant_id')
     and 'due_rentals' (a list where each item has 'property_name', 'rent_amount', 'dueDate', 'payment_id').
+    
+    Returns a tuple containing the PDF bytes and the invoice number.
     """
     pdf = PDF()
     pdf.add_page()
@@ -92,4 +94,4 @@ def create_invoice_pdf(tenant_info: dict) -> bytes:
     pdf.cell(160, 10, 'Total Amount Due:', border=0, align='R', new_x=XPos.RIGHT, new_y=YPos.TOP)
     pdf.cell(30, 10, f'ZMW {total_amount_due:.2f}', border=1, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    return pdf.output()
+    return bytes(pdf.output()), invoice_number

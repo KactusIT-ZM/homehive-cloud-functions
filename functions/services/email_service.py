@@ -11,7 +11,7 @@ from .secret_manager_service import access_secret_version
 # Set up a module-level logger
 log = logging.getLogger(__name__)
 
-def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: bytes = None, cc_recipients: list = None) -> bool:
+def send_tenant_summary_email(tenant_info: dict, template_env, invoice_url: str = None, cc_recipients: list = None) -> bool:
     """
     Sends a consolidated rent reminder email to the tenant, summarizing multiple due rentals.
     Optionally, CCs a list of recipients (e.g., landlord).
@@ -54,13 +54,16 @@ def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: byte
     template = template_env.get_template('tenant_summary_email.html')
     html_body = template.render(
         name=tenant_name, 
-        due_rentals=due_rentals
+        due_rentals=due_rentals,
+        invoice_url=invoice_url
     )
     # Create a plain text version as a fallback
     text_body = f"Hi {tenant_name},\n\nThis is a friendly reminder that multiple rent payments are due soon for the following properties:\n\n"
     for rental in due_rentals:
         text_body += f"- Property: {rental.get('property_name', 'N/A')}, Amount: ZMW {rental.get('rent_amount', 'N/A')}, Due Date: {rental.get('dueDate', 'N/A')}\n"
-    text_body += "\nPlease find a consolidated invoice attached to this email. You can also log in to your HomeHive portal to view your statements or make payments: https://your-homehive-portal.com\n\nIf you have already made these payments or have any questions, please disregard this email or contact us directly.\n\nThank you for being a valued tenant.\n\nSincerely,\nThe HomeHive Team\n\n© 2025 HomeHive. All rights reserved.\nThis is an automated message, please do not reply."
+    if invoice_url:
+        text_body += f"\nYour consolidated invoice is available here: {invoice_url}\n"
+    text_body += "You can also log in to your HomeHive portal to view your statements or make payments: https://your-homehive-portal.com\n\nIf you have already made these payments or have any questions, please disregard this email or contact us directly.\n\nThank you for being a valued tenant.\n\nSincerely,\nThe HomeHive Team\n\n© 2025 HomeHive. All rights reserved.\nThis is an automated message, please do not reply."
     
     aws_access_key_id = access_secret_version("AWS_ACCESS_KEY_ID")
     aws_secret_access_key = access_secret_version("AWS_SECRET_ACCESS_KEY")
@@ -107,11 +110,7 @@ def send_tenant_summary_email(tenant_info: dict, template_env, invoice_pdf: byte
         logo.add_header('Content-ID', '<logo>')
         msg_related.attach(logo)
 
-        # Attach PDF if it exists
-        if invoice_pdf:
-            part = MIMEApplication(invoice_pdf, Name='invoice.pdf')
-            part['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
-            msg.attach(part)
+
         
         # Determine all destinations for SES
         destinations = [recipient_email]
