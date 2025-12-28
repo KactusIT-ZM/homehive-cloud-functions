@@ -73,14 +73,14 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
         else:
             log.info(f"No tenants found with rent due exactly {days_window} days from now.")
 
-        if landlord_due_rentals:
-            log.error(f"Found {len(landlord_due_rentals)} landlords with due rentals exactly {days_window} days from now.")
-            for landlord_email, rentals_list in landlord_due_rentals.items():
-                log.info(f"  - Sending summary email to landlord {landlord_email} for {len(rentals_list)} due rentals.")
-                log.error(f"Landlord email: {landlord_email}, Rentals: {rentals_list}, template_env: {template_env}")
-                send_landlord_summary_email(landlord_email, rentals_list, template_env)
-        else:
-            log.info("No landlords found with due rentals for notification.")
+        # if landlord_due_rentals:
+        #     log.error(f"Found {len(landlord_due_rentals)} landlords with due rentals exactly {days_window} days from now.")
+        #     for landlord_email, rentals_list in landlord_due_rentals.items():
+        #         log.info(f"  - Sending summary email to landlord {landlord_email} for {len(rentals_list)} due rentals.")
+        #         log.error(f"Landlord email: {landlord_email}, Rentals: {rentals_list}, template_env: {template_env}")
+        #         send_landlord_summary_email(landlord_email, rentals_list, template_env)
+        # else:
+        #     log.info("No landlords found with due rentals for notification.")
         
         # --- Move pending to due ---
         if payments_to_move_to_due:
