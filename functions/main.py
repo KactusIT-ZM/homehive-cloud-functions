@@ -175,7 +175,7 @@ def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
     # Assuming 'get_invoice_redirect' is the name of the new function
     # The base URL for Cloud Functions can be obtained from environment variables or constructed
     cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', 'https://us-central1-homehive-8c7d4.cloudfunctions.net')
-    invoice_url = f"{cloud_function_base_url}/get_invoice_redirect?invoiceId={invoice_redirect_id}"
+    invoice_url = f"{cloud_function_base_url}/get_invoice?invoiceId={invoice_redirect_id}"
 
 
     # Call the email service to send the reminder with the consolidated invoice attached
@@ -192,7 +192,7 @@ def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
     #     return https_fn.Response("An error occurred.", status=500)
 
 @https_fn.on_request()
-def get_invoice_redirect(req: https_fn.Request) -> https_fn.Response:
+def get_invoice(req: https_fn.Request) -> https_fn.Response:
     """
     HTTP-triggered function that retrieves an invoice PDF from Google Cloud Storage
     and streams its content directly to the client. This hides the direct storage
@@ -203,7 +203,7 @@ def get_invoice_redirect(req: https_fn.Request) -> https_fn.Response:
 
     invoice_id = req.args.get('invoiceId')
     if not invoice_id:
-        log.error("Missing invoiceId query parameter for get_invoice_redirect.")
+        log.error("Missing invoiceId query parameter for get_invoice.")
         return https_fn.Response("Missing invoiceId.", status=400)
 
     try:
@@ -234,22 +234,5 @@ def get_invoice_redirect(req: https_fn.Request) -> https_fn.Response:
         return https_fn.Response(pdf_content, headers={"Content-Type": "application/pdf"}, status=200)
 
     except Exception as e:
-        log.error(f"Error in get_invoice_redirect for invoiceId {invoice_id}: {e}")
+        log.error(f"Error in get_invoice for invoiceId {invoice_id}: {e}")
         return https_fn.Response("An error occurred.", status=500)
-
-
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_tenant_portal(path):
-    # Determine the absolute path to the build directory
-    build_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'tenant-portal', 'build'))
-    
-    if path != "" and os.path.exists(os.path.join(build_dir, path)):
-        return send_from_directory(build_dir, path)
-    else:
-        return send_from_directory(build_dir, 'index.html')
-
-@https_fn.on_request()
-def tenant_portal(req: https_fn.Request) -> https_fn.Response:
-    with app.request_context(req.environ):
-        return app.full_dispatch_request()
