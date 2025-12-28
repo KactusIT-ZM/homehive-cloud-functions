@@ -1,14 +1,14 @@
-import json
-import os
-import sys
 import unittest
 from unittest.mock import patch, MagicMock
 from flask import Flask
 from datetime import date, timedelta
 import copy
-import logging
-import firebase_admin # Added for mocking
-from unittest.mock import patch, MagicMock, ANY
+import sys
+import os
+import json
+from unittest.mock import patch, MagicMock, ANY, call
+from freezegun import freeze_time
+
 
 # Add the project root directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -16,25 +16,18 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Now we can import from main
 from functions.main import (
     main as notification_handler,
-    send_notification_worker
-)
-from functions.services.db_service import (
-    get_all_tenants, 
-    get_all_accounts, move_payment_to_due
 )
 from functions.logic.notification_logic import (
     get_due_rentals_by_tenant, 
     _flatten_tenants, get_due_rentals_by_landlord, 
-    get_payments_to_move_to_due_soon, 
+    get_payments_to_move_to_due, 
     get_payments_to_move_from_due_to_overdue
 )
-from functions.services.cloud_tasks_service import enqueue_notification_tasks
 from functions.services.email_service import (
     send_tenant_summary_email, 
     send_landlord_summary_email
 )
-from firebase_functions import https_fn
-
+from functions.utils.template_renderer import template_env
 class MockEvent:
     """A mock event object for testing Cloud Functions."""
     def __init__(self):
@@ -226,7 +219,7 @@ class TestHelperFunctions(unittest.TestCase):
             self.assertEqual(moved_payment['payment_details']['amount'], 1000)
             self.assertEqual(moved_payment['payment_details']['dueDate'], '23/12/2025')
 
-    def test_get_payments_to_move_to_due_soon(self):
+    def test_get_payments_to_move_to_due(self):
         mock_today = date(2025, 12, 24) # Today is 24/12/2025
 
         mock_statistics_data = {
@@ -266,7 +259,7 @@ class TestHelperFunctions(unittest.TestCase):
             mock_date.today.return_value = mock_today
             mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
 
-            payments_to_move = get_payments_to_move_to_due_soon(mock_statistics_data, 7)
+            payments_to_move = get_payments_to_move_to_due(mock_statistics_data, 7)
 
             self.assertIsInstance(payments_to_move, list)
             self.assertEqual(len(payments_to_move), 2) # Expect 2 payments to move
@@ -422,15 +415,15 @@ class TestMainIntegration(unittest.TestCase):
         self.patch_get_tenants = patch('functions.main.get_all_tenants')
         self.patch_get_statistics = patch('functions.main.get_all_statistics')
         self.patch_get_companies = patch('functions.main.get_all_companies') # Add mock for get_all_companies
-        self.patch_move_payment_to_due = patch('functions.main.move_payment_to_due')
-        self.patch_get_payments_to_move_to_due_soon = patch('functions.main.get_payments_to_move_to_due_soon')
+        self.patch_move_pending_to_due = patch('functions.main.move_pending_to_due')
+        self.patch_get_payments_to_move_to_due = patch('functions.main.get_payments_to_move_to_due')
         
         self.mock_enqueue = self.patch_enqueue.start()
         self.mock_get_tenants = self.patch_get_tenants.start()
         self.mock_get_statistics = self.patch_get_statistics.start()
         self.mock_get_companies = self.patch_get_companies.start() # Start the mock
-        self.mock_move_payment_to_due = self.patch_move_payment_to_due.start()
-        self.mock_get_payments_to_move_to_due_soon = self.patch_get_payments_to_move_to_due_soon.start()
+        self.mock_move_pending_to_due = self.patch_move_pending_to_due.start()
+        self.mock_get_payments_to_move_to_due = self.patch_get_payments_to_move_to_due.start()
 
 
     def tearDown(self):
@@ -446,123 +439,6 @@ class TestMainIntegration(unittest.TestCase):
             return self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"]
         return None
 
-    def test_main_triggers_tenant_notifications(self): # Renamed function
-        statistics_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"])
-        tenants_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"])
-        
-        # We need to mock these to control the return values precisely
-        self.mock_get_statistics.return_value = statistics_data
-        self.mock_get_tenants.return_value = tenants_data
-        self.mock_get_companies.return_value = { # Use actual company IDs and emails from test_db.json
-            "-OTi3TKQ16jieuDen2Pv": {"contactEmail": "support@wachilamaka.co.zm"},
-            "-OTlPNCoFjq8k_XsMqw2": {"contactEmail": "kalumbabwale@gmail.com"},
-            "-OTwq4TeVXxvt9GBXWe1": {"contactEmail": "Chombasikasote@yahoo.com"},
-            "-OU4R7yDY7uGpYed6j0B": {"contactEmail": "chipusiles@gmail.com"},
-            "-OXCgbwyw1s1xQ8bAPpu": {"contactEmail": "chipusiles@gmail.com"}
-        }
-        
-        # Mock dueSoon payments to be empty for this test
-        self.mock_get_payments_to_move_to_due_soon.return_value = []
-        
-        mock_event = MockEvent()
-
-        with self.app.app_context():
-            with patch('functions.logic.notification_logic.date') as mock_date_logic, \
-                 patch('functions.main.get_due_rentals_by_tenant') as mock_get_due_rentals_by_tenant: # Patch new function
-                mock_date_logic.today.return_value = date(2025, 12, 24) # Set a fixed date for the test
-                mock_date_logic.side_effect = lambda *args, **kw: date(*args, **kw) # Allow normal date constructor
-
-                # Mock to ensure enqueue is called with the expected tenant_info
-                # This should be a grouped structure now
-                mock_get_due_rentals_by_tenant.return_value = {
-                    'tenant_id_1': {
-                        'tenant_info': {
-                            'tenant_id': 'tenant_id_1',
-                            'name': 'Tenant One',
-                            'email': 'tenant1@example.com',
-                            'mobileNumber': '111',
-                        },
-                        'due_rentals': [
-                            {
-                                'dueDate': '31/12/2025',
-                                'rent_amount': 1000,
-                                'property_name': 'Property A',
-                                'payment_id': 'payment_A',
-                                'company_id': 'company_id_1' # Added company_id
-                            },
-                            {
-                                'dueDate': '31/12/2025',
-                                'rent_amount': 500,
-                                'property_name': 'Property B',
-                                'payment_id': 'payment_B',
-                                'company_id': 'company_id_1' # Added company_id
-                            }
-                        ]
-                    }
-                } 
-                notification_handler(mock_event)
-        
-        mock_get_due_rentals_by_tenant.assert_called_once_with(statistics_data, tenants_data, 7)
-        self.mock_get_payments_to_move_to_due_soon.assert_called_once_with(statistics_data, 7)
-        self.mock_move_payment_to_due.assert_not_called() # No payments to move
-        # enqueue_notification_tasks should be called with a list of the values from the grouped dict
-        self.mock_enqueue.assert_called_once_with(list(mock_get_due_rentals_by_tenant.return_value.values()))
-
-
-
-    @patch('functions.main.get_all_companies')
-    @patch('functions.main.get_due_rentals_by_landlord')
-    @patch('functions.main.send_landlord_summary_email')
-    def test_main_function_triggers_landlord_notifications(self, mock_send_landlord_summary_email, mock_get_due_rentals_by_landlord, mock_get_all_companies):
-        statistics_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"])
-        tenants_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"])
-        companies_data = {
-            "company_id_1": {"contactEmail": "landlord1@example.com"},
-            "company_id_2": {"contactEmail": "landlord2@example.com"}
-        }
-        
-        self.mock_get_statistics.return_value = statistics_data
-        self.mock_get_tenants.return_value = tenants_data
-        mock_get_all_companies.return_value = companies_data
-
-        mock_landlord_rentals = {
-            "landlord1@example.com": [
-                {'tenant_name': 'Tenant A', 'property_name': 'Property A', 'amount': 1000, 'due_date': '31/12/2025'}
-            ],
-            "landlord2@example.com": [
-                {'tenant_name': 'Tenant C', 'property_name': 'Property C', 'amount': 1500, 'due_date': '31/12/2025'}
-            ]
-        }
-        mock_get_due_rentals_by_landlord.return_value = mock_landlord_rentals
-        
-        # Mock dueSoon payments to be empty for this test
-        self.mock_get_payments_to_move_to_due_soon.return_value = []
-
-        mock_event = MockEvent()
-
-        with self.app.app_context():
-            with patch('functions.logic.notification_logic.date') as mock_date_logic, \
-                 patch('functions.main.get_due_rentals_by_tenant') as mock_get_due_rentals_by_tenant: # Patch new function
-                mock_date_logic.today.return_value = date(2025, 12, 24)
-                mock_date_logic.side_effect = lambda *args, **kw: date(*args, **kw)
-
-                mock_get_due_rentals_by_tenant.return_value = {} # No tenant reminders for this test
-
-                notification_handler(mock_event)
-        
-        mock_get_all_companies.assert_called_once()
-        mock_get_due_rentals_by_landlord.assert_called_once_with(
-            statistics_data, tenants_data, companies_data, 7
-        )
-        self.mock_get_payments_to_move_to_due_soon.assert_called_once_with(statistics_data, 7)
-        self.mock_move_payment_to_due.assert_not_called() # No payments to move
-        self.assertEqual(mock_send_landlord_summary_email.call_count, 2)
-        mock_send_landlord_summary_email.assert_any_call(
-            "landlord1@example.com", mock_landlord_rentals["landlord1@example.com"], ANY # ANY for template_env
-        )
-        mock_send_landlord_summary_email.assert_any_call(
-            "landlord2@example.com", mock_landlord_rentals["landlord2@example.com"], ANY # ANY for template_env
-        )
 
 class TestNotificationWorker(unittest.TestCase):
     @patch.dict(os.environ, {
@@ -661,5 +537,201 @@ class TestNotificationWorker(unittest.TestCase):
             mock_template_env.get_template.assert_called_with('landlord_reminder_email.html')
             mock_template_env.get_template.return_value.render.assert_called_with(due_rentals=due_rentals_list)
 
+class TestEndtoEnd(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        json_file_path = os.path.join(current_dir, 'test_db.json')
+        with open(json_file_path, 'r') as f:
+            cls.full_db_data = json.load(f)
+        cls.app = Flask(__name__)
+    
+    def _mock_db_get(self, path=None):
+        """Mocks the Firebase db.reference().get() method."""
+        if path == '/HomeHive/PropertyManagement/Accounts':
+            return self.full_db_data["HomeHive"]["PropertyManagement"]["Accounts"]
+        elif path == '/HomeHive/PropertyManagement/Tenants':
+            return self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"]
+        elif path == '/HomeHive/PropertyManagement/Statistics':
+            return self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"]
+        return None
+
+    def setUp(self):
+        # Mock Firebase app initialization
+        self.patch_initialize_app = patch('firebase_admin.initialize_app')
+        self.mock_initialize_app = self.patch_initialize_app.start()
+
+        # Mock Firebase db reference
+        self.patch_db_reference = patch('firebase_admin.db.reference')
+        self.mock_db_reference = self.patch_db_reference.start()
+        # Configure mock for .get() calls
+        mock_ref_instance = MagicMock()
+        mock_ref_instance.get.side_effect = self._mock_db_get
+
+        # Ensure that db.reference returns a mock object that has a .get method
+        self.mock_db_reference.return_value = mock_ref_instance
+
+        self.patch_get_tenants = patch('functions.main.get_all_tenants')
+        self.patch_get_statistics = patch('functions.main.get_all_statistics')
+        self.patch_get_companies = patch('functions.main.get_all_companies') 
+        self.patch_get_accounts = patch('functions.main.get_all_accounts')
+        self.patch_enqueue = patch('functions.main.enqueue_notification_tasks')
+        self.patch_send_landlord_summary_email = patch('functions.main.send_landlord_summary_email')
+        self.patch_template_env = patch('functions.main.template_env')
+        self.patch_move_pending_to_due = patch('functions.main.move_pending_to_due')
+
+        self.mock_get_tenants = self.patch_get_tenants.start()
+        self.mock_get_statistics = self.patch_get_statistics.start()
+        self.mock_get_companies = self.patch_get_companies.start() 
+        self.mock_get_accounts = self.patch_get_accounts.start()
+        self.mock_enqueue = self.patch_enqueue.start()
+        self.mock_send_landlord_summary_email = self.patch_send_landlord_summary_email.start()
+        self.mock_template_env = self.patch_template_env.start()
+        self.mock_move_pending_to_due = self.patch_move_pending_to_due.start()
+
+        self.app = Flask(__name__)
+
+    def tearDown(self):
+        patch.stopall()
+
+    @patch.dict(os.environ, {
+        "GCLOUD_PROJECT": "test_project",
+    }, clear=True)
+    @freeze_time("2025-12-24")
+    def test_main(self):
+        with self.app.app_context():
+            statistics_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"])
+            tenant_id = "mjm2dme0g7lj9ukzmw8"
+            company_id = "-OTi3TKQ16jieuDen2Pv"
+            payment_id = "1766704766379fg6fze94e"
+
+            mock_grouped_rentals = [{'tenant_info': {'tenant_id': 'mjm2dme0g7lj9ukzmw8', 'name': 'Khondwani Sikasote', 'email': 'Khondwani66@gmail.com', 'mobileNumber': '0743794740'}, 'due_rentals': [{'dueDate': '31/12/2025', 'rent_amount': 8000, 'property_name': 'Big 4 - Unit 1', 'payment_id': '1766704766379fg6fze94e', 'company_id': '-OTi3TKQ16jieuDen2Pv'}]}]
+            
+            try:
+                statistics_data[company_id]['paymentTracking']['pending'][payment_id]['dueDate'] = "31/12/2025"
+            except KeyError:
+                self.fail(f"Could not find payment with ID {payment_id} for tenant {tenant_id} in company {company_id}")
+
+            self.mock_get_statistics.return_value = statistics_data
+            self.mock_get_tenants.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"])
+            self.mock_get_accounts.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Accounts"])
+            self.mock_get_companies.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Companies"])
+            self.mock_template_env.return_value = MagicMock()
+            
+            notification_handler(MockEvent())
+            self.mock_enqueue.assert_called_once_with(mock_grouped_rentals)
+            self.mock_send_landlord_summary_email.assert_called_once_with(
+                "support@wachilamaka.co.zm", 
+                [
+                    {
+                        'tenant_name': 'Khondwani Sikasote', 
+                        'property_name': 'Big 4 - Unit 1', 
+                        'amount': 8000, 
+                        'due_date': '31/12/2025'
+                    }
+                ], 
+                self.mock_template_env
+            )
+            self.mock_move_pending_to_due.assert_called_once_with(
+                company_id, 
+                payment_id,
+                {
+                    'accountId': 'mjm2dme0g7lj9ukzmw8', 
+                    'amount': 8000, 
+                    'dueDate': '31/12/2025', 
+                    'lastUpdated': '2025-12-25T23:19:26.783Z', 
+                    'parentPropertyId': 'mcdy0kf4sfvxvub1rke', 
+                    'paymentId': '1766704766379fg6fze94e', 
+                    'paymentStatus': 1, 
+                    'paymentType': 0, 
+                    'propertyId': '1758235072928lyvinkkspd', 
+                    'propertyName': 'Big 4 - Unit 1', 
+                    'tenantId': 'mjm2dme0g7lj9ukzmw8', 
+                    'tenantName': 'Khondwani Sikasote',
+                    'tenantType': 0
+                },
+                tenant_id
+            )
+
+    @patch('functions.main.move_payment_to_overdue')
+    @freeze_time("2025-12-24")
+    def test_main_move_to_overdue(self, mock_move_payment_to_overdue):
+        with self.app.app_context():
+            statistics_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"])
+            tenant_id = "mjm2dme0g7lj9ukzmw8"
+            company_id = "-OTi3TKQ16jieuDen2Pv"
+            payment_id_pending = "1766704766379fg6fze94e"
+
+            # Dynamically set the due date for the specific payment
+            try:
+                statistics_data[company_id]['paymentTracking']['pending'][payment_id_pending]['dueDate'] = "23/12/2025"
+            except KeyError:
+                self.fail(f"Could not find payment with ID {payment_id_pending} for tenant {tenant_id} in company {company_id}")
+
+            self.mock_get_statistics.return_value = statistics_data
+            self.mock_get_tenants.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"])
+            self.mock_get_accounts.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Accounts"])
+            self.mock_get_companies.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Companies"])
+            self.mock_template_env.return_value = MagicMock()
+            
+            notification_handler(MockEvent())
+
+            mock_move_payment_to_overdue.assert_called_once_with(
+                company_id,
+                payment_id_pending,
+                {'accountId': 'mjm2dme0g7lj9ukzmw8', 'amount': 8000, 'dueDate': '23/12/2025', 'lastUpdated': '2025-12-25T23:19:26.783Z', 'parentPropertyId': 'mcdy0kf4sfvxvub1rke', 'paymentId': '1766704766379fg6fze94e', 'paymentStatus': 1, 'paymentType': 0, 'propertyId': '1758235072928lyvinkkspd', 'propertyName': 'Big 4 - Unit 1', 'tenantId': 'mjm2dme0g7lj9ukzmw8', 'tenantName': 'Khondwani Sikasote', 'tenantType': 0},
+                source_tracking_node='pending'
+            )
+    
+    @patch('functions.main.move_payment_to_overdue')
+    @freeze_time("2025-12-24")
+    def test_main_move_from_due_to_overdue(self, mock_move_payment_to_overdue):
+        with self.app.app_context():
+            statistics_data = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Statistics"])
+            tenant_id = "mjm2dme0g7lj9ukzmw8"
+            company_id = "-OTi3TKQ16jieuDen2Pv"
+            payment_id_pending = "1766704766379fg6fze94e"
+
+            # Dynamically set the due date for the specific payment
+            try:
+                statistics_data[company_id]['paymentTracking'] = {
+                        "due": {
+                            "1766704766379fg6fze94e": {
+                                "accountId": "mjm2dme0g7lj9ukzmw8",
+                                "amount": 8000,
+                                "dueDate": "02/01/2026",
+                                "lastUpdated": "2025-12-25T23:19:26.783Z",
+                                "parentPropertyId": "mcdy0kf4sfvxvub1rke",
+                                "paymentId": "1766704766379fg6fze94e",
+                                "paymentStatus": 1,
+                                "paymentType": 0,
+                                "propertyId": "1758235072928lyvinkkspd",
+                                "propertyName": "Big 4 - Unit 1",
+                                "tenantId": "mjm2dme0g7lj9ukzmw8",
+                                "tenantName": "Khondwani Sikasote",
+                                "tenantType": 0
+                            }
+                    }
+                }
+                statistics_data[company_id]['paymentTracking']['due'][payment_id_pending]['dueDate'] = "23/12/2025"
+            except KeyError:
+                self.fail(f"Could not find payment with ID {payment_id_pending} for tenant {tenant_id} in company {company_id}")
+
+            self.mock_get_statistics.return_value = statistics_data
+            self.mock_get_tenants.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Tenants"])
+            self.mock_get_accounts.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Accounts"])
+            self.mock_get_companies.return_value = copy.deepcopy(self.full_db_data["HomeHive"]["PropertyManagement"]["Companies"])
+            self.mock_template_env.return_value = MagicMock()
+            
+            notification_handler(MockEvent())
+
+            mock_move_payment_to_overdue.assert_called_once_with(
+                company_id,
+                payment_id_pending,
+                {'accountId': 'mjm2dme0g7lj9ukzmw8', 'amount': 8000, 'dueDate': '23/12/2025', 'lastUpdated': '2025-12-25T23:19:26.783Z', 'parentPropertyId': 'mcdy0kf4sfvxvub1rke', 'paymentId': '1766704766379fg6fze94e', 'paymentStatus': 1, 'paymentType': 0, 'propertyId': '1758235072928lyvinkkspd', 'propertyName': 'Big 4 - Unit 1', 'tenantId': 'mjm2dme0g7lj9ukzmw8', 'tenantName': 'Khondwani Sikasote', 'tenantType': 0},
+                source_tracking_node='due'
+            )
+
 if __name__ == '__main__':
     unittest.main()
+

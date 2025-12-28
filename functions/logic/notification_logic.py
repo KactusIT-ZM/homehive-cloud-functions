@@ -22,7 +22,6 @@ def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_t
     target_due_date = today + timedelta(days=exact_days_from_today)
     all_tenants_flat = _flatten_tenants(tenants)
     
-    # Structure: {tenant_id: {'tenant_info': {...}, 'due_rentals': [...]}}
     grouped_due_rentals_by_tenant = {} 
 
     for company_id, company_stats in statistics.items():
@@ -64,6 +63,7 @@ def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_t
             except (ValueError, TypeError):
                 log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
                 continue
+
     return grouped_due_rentals_by_tenant
 
 def get_due_rentals_by_landlord(statistics: dict, tenants: dict, companies: dict, exact_days_from_today: int) -> dict:
@@ -200,5 +200,7 @@ def get_payments_to_move_to_due(statistics: dict, exact_days_from_today: int) ->
             except (ValueError, TypeError):
                 log.warning(f"Could not parse date '{rent_due_date_str}' for payment {payment_id}")
                 continue
+
+    log.error(f"Payments to move to due: {payments_to_move}")
     return payments_to_move
 

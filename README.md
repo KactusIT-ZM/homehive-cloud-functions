@@ -76,6 +76,10 @@ To run a single specific test method, use the following format:
 functions/venv/bin/python -m unittest functions.tests.test_main.TestNotificationWorker.test_send_email_testing_mode_redirects_email
 ```
 
+```bash
+functions/venv/bin/python -m unittest functions.tests.test_main.TestEndtoEnd.test_main
+```
+
 **Run all tests:**
 ```bash
 source functions/venv/bin/activate && python -m unittest discover functions/tests

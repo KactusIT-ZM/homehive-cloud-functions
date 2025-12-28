@@ -7,7 +7,9 @@ import os
 from services.db_service import (
     get_all_tenants, get_all_statistics, 
     move_payment_to_overdue, 
-    get_all_companies, move_payment_to_due
+    get_all_companies, 
+    move_pending_to_due, 
+    get_all_accounts,
 )
 from logic.notification_logic import (
     get_due_rentals_by_tenant, 
@@ -44,10 +46,11 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
     statistics = get_all_statistics()
     tenants = get_all_tenants()
     companies = get_all_companies() # Fetch company data
+    accounts = get_all_accounts()
 
-    if statistics and tenants and companies:
+    if statistics and tenants and companies and accounts:
         grouped_due_rentals_by_tenant = get_due_rentals_by_tenant(statistics, tenants, days_window)
-        payments_to_move_to_due = get_payments_to_move_to_due(statistics, days_window) # Get payments for dueSoon
+        payments_to_move_to_due = get_payments_to_move_to_due(statistics, days_window)
         payments_to_move_to_overdue = get_payments_to_move_to_overdue(statistics)
         landlord_due_rentals = get_due_rentals_by_landlord(statistics, tenants, companies, days_window)
 
@@ -61,28 +64,29 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
             log.info(f"No tenants found with rent due exactly {days_window} days from now.")
 
         if landlord_due_rentals:
-            log.info(f"Found {len(landlord_due_rentals)} landlords with due rentals exactly {days_window} days from now.")
+            log.error(f"Found {len(landlord_due_rentals)} landlords with due rentals exactly {days_window} days from now.")
             for landlord_email, rentals_list in landlord_due_rentals.items():
                 log.info(f"  - Sending summary email to landlord {landlord_email} for {len(rentals_list)} due rentals.")
+                log.error(f"Landlord email: {landlord_email}, Rentals: {rentals_list}, template_env: {template_env}")
                 send_landlord_summary_email(landlord_email, rentals_list, template_env)
         else:
             log.info("No landlords found with due rentals for notification.")
         
-        # --- Move payments to due ---
+        # --- Move pending to due ---
         if payments_to_move_to_due:
             log.warning(f"Found {len(payments_to_move_to_due)} payments to move to due:")
             for payment in payments_to_move_to_due:
-                log.warning(f"  - Payment: {payment['payment_id']} for company {payment['company_id']}, Due: {payment['payment_details'].get('dueDate')} (moving to dueSoon)")
-                move_payment_to_due(payment['company_id'], payment['payment_id'], payment['payment_details'])
+                log.warning(f"  - Payment: {payment['payment_id']} for company {payment['company_id']}, Due: {payment['payment_details'].get('dueDate')} (moving to due)")
+                move_pending_to_due(payment['company_id'], payment['payment_id'], payment['payment_details'], payment['payment_details']['tenantId'])
         else:
             log.info("No payments to move to dueSoon.")
 
-        # --- Move payments to overdue (existing logic) ---
+        # --- Move payments from pending to overdue ---
         if payments_to_move_to_overdue:
             log.warning(f"Found {len(payments_to_move_to_overdue)} payments to move to overdue:")
             for payment in payments_to_move_to_overdue:
                 log.warning(f"  - Payment: {payment['payment_id']} for company {payment['company_id']}, Due: {payment['payment_details'].get('dueDate')}")
-                move_payment_to_overdue(payment['company_id'], payment['payment_id'], payment['payment_details'])
+                move_payment_to_overdue(payment['company_id'], payment['payment_id'], payment['payment_details'], source_tracking_node='pending')
         else:
             log.info("No payments to move to overdue.")
 
@@ -92,7 +96,7 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
             log.warning(f"Found {len(payments_to_move_from_due_to_overdue)} payments to move from due to overdue:")
             for payment in payments_to_move_from_due_to_overdue:
                 log.warning(f"  - Payment: {payment['payment_id']} for company {payment['company_id']}, Due: {payment['payment_details'].get('dueDate')} (moving from due to overdue)")
-                move_payment_to_overdue(payment['company_id'], payment['payment_id'], payment['payment_details'])
+                move_payment_to_overdue(payment['company_id'], payment['payment_id'], payment['payment_details'], source_tracking_node='due')
         else:
             log.info("No payments to move from due to overdue.")
 
