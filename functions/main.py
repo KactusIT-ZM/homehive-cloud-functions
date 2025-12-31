@@ -4,7 +4,6 @@ from firebase_admin import initialize_app, storage, db
 import firebase_admin # Added import
 import logging
 import os 
-from flask import Flask, send_from_directory
 import uuid
 from datetime import timedelta, datetime
 
@@ -30,17 +29,19 @@ from services.email_service import (
 )
 from services.invoice_service import create_invoice_pdf
 from services.storage_service import upload_to_storage
+from services.receipt_service import generate_receipt_pdf
+
 
 # Set up a module-level logger
 log = logging.getLogger(__name__)
 
 # Global Firebase app initialization, including Realtime Database URL
 # firebase_options = {'databaseURL': os.environ.get('FIREBASE_DATABASE_URL')}
-initialize_app() # Automatically picks up config from environment
+try:
+    firebase_admin.get_app()
+except ValueError:
+    initialize_app()
 set_global_options(max_instances=1)
-
-# Initialize Flask app for serving static files
-app = Flask(__name__, static_folder='../tenant-portal/build', static_url_path='/')
 
 @scheduler_fn.on_schedule(
     schedule="0 7 * * *",
@@ -152,13 +153,7 @@ def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
     invoice_pdf_bytes, invoice_number = create_invoice_pdf(tenant_consolidated_info)
 
     # Upload the invoice PDF to storage
-    upload_success = upload_to_storage(invoice_pdf_bytes, id_number, invoice_number)
-    if not upload_success:
-        log.error(f"Failed to upload invoice PDF for tenant {tenant_id_for_logging}.")
-        return https_fn.Response("Failed to upload invoice PDF.", status=500)
-
-    # Upload the invoice PDF to storage
-    cloud_storage_path = upload_to_storage(invoice_pdf_bytes, id_number, invoice_number)
+    cloud_storage_path = upload_to_storage(invoice_pdf_bytes, id_number, invoice_number, file_type="invoices")
     if not cloud_storage_path:
         log.error(f"Failed to upload invoice PDF for tenant {tenant_id_for_logging}.")
         return https_fn.Response("Failed to upload invoice PDF.", status=500)
@@ -253,4 +248,78 @@ def get_invoice(req: https_fn.Request) -> https_fn.Response:
 
     except Exception as e:
         log.error(f"Error in get_invoice for payment {payment_id}: {e}")
+        return https_fn.Response("An error occurred.", status=500)
+
+
+@https_fn.on_request()
+def generate_receipt(req: https_fn.Request) -> https_fn.Response:
+    """
+    HTTP-triggered function that generates a receipt, stores it, and returns the URL.
+    """
+    try:
+        data = req.get_json(silent=True)
+        if not data:
+            log.error("No data in request body.")
+            return https_fn.Response("No data received", status=400)
+
+        # Generate a unique name for the receipt
+        receipt_number = str(uuid.uuid4())
+        
+        # Generate the PDF
+        pdf_bytes = generate_receipt_pdf(data)
+        
+        # Upload to storage
+        id_number = data.get("id_number")
+        if not id_number:
+            log.error("Missing id_number in request.")
+            return https_fn.Response("Missing id_number.", status=400)
+            
+        file_path = upload_to_storage(pdf_bytes, id_number, receipt_number, file_type="receipts")
+        
+        if file_path:
+            # Construct the URL to the get_receipt Cloud Function
+            cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', 'https://us-central1-homehive-8c7d4.cloudfunctions.net')
+            receipt_url = f"{cloud_function_base_url}/get_receipt?id_number={id_number}&receipt_number={receipt_number}"
+            
+            return https_fn.Response(receipt_url, status=200)
+        else:
+            log.error("Failed to upload receipt.")
+            return https_fn.Response("Failed to upload receipt.", status=500)
+
+    except Exception as e:
+        log.error(f"An unexpected error occurred in generate_receipt: {e}")
+        return https_fn.Response("An error occurred.", status=500)
+
+
+@https_fn.on_request()
+def get_receipt(req: https_fn.Request) -> https_fn.Response:
+    """
+    HTTP-triggered function that retrieves a receipt PDF from Google Cloud Storage
+    and streams its content directly to the client.
+    """
+    id_number = req.args.get('id_number')
+    receipt_number = req.args.get('receipt_number')
+
+    if not id_number or not receipt_number:
+        log.error("Missing id_number or receipt_number query parameters for get_receipt.")
+        return https_fn.Response("Missing identifiers.", status=400)
+
+    try:
+        file_path = f"Tenants/{id_number}/receipts/{receipt_number}.pdf"
+        
+        # Now, retrieve the PDF content directly from Cloud Storage
+        bucket = storage.bucket()
+        blob = bucket.blob(file_path)
+
+        if not blob.exists():
+            log.error(f"Receipt PDF not found in storage at: {file_path}")
+            return https_fn.Response("Receipt file not found in storage.", status=404)
+
+        pdf_content = blob.download_as_bytes()
+        
+        log.info(f"Streaming receipt PDF for receipt {receipt_number} directly to client.")
+        return https_fn.Response(pdf_content, headers={"Content-Type": "application/pdf"}, status=200)
+
+    except Exception as e:
+        log.error(f"Error in get_receipt for receipt {receipt_number}: {e}")
         return https_fn.Response("An error occurred.", status=500)

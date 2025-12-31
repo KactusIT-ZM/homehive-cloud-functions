@@ -4,23 +4,30 @@ This repository contains the backend Cloud Functions for the HomeHive platform, 
 
 ## Overview
 
-This project includes two main Cloud Functions:
+This project includes three main Cloud Functions:
 
 1.  **`main` (Scheduled Function):** A scheduler-triggered function that runs periodically (e.g., daily). It queries the Firebase Realtime Database to find tenants whose rent is due within a configurable window (e.g., 7 days). For each due tenant, it enqueues a task in Google Cloud Tasks.
-2.  **`send_notification_worker` (HTTP Function):** An HTTP-triggered function designed to be invoked by Cloud Tasks. It receives a tenant's information in the request payload and sends them a rent reminder email using AWS Simple Email Service (SES).
+2.  **`send_notification_worker` (HTTP Function):** An HTTP-triggered function designed to be invoked by Cloud Tasks. It receives a tenant's information in the request payload and sends them a rent reminder email using AWS Simple Email Service (SES). Landlord emails are currently disabled.
+3.  **`stream_invoice_pdf` (HTTP Function):** An HTTP-triggered function that allows tenants to securely stream their invoice as a PDF directly from Google Cloud Storage.
 
-This two-function architecture provides a robust, scalable, and decoupled system for handling notifications.
+This architecture provides a robust, scalable, and decoupled system for handling notifications and document access.
 
 ## Repository Contents
 
-*   `functions/main.py`: Contains the core Python code for both the `main` scheduler function and the `send_notification_worker` function.
+*   `functions/main.py`: Contains the core Python code for the `main` scheduler function, the `send_notification_worker` function, and the `stream_invoice_pdf` function.
 *   `functions/requirements.txt`: Lists all the Python dependencies for the project (e.g., `firebase-functions`, `boto3`, `Jinja2`).
-*   `functions/templates/reminder_email.txt`: The Jinja2 template used to generate the body of the rent reminder email.
+*   `functions/templates/reminder_email.html`: The Jinja2 template used to generate the body of the rent reminder email.
 *   `functions/tests/`: Contains all the unit and integration tests.
     *   `test_main.py`: The main test file, containing tests for all functions and helpers.
     *   `test_db.json`: A snapshot of the database schema used for mock data in the tests.
 *   `firebase.json` & `.firebaserc`: Configuration files for deploying with the Firebase CLI.
 *   `README.md`: This file, providing an overview and instructions for the project.
+
+## Recent Changes
+
+*   **Invoice Reference:** The invoice reference is now stored in the `accounts` section of the database.
+*   **Landlord Emails:** Landlord reminder emails have been disabled.
+*   **Invoice Streaming:** A new `stream_invoice_pdf` function has been added to allow tenants to securely stream their invoices as PDFs.
 
 ## Prerequisites
 

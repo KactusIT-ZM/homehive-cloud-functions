@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 log = logging.getLogger(__name__)
 
-def upload_to_storage(file_bytes: bytes, id_number: str, invoice_number: str) -> str:
+def upload_to_storage(file_bytes: bytes, id_number: str, file_name: str, file_type: str = "invoices") -> str:
     """
     Uploads a file to Firebase Storage.
     Returns the relative path to the uploaded object (e.g., "Tenants/...") if successful, None otherwise.
@@ -12,8 +12,8 @@ def upload_to_storage(file_bytes: bytes, id_number: str, invoice_number: str) ->
     try:
         bucket = storage.bucket()
         
-        # Create a path in the bucket, e.g., "Tenants/id_number/invoices/invoice_number.pdf"
-        file_path = f"Tenants/{id_number}/invoices/{invoice_number}.pdf"
+        # Create a path in the bucket, e.g., "Tenants/id_number/invoices/file_name.pdf"
+        file_path = f"Tenants/{id_number}/{file_type}/{file_name}.pdf"
         blob = bucket.blob(file_path)
 
         # Upload the file from bytes
@@ -22,7 +22,7 @@ def upload_to_storage(file_bytes: bytes, id_number: str, invoice_number: str) ->
             content_type='application/pdf'
         )
         
-        log.info(f"Successfully uploaded invoice to {file_path}.")
+        log.info(f"Successfully uploaded {file_type} to {file_path}.")
         return file_path
 
     except Exception as e:
