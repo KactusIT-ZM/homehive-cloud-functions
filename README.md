@@ -4,21 +4,25 @@ This repository contains the backend Cloud Functions for the HomeHive platform, 
 
 ## Overview
 
-This project includes three main Cloud Functions:
+This project includes four main Cloud Functions:
 
 1.  **`main` (Scheduled Function):** A scheduler-triggered function that runs periodically (e.g., daily). It queries the Firebase Realtime Database to find tenants whose rent is due within a configurable window (e.g., 7 days). For each due tenant, it enqueues a task in Google Cloud Tasks.
 2.  **`send_notification_worker` (HTTP Function):** An HTTP-triggered function designed to be invoked by Cloud Tasks. It receives a tenant's information in the request payload and sends them a rent reminder email using AWS Simple Email Service (SES). Landlord emails are currently disabled.
-3.  **`stream_invoice_pdf` (HTTP Function):** An HTTP-triggered function that allows tenants to securely stream their invoice as a PDF directly from Google Cloud Storage.
+3.  **`get_invoice` (HTTP Function):** An HTTP-triggered function that allows tenants to securely stream their invoice as a PDF directly from Google Cloud Storage.
+4.  **`generate_receipt` (HTTP Function):** An HTTP-triggered function that generates a receipt PDF for a given payment, stores it in Google Cloud Storage, and returns a URL to retrieve it.
+5.  **`get_receipt` (HTTP Function):** An HTTP-triggered function that allows tenants to securely stream their receipt as a PDF directly from Google Cloud Storage.
 
 This architecture provides a robust, scalable, and decoupled system for handling notifications and document access.
 
 ## Repository Contents
 
-*   `functions/main.py`: Contains the core Python code for the `main` scheduler function, the `send_notification_worker` function, and the `stream_invoice_pdf` function.
+*   `functions/main.py`: Contains the core Python code for the `main` scheduler function, the `send_notification_worker` function, and the `get_invoice`, `generate_receipt`, and `get_receipt` functions.
+*   `functions/services/receipt_service.py`: Contains the logic for generating receipt PDFs.
 *   `functions/requirements.txt`: Lists all the Python dependencies for the project (e.g., `firebase-functions`, `boto3`, `Jinja2`).
 *   `functions/templates/reminder_email.html`: The Jinja2 template used to generate the body of the rent reminder email.
 *   `functions/tests/`: Contains all the unit and integration tests.
     *   `test_main.py`: The main test file, containing tests for all functions and helpers.
+    *   `test_receipt.py`: Contains tests for the receipt generation functionality.
     *   `test_db.json`: A snapshot of the database schema used for mock data in the tests.
 *   `firebase.json` & `.firebaserc`: Configuration files for deploying with the Firebase CLI.
 *   `README.md`: This file, providing an overview and instructions for the project.
@@ -27,7 +31,8 @@ This architecture provides a robust, scalable, and decoupled system for handling
 
 *   **Invoice Reference:** The invoice reference is now stored in the `accounts` section of the database.
 *   **Landlord Emails:** Landlord reminder emails have been disabled.
-*   **Invoice Streaming:** A new `stream_invoice_pdf` function has been added to allow tenants to securely stream their invoices as PDFs.
+*   **Invoice Streaming:** A new `get_invoice` function has been added to allow tenants to securely stream their invoices as PDFs.
+*   **Receipt Generation:** New `generate_receipt` and `get_receipt` functions have been added to generate and stream receipt PDFs.
 
 ## Prerequisites
 
@@ -91,6 +96,31 @@ functions/venv/bin/python -m unittest functions.tests.test_main.TestEndtoEnd.tes
 ```bash
 source functions/venv/bin/activate && python -m unittest discover functions/tests
 ```
+
+## Testing New Features
+
+### Testing Receipt Generation
+
+To test the `generate_receipt` function, you can use `curl` to send a POST request to the function's URL. You will need to replace `YOUR_CLOUD_FUNCTION_URL` with the actual URL of your deployed function.
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+-d '{
+  "tenant_name": "John Doe",
+  "property_name": "The Grand Estate",
+  "date_paid": "2025-12-31",
+  "next_payment_date": "2026-01-31",
+  "amount_paid": 1500.00,
+  "additional_info": [
+    {"title": "Rent", "amount": 1400.00},
+    {"title": "Late Fee", "amount": 100.00}
+  ],
+  "id_number": "12345"
+}' \
+https://us-central1-homehive-8c7d4.cloudfunctions.net/generate_receipt
+```
+
+The function will respond with a URL to the generated receipt PDF. You can then use this URL to download the receipt.
 
 ## Test Coverage
 
