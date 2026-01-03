@@ -2,6 +2,8 @@ from firebase_functions import scheduler_fn, https_fn
 from firebase_functions.options import set_global_options
 from firebase_admin import initialize_app, storage, db
 import firebase_admin # Added import
+import google.cloud.logging
+
 import logging
 import os 
 import uuid
@@ -21,11 +23,12 @@ from logic.notification_logic import (
     get_payments_to_move_to_due, 
     get_payments_to_move_from_due_to_overdue
 )
-from services.cloud_tasks_service import enqueue_notification_tasks
+from services.cloud_tasks_service import enqueue_tasks
 from utils.template_renderer import template_env
 from services.email_service import (
     send_tenant_summary_email, 
-    send_landlord_summary_email
+    send_landlord_summary_email,
+    send_email
 )
 from services.invoice_service import create_invoice_pdf
 from services.storage_service import upload_to_storage
@@ -33,7 +36,10 @@ from services.receipt_service import generate_receipt_pdf
 
 
 # Set up a module-level logger
+client = google.cloud.logging.Client()
+client.setup_logging()
 log = logging.getLogger(__name__)
+
 
 # Global Firebase app initialization, including Realtime Database URL
 # firebase_options = {'databaseURL': os.environ.get('FIREBASE_DATABASE_URL')}
@@ -44,7 +50,7 @@ except ValueError:
 set_global_options(max_instances=1)
 
 @scheduler_fn.on_schedule(
-    schedule="0 7 * * *",
+    schedule="0 3 * * *",
     timezone=scheduler_fn.Timezone("Africa/Johannesburg"),
 )
 def main(event: scheduler_fn.ScheduledEvent) -> None:
@@ -58,17 +64,21 @@ def main(event: scheduler_fn.ScheduledEvent) -> None:
     tenants = get_all_tenants()
     companies = get_all_companies() # Fetch company data
     accounts = get_all_accounts()
-
+    log.info(f"Fetched data - Statistics: {len(statistics)}, Tenants: {bool(tenants)}, Companies: {bool(companies)}, Accounts: {bool(accounts)}")
     if statistics and tenants and companies and accounts:
         grouped_due_rentals_by_tenant = get_due_rentals_by_tenant(statistics, tenants, days_window)
         payments_to_move_to_due = get_payments_to_move_to_due(statistics, days_window)
         payments_to_move_to_overdue = get_payments_to_move_to_overdue(statistics)
-        landlord_due_rentals = get_due_rentals_by_landlord(statistics, tenants, companies, days_window)
+        # landlord_due_rentals = get_due_rentals_by_landlord(statistics, tenants, companies, days_window)
 
         if grouped_due_rentals_by_tenant:
             log.info(f"Found {len(grouped_due_rentals_by_tenant)} tenants with rent due exactly {days_window} days from now:")
             # Enqueue each tenant's consolidated reminder as a single task
-            enqueue_notification_tasks(list(grouped_due_rentals_by_tenant.values()))
+            enqueue_tasks(
+                list(grouped_due_rentals_by_tenant.values()), 
+                target_function="send_notification_worker", 
+                task_name_prefix="send-notification-",
+            )
             for tenant_id, tenant_data in grouped_due_rentals_by_tenant.items():
                 log.info(f"  - Enqueued consolidated reminder for Tenant ID: {tenant_id}, Name: {tenant_data['tenant_info']['name']}")
         else:
@@ -201,6 +211,35 @@ def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
     #     return https_fn.Response("An error occurred.", status=500)
 
 @https_fn.on_request()
+def send_email_worker(req: https_fn.Request) -> https_fn.Response:
+    """
+    HTTP-triggered function that receives an email payload and sends an email.
+    """
+    try:
+        email_payload = req.get_json(silent=True)
+        if not email_payload:
+            log.error("No email data in request body.")
+            return https_fn.Response("No data received", status=400)
+
+        success = send_email(
+            recipient_email=email_payload["recipient_email"],
+            subject=email_payload["subject"],
+            template_name=email_payload["template_name"],
+            template_env=template_env,
+            context=email_payload["context"]
+        )
+
+        if success:
+            return https_fn.Response("Email sent successfully.", status=200)
+        else:
+            return https_fn.Response("Failed to send email.", status=500)
+
+    except Exception as e:
+        log.error(f"An unexpected error occurred in send_email_worker: {e}")
+        return https_fn.Response("An error occurred.", status=500)
+
+
+@https_fn.on_request()
 def get_invoice(req: https_fn.Request) -> https_fn.Response:
     """
     HTTP-triggered function that retrieves an invoice PDF from Google Cloud Storage
@@ -280,7 +319,28 @@ def generate_receipt(req: https_fn.Request) -> https_fn.Response:
             # Construct the URL to the get_receipt Cloud Function
             cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', 'https://us-central1-homehive-8c7d4.cloudfunctions.net')
             receipt_url = f"{cloud_function_base_url}/get_receipt?id_number={id_number}&receipt_number={receipt_number}"
-            
+
+            # Enqueue a task to send the receipt email
+            email_payload = {
+                "email_type": "receipt",
+                "recipient_email": data["tenant_email"],
+                "subject": "Your Payment Receipt from HomeHive",
+                "template_name": "receipt_email.html",
+                "context": {
+                    "name": data["tenant_name"],
+                    "additional_info": data["additional_info"],
+                    "amount_paid": data["amount_paid"],
+                    "next_payment_date": data["next_payment_date"],
+                    "receipt_url": receipt_url,
+                    "current_year": datetime.now().year
+                }
+            }
+            enqueue_tasks(
+                [email_payload], 
+                target_function="send_email_worker", 
+                task_name_prefix="send-email-",
+            )
+
             return https_fn.Response(receipt_url, status=200)
         else:
             log.error("Failed to upload receipt.")

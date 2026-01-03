@@ -4,25 +4,30 @@ This repository contains the backend Cloud Functions for the HomeHive platform, 
 
 ## Overview
 
-This project includes four main Cloud Functions:
+This project includes six main Cloud Functions:
 
-1.  **`main` (Scheduled Function):** A scheduler-triggered function that runs periodically (e.g., daily). It queries the Firebase Realtime Database to find tenants whose rent is due within a configurable window (e.g., 7 days). For each due tenant, it enqueues a task in Google Cloud Tasks.
+1.  **`main` (Scheduled Function):** A scheduler-triggered function that runs periodically (e.g., daily). It queries the Firebase Realtime Database to find tenants whose rent is due within a configurable window (e.g., 7 days). For each due tenant, it enqueues a task to `send_notification_worker` in Google Cloud Tasks.
 2.  **`send_notification_worker` (HTTP Function):** An HTTP-triggered function designed to be invoked by Cloud Tasks. It receives a tenant's information in the request payload and sends them a rent reminder email using AWS Simple Email Service (SES). Landlord emails are currently disabled.
 3.  **`get_invoice` (HTTP Function):** An HTTP-triggered function that allows tenants to securely stream their invoice as a PDF directly from Google Cloud Storage.
-4.  **`generate_receipt` (HTTP Function):** An HTTP-triggered function that generates a receipt PDF for a given payment, stores it in Google Cloud Storage, and returns a URL to retrieve it.
-5.  **`get_receipt` (HTTP Function):** An HTTP-triggered function that allows tenants to securely stream their receipt as a PDF directly from Google Cloud Storage.
+4.  **`generate_receipt` (HTTP Function):** An HTTP-triggered function that generates a receipt PDF for a given payment, stores it in Google Cloud Storage, returns a URL to retrieve the PDF, and **asynchronously enqueues a task to `send_email_worker` to send a receipt email.**
+5.  **`get_receipt` (HTTP Function):** An HTTP-triggered function that retrieves a receipt PDF from Google Cloud Storage based on URL parameters and streams its content directly to the client. **It does NOT trigger any email sending or other background processes.**
+6.  **`send_email_worker` (HTTP Function):** A generic HTTP-triggered function invoked by Cloud Tasks to send various types of emails (e.g., receipts) using a template-based system.
 
 This architecture provides a robust, scalable, and decoupled system for handling notifications and document access.
 
 ## Repository Contents
 
-*   `functions/main.py`: Contains the core Python code for the `main` scheduler function, the `send_notification_worker` function, and the `get_invoice`, `generate_receipt`, and `get_receipt` functions.
+*   `functions/main.py`: Contains the core Python code for all Cloud Functions.
 *   `functions/services/receipt_service.py`: Contains the logic for generating receipt PDFs.
-*   `functions/requirements.txt`: Lists all the Python dependencies for the project (e.g., `firebase-functions`, `boto3`, `Jinja2`).
-*   `functions/templates/reminder_email.html`: The Jinja2 template used to generate the body of the rent reminder email.
+*   `functions/services/email_service.py`: Contains the logic for sending emails.
+*   `functions/requirements.txt`: Lists all the Python dependencies for the project.
+*   `functions/templates/`: Contains the Jinja2 templates for emails.
+    *   `reminder_email.html`: Template for rent reminder emails.
+    *   `receipt_email.html`: Template for receipt emails.
 *   `functions/tests/`: Contains all the unit and integration tests.
-    *   `test_main.py`: The main test file, containing tests for all functions and helpers.
+    *   `test_main.py`: The main test file, containing tests for the main scheduler function.
     *   `test_receipt.py`: Contains tests for the receipt generation functionality.
+    *   `test_email.py`: Contains tests for the email sending functionality.
     *   `test_db.json`: A snapshot of the database schema used for mock data in the tests.
 *   `firebase.json` & `.firebaserc`: Configuration files for deploying with the Firebase CLI.
 *   `README.md`: This file, providing an overview and instructions for the project.
@@ -33,6 +38,7 @@ This architecture provides a robust, scalable, and decoupled system for handling
 *   **Landlord Emails:** Landlord reminder emails have been disabled.
 *   **Invoice Streaming:** A new `get_invoice` function has been added to allow tenants to securely stream their invoices as PDFs.
 *   **Receipt Generation:** New `generate_receipt` and `get_receipt` functions have been added to generate and stream receipt PDFs.
+*   **Generic Email Service:** A new `send_email_worker` function and a generic `send_email` service have been added to handle sending different types of emails.
 
 ## Prerequisites
 
@@ -99,7 +105,20 @@ source functions/venv/bin/activate && python -m unittest discover functions/test
 
 ## Testing New Features
 
-### Testing Receipt Generation
+### Understanding Receipt & Email Flow
+
+It's important to understand the decoupled and asynchronous nature of the `generate_receipt` and email sending process:
+
+1.  When you call the `generate_receipt` function, it does two main things:
+    *   Generates and saves the PDF receipt to Cloud Storage.
+    *   **Immediately enqueues a separate task to send the email.** This task targets the `send_email_worker` function.
+2.  The `generate_receipt` function then returns the `get_receipt` URL to you. It does **not** wait for the email to be sent.
+3.  The `send_email_worker` function is triggered independently by Google Cloud Tasks to process the email sending.
+4.  The `get_receipt` function simply retrieves the PDF when its URL is accessed; it does not trigger any email sending.
+
+This asynchronous design ensures responsiveness and resilience.
+
+### Testing Receipt Generation and Emailing
 
 To test the `generate_receipt` function, you can use `curl` to send a POST request to the function's URL. You will need to replace `YOUR_CLOUD_FUNCTION_URL` with the actual URL of your deployed function.
 
@@ -107,6 +126,7 @@ To test the `generate_receipt` function, you can use `curl` to send a POST reque
 curl -X POST -H "Content-Type: application/json" \
 -d '{
   "tenant_name": "John Doe",
+  "tenant_email": "john.doe@example.com",
   "property_name": "The Grand Estate",
   "date_paid": "2025-12-31",
   "next_payment_date": "2026-01-31",
@@ -120,7 +140,7 @@ curl -X POST -H "Content-Type: application/json" \
 https://us-central1-homehive-8c7d4.cloudfunctions.net/generate_receipt
 ```
 
-The function will respond with a URL to the generated receipt PDF. You can then use this URL to download the receipt.
+The function will respond with a URL to the generated receipt PDF. You can then use this URL to download the receipt. This will also enqueue a task to send the receipt to the specified `tenant_email`.
 
 ## Test Coverage
 

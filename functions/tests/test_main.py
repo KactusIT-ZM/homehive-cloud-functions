@@ -411,7 +411,7 @@ class TestMainIntegration(unittest.TestCase):
         # Ensure that db.reference returns a mock object that has a .get method
         self.mock_db_reference.return_value = mock_ref_instance
 
-        self.patch_enqueue = patch('functions.main.enqueue_notification_tasks')
+        self.patch_enqueue = patch('functions.main.enqueue_tasks')
         self.patch_get_tenants = patch('functions.main.get_all_tenants')
         self.patch_get_statistics = patch('functions.main.get_all_statistics')
         self.patch_get_companies = patch('functions.main.get_all_companies') # Add mock for get_all_companies
@@ -576,7 +576,7 @@ class TestEndtoEnd(unittest.TestCase):
         self.patch_get_statistics = patch('functions.main.get_all_statistics')
         self.patch_get_companies = patch('functions.main.get_all_companies') 
         self.patch_get_accounts = patch('functions.main.get_all_accounts')
-        self.patch_enqueue = patch('functions.main.enqueue_notification_tasks')
+        self.patch_enqueue = patch('functions.main.enqueue_tasks')
         self.patch_send_landlord_summary_email = patch('functions.main.send_landlord_summary_email')
         self.patch_template_env = patch('functions.main.template_env')
         self.patch_move_pending_to_due = patch('functions.main.move_pending_to_due')
@@ -620,7 +620,11 @@ class TestEndtoEnd(unittest.TestCase):
             self.mock_template_env.return_value = MagicMock()
             
             notification_handler(MockEvent())
-            self.mock_enqueue.assert_called_once_with(mock_grouped_rentals)
+            self.mock_enqueue.assert_called_once_with(
+                mock_grouped_rentals,
+                target_function="send_notification_worker",
+                task_name_prefix="send-notification-"
+            )
             # self.mock_send_landlord_summary_email.assert_called_once_with(
             #     "support@wachilamaka.co.zm", 
             #     [

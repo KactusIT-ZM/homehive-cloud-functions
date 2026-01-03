@@ -10,18 +10,21 @@ PROJECT = 'homehive-8c7d4'
 QUEUE = 'notification-queue'
 LOCATION = 'us-central1'
 
-def enqueue_notification_tasks(due_tenants: list):
+def enqueue_tasks(payloads: list, target_function: str, task_name_prefix: str = "task-"):
     """
-    Enqueues tasks to Cloud Tasks to send notifications to tenants.
+    Enqueues tasks to Cloud Tasks.
     """
     tasks_client = tasks_v2.CloudTasksClient()
     parent = tasks_client.queue_path(PROJECT, LOCATION, QUEUE)
 
-    for tenant_info in due_tenants:
-        url = f"https://{LOCATION}-{PROJECT}.cloudfunctions.net/send_notification_worker"
-        payload = json.dumps(tenant_info)
+    for payload_data in payloads:
+        url = f"https://{LOCATION}-{PROJECT}.cloudfunctions.net/{target_function}"
+        payload = json.dumps(payload_data)
         
+        task_name = f"{task_name_prefix}{payload_data.get('tenant_id', '')}-{payload_data.get('email_type', '')}"
+
         task = {
+            "name": tasks_client.task_path(PROJECT, LOCATION, QUEUE, task_name),
             "http_request": {
                 "http_method": tasks_v2.HttpMethod.POST,
                 "url": url,
@@ -32,6 +35,6 @@ def enqueue_notification_tasks(due_tenants: list):
         
         try:
             response = tasks_client.create_task(parent=parent, task=task)
-            log.info(f"Created task {response.name} for tenant {tenant_info['tenant_info']['tenant_id']}")
+            log.info(f"Created task {response.name}")
         except Exception as e:
-            log.error(f"Error creating task for tenant {tenant_info['tenant_info']['tenant_id']}: {e}")
+            log.error(f"Error creating task: {e}")

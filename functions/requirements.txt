@@ -7,5 +7,6 @@ boto3
 coverage
 Jinja2
 google-cloud-secret-manager
+google-cloud-logging
 fpdf2
 freezegun

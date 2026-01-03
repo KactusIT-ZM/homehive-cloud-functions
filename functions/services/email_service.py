@@ -11,6 +11,97 @@ from .secret_manager_service import access_secret_version
 # Set up a module-level logger
 log = logging.getLogger(__name__)
 
+def send_email(recipient_email: str, subject: str, template_name: str, template_env, context: dict, cc_recipients: list = None) -> bool:
+    """
+    Sends an email using a specified template and context.
+    """
+    if not recipient_email:
+        log.error("No recipient email provided. Skipping email.")
+        return False
+
+    aws_region = "us-east-1"
+    sender_email = os.environ.get("SENDER_EMAIL", "noreply@homehive.properties")
+
+    if not sender_email:
+        log.error("SENDER_EMAIL environment variable not set.")
+        return False
+    
+    # --- Andon Cord / Safety Net ---
+    is_testing = os.environ.get("TESTING_MODE", "true").lower() == "true"
+    if is_testing:
+        original_email = recipient_email
+        recipient_email = "info@kactusit.com"
+        log.warning(f"TESTING_MODE is active. Redirecting email from {original_email} to {recipient_email}")
+        if cc_recipients:
+            log.warning(f"TESTING_MODE is active. Redirecting CC recipients {cc_recipients} to {recipient_email}")
+            cc_recipients = [recipient_email]
+
+    # Render the email body from the template
+    template = template_env.get_template(template_name)
+    html_body = template.render(**context)
+    
+    # Create a plain text version as a fallback
+    # This is a generic fallback, you might want to customize it
+    text_body = "This is an automated message from HomeHive. Please view the HTML version of this email."
+
+    aws_access_key_id = access_secret_version("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key = access_secret_version("AWS_SECRET_ACCESS_KEY")
+
+    if not aws_access_key_id or not aws_secret_access_key:
+        log.error("Failed to retrieve AWS credentials from Secret Manager.")
+        return False
+
+    try:
+        ses_client = boto3.client(
+            'ses',
+            region_name=aws_region,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key
+        )
+        
+        msg = MIMEMultipart('mixed')
+        msg['Subject'] = subject
+        msg['From'] = sender_email
+        msg['To'] = recipient_email
+        if cc_recipients:
+            msg['Cc'] = ', '.join(cc_recipients)
+
+        msg_related = MIMEMultipart('related')
+        msg.attach(msg_related)
+        
+        msg_alternative = MIMEMultipart('alternative')
+        msg_related.attach(msg_alternative)
+
+        msg_alternative.attach(MIMEText(text_body, 'plain'))
+        msg_alternative.attach(MIMEText(html_body, 'html'))
+        
+        # Attach the logo
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        logo_path = os.path.normpath(os.path.join(current_dir, '..', 'templates', 'assets', 'apple-touch-icon.png'))
+        with open(logo_path, 'rb') as f:
+            logo_data = f.read()
+        logo = MIMEImage(logo_data, 'png')
+        logo.add_header('Content-ID', '<logo>')
+        msg_related.attach(logo)
+        
+        destinations = [recipient_email]
+        if cc_recipients:
+            destinations.extend(cc_recipients)
+
+        ses_client.send_raw_email(
+            Source=sender_email,
+            Destinations=destinations,
+            RawMessage={'Data': msg.as_string()}
+        )
+        
+        log.info(f"Successfully sent email with subject '{subject}' to {recipient_email}")
+        if cc_recipients:
+            log.info(f"CC'd to: {', '.join(cc_recipients)}")
+        return True
+    except Exception as e:
+        log.error(f"An unexpected error occurred while sending email: {e}")
+        return False
+
 def send_tenant_summary_email(tenant_info: dict, template_env, invoice_url: str = None, cc_recipients: list = None) -> bool:
     """
     Sends a consolidated rent reminder email to the tenant, summarizing multiple due rentals.
@@ -19,7 +110,7 @@ def send_tenant_summary_email(tenant_info: dict, template_env, invoice_url: str 
     """
     tenant_id_for_logging = "UNKNOWN_TENANT_IN_EMAIL_SERVICE" # Initialize for logging
     try:
-        tenant_details = tenant_info.get('tenant_info', {}) 
+        tenant_details = tenant_info.get('tenant_info', {})
         recipient_email = tenant_details.get('email')
         tenant_name = tenant_details.get('name', 'Tenant')
         tenant_id_for_logging = tenant_details.get('tenant_id', "UNKNOWN_ID_FROM_PAYLOAD") # Re-assign with extracted ID
