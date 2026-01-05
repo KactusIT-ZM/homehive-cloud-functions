@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Shared - HomeHive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 20px;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+        }
+        .content {
+            padding: 20px;
+            line-height: 1.6;
+            color: #333333;
+        }
+        .content p {
+            margin: 0 0 15px;
+        }
+        .document-info {
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .document-info h3 {
+            margin: 0 0 10px 0;
+            color: #4CAF50;
+            font-size: 18px;
+        }
+        .document-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .button-container {
+            text-align: center;
+            padding: 10px 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .footer {
+            background-color: #f0f0f0;
+            color: #777777;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9em;
+            border-top: 1px solid #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="33%" align="left" valign="middle">
+                        <img src="cid:logo" alt="HomeHive Logo" style="max-width: 40px; height: auto; display: block; padding-left: 10px;">
+                    </td>
+                    <td width="34%" align="center" valign="middle">
+                        <h1>Document Shared</h1>
+                    </td>
+                    <td width="33%" align="right" valign="middle">
+                        <!-- Empty cell for spacing -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="content">
+            <p>Hello {{ tenant_name }},</p>
+
+            <p>A document has been shared with you from your property management team.</p>
+
+            <div class="document-info">
+                <h3>{{ document_title }}</h3>
+                <p><strong>Description:</strong> {{ document_description }}</p>
+                {% if document_type %}
+                <p><strong>Type:</strong> {{ document_type }}</p>
+                {% endif %}
+            </div>
+
+            <p>You can view and download the document using the button below:</p>
+        </div>
+
+        <div class="button-container">
+            <a href="{{ document_url }}" class="button">View Document</a>
+        </div>
+
+        <div class="content">
+            <p>If you have any questions about this document, please don't hesitate to contact your property management team.</p>
+
+            <p>Sincerely,<br>
+            The HomeHive Team</p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; {{ current_year }} HomeHive Property Management. All rights reserved.</p>
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

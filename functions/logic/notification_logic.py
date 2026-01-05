@@ -37,7 +37,7 @@ def get_due_rentals_by_tenant(statistics: dict, tenants: dict, exact_days_from_t
 
             try:
                 due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
-                if due_date == target_due_date: # Check for exact due date
+                if today <= due_date <= target_due_date: # Check for exact due date
                     tenant_id = payment_details.get('tenantId')
                     tenant_details_from_db = all_tenants_flat.get(tenant_id)
                     if tenant_details_from_db:
@@ -97,7 +97,7 @@ def get_due_rentals_by_landlord(statistics: dict, tenants: dict, companies: dict
 
             try:
                 due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
-                if due_date == target_due_date: # Check for exact due date
+                if today <= due_date <= target_due_date: # Check for exact due date
                     tenant_id = payment_details.get('tenantId')
                     tenant_details_from_db = all_tenants_flat.get(tenant_id)
                     if tenant_details_from_db:
@@ -192,7 +192,7 @@ def get_payments_to_move_to_due(statistics: dict, exact_days_from_today: int) ->
 
             try:
                 due_date = datetime.strptime(rent_due_date_str, '%d/%m/%Y').date()
-                if due_date == target_due_date: # Check for exact due date
+                if today <= due_date <= target_due_date: # Check for exact due date
                     payments_to_move.append({
                         'company_id': company_id,
                         'payment_id': payment_id,

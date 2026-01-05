@@ -19,11 +19,12 @@ class MockRequest:
 
 class TestReceipts(unittest.TestCase):
 
+    @patch('main.enqueue_tasks')
     @patch('main.os.environ.get', return_value='https://test.com')
     @patch('main.uuid.uuid4')
     @patch('main.storage.bucket')
     @patch('main.generate_receipt_pdf')
-    def test_generate_receipt_success(self, mock_generate_receipt_pdf, mock_storage_bucket, mock_uuid, mock_env_get):
+    def test_generate_receipt_success(self, mock_generate_receipt_pdf, mock_storage_bucket, mock_uuid, mock_env_get, mock_enqueue_tasks):
         # Mocking the PDF generation
         mock_generate_receipt_pdf.return_value = b'test_pdf_content'
         mock_uuid.return_value = "test-uuid"
@@ -37,6 +38,7 @@ class TestReceipts(unittest.TestCase):
         # Mocking the request
         req_data = {
             "tenant_name": "John Doe",
+            "tenant_email": "john.doe@example.com",
             "property_name": "The Grand Estate",
             "date_paid": "2025-12-31",
             "next_payment_date": "2026-01-31",
@@ -62,6 +64,8 @@ class TestReceipts(unittest.TestCase):
             b'test_pdf_content',
             content_type='application/pdf'
         )
+        mock_enqueue_tasks.assert_called_once()
+
 
     @patch('main.storage.bucket')
     def test_get_receipt_success(self, mock_storage_bucket):
