@@ -36,7 +36,7 @@ def generate_receipt_pdf(data):
     pdf.set_x(10)
     pdf.cell(95, 10, f"Bill To: {data['tenant_name']}", border=0, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
     
-    receipt_number = f"RCPT-{data.get('id_number', 'UNKNOWN')[:8].upper()}-{datetime.now().strftime('%Y%m%d')}"
+    receipt_number = f"RCPT-{data.get('payment_id', 'UNKNOWN')[-5:].upper()}-{datetime.now().strftime('%Y%m%d')}"
     pdf.cell(95, 10, f"Receipt #: {receipt_number}", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     pdf.set_font('Helvetica', '', 12)
@@ -44,20 +44,42 @@ def generate_receipt_pdf(data):
 
     # Dates (right aligned)
     pdf.cell(0, 7, f"Date Paid: {data['date_paid']}", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-    pdf.cell(0, 7, f"Next Payment Date: {data['next_payment_date']}", border=0, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.ln(10)
 
     # Invoice Table Header
     pdf.set_fill_color(200, 220, 255)
     pdf.set_font('Helvetica', 'B', 12)
-    pdf.cell(150, 10, 'Description', border=1, align='L', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
-    pdf.cell(40, 10, 'Amount', border=1, align='R', fill=True, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    col_widths = {'desc': 40, 'prop': 110, 'amt': 40} # Adjusted widths
+    pdf.cell(col_widths['desc'], 10, 'Description', border=1, align='L', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
+    pdf.cell(col_widths['prop'], 10, 'Property', border=1, align='L', fill=True, new_x=XPos.RIGHT, new_y=YPos.TOP)
+    pdf.cell(col_widths['amt'], 10, 'Amount', border=1, align='R', fill=True, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     # Invoice Table Body
     pdf.set_font('Helvetica', '', 12)
-    for item in data['additional_info']:
-        pdf.cell(150, 10, item['title'], border=1, align='L', new_x=XPos.RIGHT, new_y=YPos.TOP)
-        pdf.cell(40, 10, f"ZMW {item['amount']:.2f}", border=1, align='R', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    property_name = data.get('property_name', 'N/A')
+    items = data.get('additional_info')
+
+    if not items:
+        items = [{'amount': data.get('amount_paid', 0.0)}]
+
+    for item in items:
+        description = "Rent" # Changed as per request
+        
+        # --- Calculate row height ---
+        desc_lines = pdf.multi_cell(col_widths['desc'], 10, description, split_only=True)
+        h_desc = len(desc_lines) * 10
+
+        prop_lines = pdf.multi_cell(col_widths['prop'], 10, property_name, split_only=True)
+        h_prop = len(prop_lines) * 10
+
+        row_height = max(h_desc, h_prop, 10)
+
+        # --- Draw cells with calculated height ---
+        pdf.multi_cell(col_widths['desc'], row_height, description, border=1, align='L', new_x="RIGHT", new_y="TOP")
+        
+        pdf.multi_cell(col_widths['prop'], row_height, property_name, border=1, align='L', new_x="RIGHT", new_y="TOP")
+        
+        pdf.cell(col_widths['amt'], row_height, f"ZMW {item.get('amount', 0.0):.2f}", border=1, align='R', new_x="LMARGIN", new_y="NEXT")
     
     pdf.ln(10)
 
@@ -73,4 +95,3 @@ def generate_receipt_pdf(data):
     pdf.cell(0, 10, "Thank you for your payment!", ln=True, align="C")
 
     return bytes(pdf.output())
-
