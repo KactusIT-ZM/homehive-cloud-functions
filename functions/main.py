@@ -294,61 +294,90 @@ def get_invoice(req: https_fn.Request) -> https_fn.Response:
 def generate_receipt(req: https_fn.Request) -> https_fn.Response:
     """
     HTTP-triggered function that generates a receipt, stores it, and returns the URL.
+    Optionally sends email based on send_email parameter (default: true).
     """
+    # Handle CORS preflight
+    if req.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+            'Access-Control-Max-Age': '3600'
+        }
+        return https_fn.Response('', status=204, headers=headers)
+
+    # Set CORS headers for actual request
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+    }
+
     try:
         data = req.get_json(silent=True)
         if not data:
-            log.error("No data in request body.")
-            return https_fn.Response("No data received", status=400)
+            log.error(f"No data in request body. Content-Type: {req.headers.get('Content-Type')}, Body: {req.data}")
+            return https_fn.Response('{"error": "No data received"}', status=400, headers=headers)
+
+        # Check if email should be sent (default true for backward compatibility)
+        send_email_flag = data.get("send_email", True)
 
         # Generate a unique name for the receipt
         receipt_number = str(uuid.uuid4())
-        
+
         # Generate the PDF
         pdf_bytes = generate_receipt_pdf(data)
-        
+
         # Upload to storage
         id_number = data.get("id_number")
         if not id_number:
             log.error("Missing id_number in request.")
-            return https_fn.Response("Missing id_number.", status=400)
-            
+            return https_fn.Response('{"error": "Missing id_number"}', status=400, headers=headers)
+
         file_path = upload_to_storage(pdf_bytes, id_number, receipt_number, file_type="receipts")
-        
+
         if file_path:
             # Construct the URL to the get_receipt Cloud Function
-            cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', 'https://us-central1-homehive-8c7d4.cloudfunctions.net')
+            # Auto-detect project from environment
+            project_id = os.environ.get('GCP_PROJECT') or os.environ.get('GCLOUD_PROJECT') or 'homehive-dev-89916'
+            cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', f'https://us-central1-{project_id}.cloudfunctions.net')
             receipt_url = f"{cloud_function_base_url}/get_receipt?id_number={id_number}&receipt_number={receipt_number}"
 
-            # Enqueue a task to send the receipt email
-            email_payload = {
-                "email_type": "receipt",
-                "recipient_email": data["tenant_email"],
-                "subject": "Your Payment Receipt from HomeHive",
-                "template_name": "receipt_email.html",
-                "context": {
-                    "name": data["tenant_name"],
-                    "additional_info": data["additional_info"],
-                    "amount_paid": data["amount_paid"],
-                    "next_payment_date": data["next_payment_date"],
-                    "receipt_url": receipt_url,
-                    "current_year": datetime.now().year
+            # Only send email if send_email_flag is true
+            if send_email_flag:
+                # Enqueue a task to send the receipt email
+                email_payload = {
+                    "email_type": "receipt",
+                    "recipient_email": data["tenant_email"],
+                    "subject": "Your Payment Receipt from HomeHive",
+                    "template_name": "receipt_email.html",
+                    "context": {
+                        "name": data["tenant_name"],
+                        "additional_info": data["additional_info"],
+                        "amount_paid": data["amount_paid"],
+                        "next_payment_date": data["next_payment_date"],
+                        "receipt_url": receipt_url,
+                        "current_year": datetime.now().year
+                    }
                 }
-            }
-            enqueue_tasks(
-                [email_payload], 
-                target_function="send_email_worker", 
-                task_name_prefix="send-email-",
-            )
+                enqueue_tasks(
+                    [email_payload],
+                    target_function="send_email_worker",
+                    task_name_prefix="send-email-",
+                )
+                log.info(f"Receipt generated and email queued for {data['tenant_email']}")
+            else:
+                log.info(f"Receipt generated for preview only (no email sent)")
 
-            return https_fn.Response(receipt_url, status=200)
+            return https_fn.Response(receipt_url, status=200, headers=headers)
         else:
             log.error("Failed to upload receipt.")
-            return https_fn.Response("Failed to upload receipt.", status=500)
+            return https_fn.Response('{"error": "Failed to upload receipt"}', status=500, headers=headers)
 
     except Exception as e:
         log.error(f"An unexpected error occurred in generate_receipt: {e}")
-        return https_fn.Response("An error occurred.", status=500)
+        import traceback
+        traceback.print_exc()
+        return https_fn.Response(f'{{"error": "An error occurred: {str(e)}"}}', status=500, headers=headers)
 
 
 @https_fn.on_request()
@@ -357,6 +386,16 @@ def get_receipt(req: https_fn.Request) -> https_fn.Response:
     HTTP-triggered function that retrieves a receipt PDF from Google Cloud Storage
     and streams its content directly to the client.
     """
+    # Handle CORS preflight
+    if req.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600'
+        }
+        return https_fn.Response('', status=204, headers=headers)
+
     id_number = req.args.get('id_number')
     receipt_number = req.args.get('receipt_number')
 
@@ -366,8 +405,8 @@ def get_receipt(req: https_fn.Request) -> https_fn.Response:
 
     try:
         file_path = f"Tenants/{id_number}/receipts/{receipt_number}.pdf"
-        
-        # Now, retrieve the PDF content directly from Cloud Storage
+
+        # Retrieve the PDF content from Cloud Storage using default bucket
         bucket = storage.bucket()
         blob = bucket.blob(file_path)
 
@@ -376,10 +415,115 @@ def get_receipt(req: https_fn.Request) -> https_fn.Response:
             return https_fn.Response("Receipt file not found in storage.", status=404)
 
         pdf_content = blob.download_as_bytes()
-        
+
         log.info(f"Streaming receipt PDF for receipt {receipt_number} directly to client.")
-        return https_fn.Response(pdf_content, headers={"Content-Type": "application/pdf"}, status=200)
+
+        # Add CORS headers for iframe/browser access
+        headers = {
+            "Content-Type": "application/pdf",
+            "Access-Control-Allow-Origin": "*",
+            "Content-Disposition": f"inline; filename=receipt-{receipt_number}.pdf"
+        }
+
+        return https_fn.Response(pdf_content, headers=headers, status=200)
 
     except Exception as e:
         log.error(f"Error in get_receipt for receipt {receipt_number}: {e}")
+        return https_fn.Response("An error occurred.", status=500)
+
+
+@https_fn.on_request()
+def get_document(req: https_fn.Request) -> https_fn.Response:
+    """
+    HTTP-triggered function that retrieves a document from Firebase Storage
+    and streams its content directly to the client. This hides the actual storage path.
+    Takes companyId and documentId as query parameters.
+    """
+    # Handle CORS preflight
+    if req.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600'
+        }
+        return https_fn.Response('', status=204, headers=headers)
+
+    company_id = req.args.get('companyId')
+    document_id = req.args.get('documentId')
+
+    if not company_id or not document_id:
+        log.error("Missing companyId or documentId query parameters for get_document.")
+        return https_fn.Response("Missing identifiers.", status=400)
+
+    try:
+        # Get document metadata from Realtime Database
+        rt_db_path = f"HomeHive/PropertyManagement/Documents/{company_id}/{document_id}"
+        ref = db.reference(rt_db_path)
+        doc_data = ref.get()
+
+        if not doc_data:
+            log.warning(f"Document data not found in RTDB at: {rt_db_path}")
+            return https_fn.Response("Document not found.", status=404)
+
+        document_url = doc_data.get('documentUrl')
+        if not document_url:
+            log.error(f"Document URL not found in metadata for document {document_id}")
+            return https_fn.Response("Document URL not found.", status=404)
+
+        # Parse the storage path from the Firebase Storage URL
+        # URL format: https://firebasestorage.googleapis.com/v0/b/{bucket}/o/{path}?...
+        try:
+            from urllib.parse import urlparse, unquote
+            parsed_url = urlparse(document_url)
+            # Extract path from /v0/b/{bucket}/o/{path}
+            path_parts = parsed_url.path.split('/o/')
+            if len(path_parts) > 1:
+                file_path = unquote(path_parts[1].split('?')[0])
+            else:
+                log.error(f"Could not parse storage path from URL: {document_url}")
+                return https_fn.Response("Invalid document URL format.", status=500)
+        except Exception as e:
+            log.error(f"Error parsing document URL: {e}")
+            return https_fn.Response("Error parsing document URL.", status=500)
+
+        # Retrieve the file from Cloud Storage using default bucket
+        bucket = storage.bucket()
+        blob = bucket.blob(file_path)
+
+        if not blob.exists():
+            log.error(f"Document file not found in storage at: {file_path}")
+            return https_fn.Response("Document file not found in storage.", status=404)
+
+        file_content = blob.download_as_bytes()
+
+        # Get file extension to determine content type
+        file_extension = file_path.split('.')[-1].lower()
+        content_type_map = {
+            'pdf': 'application/pdf',
+            'doc': 'application/msword',
+            'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls': 'application/vnd.ms-excel',
+            'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'jpg': 'image/jpeg',
+            'jpeg': 'image/jpeg',
+            'png': 'image/png'
+        }
+        content_type = content_type_map.get(file_extension, 'application/octet-stream')
+
+        log.info(f"Streaming document {document_id} directly to client.")
+
+        # Add CORS headers for browser access
+        headers = {
+            "Content-Type": content_type,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Disposition": f"inline; filename={doc_data.get('title', 'document')}.{file_extension}"
+        }
+
+        return https_fn.Response(file_content, headers=headers, status=200)
+
+    except Exception as e:
+        log.error(f"Error in get_document for document {document_id}: {e}")
+        import traceback
+        traceback.print_exc()
         return https_fn.Response("An error occurred.", status=500)

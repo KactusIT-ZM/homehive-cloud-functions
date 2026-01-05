@@ -4,14 +4,15 @@ This repository contains the backend Cloud Functions for the HomeHive platform, 
 
 ## Overview
 
-This project includes six main Cloud Functions:
+This project includes seven main Cloud Functions:
 
 1.  **`main` (Scheduled Function):** A scheduler-triggered function that runs periodically (e.g., daily). It queries the Firebase Realtime Database to find tenants whose rent is due within a configurable window (e.g., 7 days). For each due tenant, it enqueues a task to `send_notification_worker` in Google Cloud Tasks.
 2.  **`send_notification_worker` (HTTP Function):** An HTTP-triggered function designed to be invoked by Cloud Tasks. It receives a tenant's information in the request payload and sends them a rent reminder email using AWS Simple Email Service (SES). Landlord emails are currently disabled.
 3.  **`get_invoice` (HTTP Function):** An HTTP-triggered function that allows tenants to securely stream their invoice as a PDF directly from Google Cloud Storage.
 4.  **`generate_receipt` (HTTP Function):** An HTTP-triggered function that generates a receipt PDF for a given payment, stores it in Google Cloud Storage, returns a URL to retrieve the PDF, and **asynchronously enqueues a task to `send_email_worker` to send a receipt email.**
 5.  **`get_receipt` (HTTP Function):** An HTTP-triggered function that retrieves a receipt PDF from Google Cloud Storage based on URL parameters and streams its content directly to the client. **It does NOT trigger any email sending or other background processes.**
-6.  **`send_email_worker` (HTTP Function):** A generic HTTP-triggered function invoked by Cloud Tasks to send various types of emails (e.g., receipts) using a template-based system.
+6.  **`get_document` (HTTP Function):** An HTTP-triggered function that retrieves a document from Firebase Storage and streams it to the client. It takes `companyId` and `documentId` as query parameters, fetches document metadata from Realtime Database, and securely streams the file. This hides the actual storage path from users.
+7.  **`send_email_worker` (HTTP Function):** A generic HTTP-triggered function invoked by Cloud Tasks to send various types of emails (e.g., receipts, document shares) using a template-based system.
 
 This architecture provides a robust, scalable, and decoupled system for handling notifications and document access.
 
@@ -22,8 +23,9 @@ This architecture provides a robust, scalable, and decoupled system for handling
 *   `functions/services/email_service.py`: Contains the logic for sending emails.
 *   `functions/requirements.txt`: Lists all the Python dependencies for the project.
 *   `functions/templates/`: Contains the Jinja2 templates for emails.
-    *   `reminder_email.html`: Template for rent reminder emails.
-    *   `receipt_email.html`: Template for receipt emails.
+    *   `reminder_email.html`: Template for rent reminder emails (green theme).
+    *   `receipt_email.html`: Template for receipt emails (green theme).
+    *   `document_share_email.html`: Template for document sharing emails (green theme).
 *   `functions/tests/`: Contains all the unit and integration tests.
     *   `test_main.py`: The main test file, containing tests for the main scheduler function.
     *   `test_receipt.py`: Contains tests for the receipt generation functionality.
@@ -39,6 +41,8 @@ This architecture provides a robust, scalable, and decoupled system for handling
 *   **Invoice Streaming:** A new `get_invoice` function has been added to allow tenants to securely stream their invoices as PDFs.
 *   **Receipt Generation:** New `generate_receipt` and `get_receipt` functions have been added to generate and stream receipt PDFs.
 *   **Generic Email Service:** A new `send_email_worker` function and a generic `send_email` service have been added to handle sending different types of emails.
+*   **Document Sharing:** A new `get_document` function has been added to securely stream documents from Firebase Storage, hiding the actual storage path. The `send_email_worker` now supports document sharing emails using the `document_share_email.html` template.
+*   **Email Template Consistency:** All email templates (reminder, receipt, document share) now use a consistent green theme (#4CAF50) for unified branding.
 
 ## Prerequisites
 
@@ -141,6 +145,39 @@ https://us-central1-homehive-8c7d4.cloudfunctions.net/generate_receipt
 ```
 
 The function will respond with a URL to the generated receipt PDF. You can then use this URL to download the receipt. This will also enqueue a task to send the receipt to the specified `tenant_email`.
+
+### Testing Document Sharing
+
+To test the document sharing functionality:
+
+1. **Upload a document** through the HomeHive management interface (Documents page)
+2. **Send document to tenant** by selecting a tenant from the dropdown and clicking "Send Document"
+3. The system will:
+   - Call `send_email_worker` with the `document_share_email.html` template
+   - Generate a secure Cloud Function URL (not direct storage URL)
+   - Send an email to the tenant with a link to view the document
+
+**Example Document URL format:**
+```
+https://us-central1-{project-id}.cloudfunctions.net/get_document?companyId={companyId}&documentId={documentId}
+```
+
+**Testing `get_document` directly:**
+```bash
+curl "https://us-central1-homehive-dev-89916.cloudfunctions.net/get_document?companyId=YOUR_COMPANY_ID&documentId=YOUR_DOCUMENT_ID"
+```
+
+The function will:
+- Fetch document metadata from Realtime Database at `HomeHive/PropertyManagement/Documents/{companyId}/{documentId}`
+- Parse the Firebase Storage URL from the document metadata
+- Stream the file content directly to the client
+- Set appropriate content-type headers (PDF, Word, Excel, images, etc.)
+
+**Security Benefits:**
+- Hides actual storage paths from users
+- Centralized access control through Cloud Function
+- Can add authentication/authorization checks in the future
+- All document access is logged in Cloud Functions
 
 ## Test Coverage
 

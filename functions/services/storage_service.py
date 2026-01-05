@@ -1,6 +1,7 @@
 import logging
 from firebase_admin import storage
 from datetime import datetime, timedelta
+import os
 
 log = logging.getLogger(__name__)
 
@@ -10,8 +11,9 @@ def upload_to_storage(file_bytes: bytes, id_number: str, file_name: str, file_ty
     Returns the relative path to the uploaded object (e.g., "Tenants/...") if successful, None otherwise.
     """
     try:
+        # Use default bucket for the current Firebase project
         bucket = storage.bucket()
-        
+
         # Create a path in the bucket, e.g., "Tenants/id_number/invoices/file_name.pdf"
         file_path = f"Tenants/{id_number}/{file_type}/{file_name}.pdf"
         blob = bucket.blob(file_path)

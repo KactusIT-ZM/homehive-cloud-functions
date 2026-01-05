@@ -1,12 +1,14 @@
 import json
 import logging
+import os
+import uuid
 from google.cloud import tasks_v2
 
 # Set up a module-level logger
 log = logging.getLogger(__name__)
 
-# Cloud Tasks Constants
-PROJECT = 'homehive-8c7d4'
+# Cloud Tasks Constants - use environment variable to detect project
+PROJECT = os.environ.get('GCP_PROJECT') or os.environ.get('GCLOUD_PROJECT') or 'homehive-dev-89916'
 QUEUE = 'notification-queue'
 LOCATION = 'us-central1'
 
@@ -20,8 +22,9 @@ def enqueue_tasks(payloads: list, target_function: str, task_name_prefix: str = 
     for payload_data in payloads:
         url = f"https://{LOCATION}-{PROJECT}.cloudfunctions.net/{target_function}"
         payload = json.dumps(payload_data)
-        
-        task_name = f"{task_name_prefix}{payload_data.get('tenant_id', '')}-{payload_data.get('email_type', '')}"
+
+        # Add UUID to make task name unique and avoid 409 errors
+        task_name = f"{task_name_prefix}{payload_data.get('tenant_id', '')}-{payload_data.get('email_type', '')}-{uuid.uuid4().hex[:8]}"
 
         task = {
             "name": tasks_client.task_path(PROJECT, LOCATION, QUEUE, task_name),

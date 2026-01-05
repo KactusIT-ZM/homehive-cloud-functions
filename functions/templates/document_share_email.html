@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Receipt from HomeHive</title>
+    <title>Document Shared - HomeHive</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,21 +41,20 @@
         .content p {
             margin: 0 0 15px;
         }
-        .receipt-details {
+        .document-info {
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
             margin: 20px 0;
         }
-        .receipt-details table {
-            width: 100%;
-            border-collapse: collapse;
+        .document-info h3 {
+            margin: 0 0 10px 0;
+            color: #4CAF50;
+            font-size: 18px;
         }
-        .receipt-details th, .receipt-details td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eeeeee;
-        }
-        .receipt-details th {
-            background-color: #f8f8f8;
-            font-weight: bold;
+        .document-info p {
+            margin: 5px 0;
+            font-size: 14px;
         }
         .button-container {
             text-align: center;
@@ -88,7 +87,7 @@
                         <img src="cid:logo" alt="HomeHive Logo" style="max-width: 40px; height: auto; display: block; padding-left: 10px;">
                     </td>
                     <td width="34%" align="center" valign="middle">
-                        <h1>Payment Receipt</h1>
+                        <h1>Document Shared</h1>
                     </td>
                     <td width="33%" align="right" valign="middle">
                         <!-- Empty cell for spacing -->
@@ -98,44 +97,35 @@
         </div>
 
         <div class="content">
-            <p>Dear {{ name }},</p>
-            <p>Thank you for your payment. We have successfully received it and your account has been updated accordingly. Here is a summary of your payment:</p>
+            <p>Hello {{ tenant_name }},</p>
 
-            <div class="receipt-details">
-                <table>
-                    <tr>
-                        <th>Description</th>
-                        <th style="text-align: right;">Amount</th>
-                    </tr>
-                    {% for item in additional_info %}
-                    <tr>
-                        <td>{{ item.title }}</td>
-                        <td style="text-align: right;">ZMW {{ "%.2f"|format(item.amount) }}</td>
-                    </tr>
-                    {% endfor %}
-                    <tr style="font-weight: bold;">
-                        <td>Total Paid</td>
-                        <td style="text-align: right;">ZMW {{ "%.2f"|format(amount_paid) }}</td>
-                    </tr>
-                </table>
+            <p>A document has been shared with you from your property management team.</p>
+
+            <div class="document-info">
+                <h3>{{ document_title }}</h3>
+                <p><strong>Description:</strong> {{ document_description }}</p>
+                {% if document_type %}
+                <p><strong>Type:</strong> {{ document_type }}</p>
+                {% endif %}
             </div>
 
-            <p>Your next payment is due on <strong>{{ next_payment_date }}</strong>.</p>
+            <p>You can view and download the document using the button below:</p>
         </div>
 
         <div class="button-container">
-            <a href="{{ receipt_url }}" class="button">View & Download Receipt</a>
+            <a href="{{ document_url }}" class="button">View Document</a>
         </div>
 
         <div class="content">
-            <p>If you have any questions about your payment or this receipt, please don't hesitate to contact our support team.</p>
-            <p>Thank you for being a valued tenant!</p>
-            <p>Sincerely,<br>The HomeHive Team</p>
+            <p>If you have any questions about this document, please don't hesitate to contact your property management team.</p>
+
+            <p>Sincerely,<br>
+            The HomeHive Team</p>
         </div>
 
         <div class="footer">
-            <p>&copy; {{ current_year }} HomeHive. All rights reserved.</p>
-            <p>This is an automated message, please do not reply.</p>
+            <p>&copy; {{ current_year }} HomeHive Property Management. All rights reserved.</p>
+            <p>This is an automated message. Please do not reply to this email.</p>
         </div>
     </div>
 </body>
