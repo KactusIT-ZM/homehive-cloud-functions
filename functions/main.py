@@ -215,28 +215,50 @@ def send_email_worker(req: https_fn.Request) -> https_fn.Response:
     """
     HTTP-triggered function that receives an email payload and sends an email.
     """
+    # Handle CORS preflight
+    if req.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+            'Access-Control-Max-Age': '3600'
+        }
+        return https_fn.Response('', status=204, headers=headers)
+
+    # Set CORS headers for actual request
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain'
+    }
+
     try:
         email_payload = req.get_json(silent=True)
         if not email_payload:
             log.error("No email data in request body.")
-            return https_fn.Response("No data received", status=400)
+            return https_fn.Response("No data received", status=400, headers=headers)
+
+        # Extract optional CC recipients (can be a list or single email string)
+        cc_recipients = email_payload.get("cc", None)
+        if cc_recipients and isinstance(cc_recipients, str):
+            cc_recipients = [cc_recipients]  # Convert single email to list
 
         success = send_email(
             recipient_email=email_payload["recipient_email"],
             subject=email_payload["subject"],
             template_name=email_payload["template_name"],
             template_env=template_env,
-            context=email_payload["context"]
+            context=email_payload["context"],
+            cc_recipients=cc_recipients
         )
 
         if success:
-            return https_fn.Response("Email sent successfully.", status=200)
+            return https_fn.Response("Email sent successfully.", status=200, headers=headers)
         else:
-            return https_fn.Response("Failed to send email.", status=500)
+            return https_fn.Response("Failed to send email.", status=500, headers=headers)
 
     except Exception as e:
         log.error(f"An unexpected error occurred in send_email_worker: {e}")
-        return https_fn.Response("An error occurred.", status=500)
+        return https_fn.Response("An error occurred.", status=500, headers=headers)
 
 
 @https_fn.on_request()
