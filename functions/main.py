@@ -130,104 +130,76 @@ def send_notification_worker(req: https_fn.Request) -> https_fn.Response:
     HTTP-triggered function that receives a tenant's consolidated info and sends a notification.
     """
     tenant_id_for_logging = "UNKNOWN_TENANT" # Initialize for logging
-    # try:
-    tenant_consolidated_info = req.get_json(silent=True)
-    if not tenant_consolidated_info:
-        log.error("No tenant data in request body.")
-        return https_fn.Response("No data received", status=400)
-    
-    tenant_info = tenant_consolidated_info.get('tenant_info', {})
-    tenant_id_for_logging = tenant_info.get('tenant_id', "UNKNOWN_TENANT_ID_IN_PAYLOAD")
-    id_number = tenant_info.get('idNumber')
-
-    if not id_number:
-        log.error(f"Missing idNumber for tenant {tenant_id_for_logging}. Cannot upload invoice.")
-        # Decide if you want to stop or continue without the PDF
-        return https_fn.Response("Missing idNumber for tenant.", status=400)
-
-    # Fetch companies data to get landlord emails for CC
-    all_companies = get_all_companies()
-    cc_recipients = set() # Use a set to store unique CC emails
-    
-    for rental in tenant_consolidated_info.get('due_rentals', []):
-        company_id = rental.get('company_id')
-        if company_id and all_companies and all_companies.get(company_id):
-            landlord_email = all_companies[company_id].get('contactEmail')
-            if landlord_email:
-                cc_recipients.add(landlord_email)
-
-    # Create the consolidated invoice PDF
-    invoice_pdf_bytes, invoice_number = create_invoice_pdf(tenant_consolidated_info)
-
-    # Create the consolidated invoice PDF
-    invoice_pdf_bytes, invoice_number = create_invoice_pdf(tenant_consolidated_info)
-
-    # Upload the invoice PDF to storage
-    cloud_storage_path = upload_to_storage(invoice_pdf_bytes, id_number, invoice_number, file_type="invoices")
-    if not cloud_storage_path:
-        log.error(f"Failed to upload invoice PDF for tenant {tenant_id_for_logging}.")
-        return https_fn.Response("Failed to upload invoice PDF.", status=500)
-
-    # --- Store invoice info in the payment node ---
-    # We will use the first due rental's info to identify the payment node
-    if not tenant_consolidated_info.get('due_rentals'):
-        log.error(f"No due rentals found for tenant {tenant_id_for_logging}. Cannot store invoice info.")
-        return https_fn.Response("No due rentals for invoice.", status=400)
-
-    first_rental = tenant_consolidated_info['due_rentals'][0]
-    company_id_for_payment = first_rental.get('company_id')
-    payment_id_for_payment = first_rental.get('payment_id')
-    tenant_id_for_payment = tenant_info.get('tenant_id') # Use the tenantId from tenant_info
-
-    if not company_id_for_payment or not payment_id_for_payment or not tenant_id_for_payment:
-        log.error(f"Missing identifiers for payment node for tenant {tenant_id_for_logging}. Cannot store invoice info.")
-        return https_fn.Response("Missing payment identifiers.", status=400)
-
-    rt_db_path = f"HomeHive/PropertyManagement/Accounts/{company_id_for_payment}/{tenant_id_for_payment}/payments/{payment_id_for_payment}/invoice"
-    ref = db.reference(rt_db_path)
-    ref.set({
-        'cloudStoragePath': cloud_storage_path,
-        'invoice_number': invoice_number,
-        'created_at': datetime.now().isoformat()
-    })
-    log.info(f"Stored invoice info in RTDB at: {rt_db_path}")
-
-    # Construct the URL to the get_invoice Cloud Function
-    cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', 'https://us-central1-homehive-8c7d4.cloudfunctions.net')
-    invoice_url = f"{cloud_function_base_url}/get_invoice?companyId={company_id_for_payment}&tenantId={tenant_id_for_payment}&paymentId={payment_id_for_payment}"
-
-
-    # Call the email service to send the reminder with the consolidated invoice attached
-    success = send_tenant_summary_email(tenant_consolidated_info, template_env, invoice_url=invoice_url, cc_recipients=list(cc_recipients))
-
-
-    if success:
-        return https_fn.Response("Email sent successfully.", status=200)
-    else:
-        return https_fn.Response("Failed to send email.", status=500)
-
-    # except Exception as e:
-    #     log.error(f"An unexpected error occurred in send_notification_worker for tenant {tenant_id_for_logging}: {e}")
-    #     return https_fn.Response("An error occurred.", status=500)
-
-@https_fn.on_request()
-def send_email_worker(req: https_fn.Request) -> https_fn.Response:
-    """
-    HTTP-triggered function that receives an email payload and sends an email.
-    """
     try:
-        email_payload = req.get_json(silent=True)
-        if not email_payload:
-            log.error("No email data in request body.")
+        tenant_consolidated_info = req.get_json(silent=True)
+        if not tenant_consolidated_info:
+            log.error("No tenant data in request body.")
             return https_fn.Response("No data received", status=400)
+        
+        tenant_info = tenant_consolidated_info.get('tenant_info', {})
+        tenant_id_for_logging = tenant_info.get('tenant_id', "UNKNOWN_TENANT_ID_IN_PAYLOAD")
+        id_number = tenant_info.get('idNumber')
 
-        success = send_email(
-            recipient_email=email_payload["recipient_email"],
-            subject=email_payload["subject"],
-            template_name=email_payload["template_name"],
-            template_env=template_env,
-            context=email_payload["context"]
-        )
+        if not id_number:
+            log.error(f"Missing idNumber for tenant {tenant_id_for_logging}. Cannot upload invoice.")
+            # Decide if you want to stop or continue without the PDF
+            return https_fn.Response("Missing idNumber for tenant.", status=400)
+
+        # Fetch companies data to get landlord emails for CC
+        all_companies = get_all_companies()
+        cc_recipients = set() # Use a set to store unique CC emails
+        
+        for rental in tenant_consolidated_info.get('due_rentals', []):
+            company_id = rental.get('company_id')
+            if company_id and all_companies and all_companies.get(company_id):
+                landlord_email = all_companies[company_id].get('contactEmail')
+                if landlord_email:
+                    cc_recipients.add(landlord_email)
+
+        # Create the consolidated invoice PDF
+        invoice_pdf_bytes, invoice_number = create_invoice_pdf(tenant_consolidated_info)
+
+        # Create the consolidated invoice PDF
+        invoice_pdf_bytes, invoice_number = create_invoice_pdf(tenant_consolidated_info)
+
+        # Upload the invoice PDF to storage
+        cloud_storage_path = upload_to_storage(invoice_pdf_bytes, id_number, invoice_number, file_type="invoices")
+        if not cloud_storage_path:
+            log.error(f"Failed to upload invoice PDF for tenant {tenant_id_for_logging}.")
+            return https_fn.Response("Failed to upload invoice PDF.", status=500)
+
+        # --- Store invoice info in the payment node ---
+        # We will use the first due rental's info to identify the payment node
+        if not tenant_consolidated_info.get('due_rentals'):
+            log.error(f"No due rentals found for tenant {tenant_id_for_logging}. Cannot store invoice info.")
+            return https_fn.Response("No due rentals for invoice.", status=400)
+
+        first_rental = tenant_consolidated_info['due_rentals'][0]
+        company_id_for_payment = first_rental.get('company_id')
+        payment_id_for_payment = first_rental.get('payment_id')
+        tenant_id_for_payment = tenant_info.get('tenant_id') # Use the tenantId from tenant_info
+
+        if not company_id_for_payment or not payment_id_for_payment or not tenant_id_for_payment:
+            log.error(f"Missing identifiers for payment node for tenant {tenant_id_for_logging}. Cannot store invoice info.")
+            return https_fn.Response("Missing payment identifiers.", status=400)
+
+        rt_db_path = f"HomeHive/PropertyManagement/Accounts/{company_id_for_payment}/{tenant_id_for_payment}/payments/{payment_id_for_payment}/invoice"
+        ref = db.reference(rt_db_path)
+        ref.set({
+            'cloudStoragePath': cloud_storage_path,
+            'invoice_number': invoice_number,
+            'created_at': datetime.now().isoformat()
+        })
+        log.info(f"Stored invoice info in RTDB at: {rt_db_path}")
+
+        # Construct the URL to the get_invoice Cloud Function
+        cloud_function_base_url = os.environ.get('CLOUD_FUNCTION_BASE_URL', 'https://us-central1-homehive-8c7d4.cloudfunctions.net')
+        invoice_url = f"{cloud_function_base_url}/get_invoice?companyId={company_id_for_payment}&tenantId={tenant_id_for_payment}&paymentId={payment_id_for_payment}"
+
+
+        # Call the email service to send the reminder with the consolidated invoice attached
+        success = send_tenant_summary_email(tenant_consolidated_info, template_env, invoice_url=invoice_url, cc_recipients=list(cc_recipients))
+
 
         if success:
             return https_fn.Response("Email sent successfully.", status=200)
@@ -235,8 +207,58 @@ def send_email_worker(req: https_fn.Request) -> https_fn.Response:
             return https_fn.Response("Failed to send email.", status=500)
 
     except Exception as e:
-        log.error(f"An unexpected error occurred in send_email_worker: {e}")
+        log.error(f"An unexpected error occurred in send_notification_worker for tenant {tenant_id_for_logging}: {e}")
         return https_fn.Response("An error occurred.", status=500)
+
+@https_fn.on_request()
+def send_email_worker(req: https_fn.Request) -> https_fn.Response:
+    """
+    HTTP-triggered function that receives an email payload and sends an email.
+    """
+    # Handle CORS preflight
+    if req.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+            'Access-Control-Max-Age': '3600'
+        }
+        return https_fn.Response('', status=204, headers=headers)
+
+    # Set CORS headers for actual request
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain'
+    }
+
+    try:
+        email_payload = req.get_json(silent=True)
+        if not email_payload:
+            log.error("No email data in request body.")
+            return https_fn.Response("No data received", status=400, headers=headers)
+
+        # Extract optional CC recipients (can be a list or single email string)
+        cc_recipients = email_payload.get("cc", None)
+        if cc_recipients and isinstance(cc_recipients, str):
+            cc_recipients = [cc_recipients]  # Convert single email to list
+
+        success = send_email(
+            recipient_email=email_payload["recipient_email"],
+            subject=email_payload["subject"],
+            template_name=email_payload["template_name"],
+            template_env=template_env,
+            context=email_payload["context"],
+            cc_recipients=cc_recipients
+        )
+
+        if success:
+            return https_fn.Response("Email sent successfully.", status=200, headers=headers)
+        else:
+            return https_fn.Response("Failed to send email.", status=500, headers=headers)
+
+    except Exception as e:
+        log.error(f"An unexpected error occurred in send_email_worker: {e}")
+        return https_fn.Response("An error occurred.", status=500, headers=headers)
 
 
 @https_fn.on_request()
